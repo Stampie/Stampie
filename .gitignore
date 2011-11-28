@@ -1,4 +1,5 @@
 vendor
 coverage
 composer.lock
+composer.phar
 phpunit.xml
