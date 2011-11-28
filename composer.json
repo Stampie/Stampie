@@ -1,5 +1,16 @@
 {
     "name" : "henrikbjorn/stampie",
+    "description" : "A Postmarkapp API Mailer",
+    "homepage" : "https://github.com/henrikbjorn/Stampie",
+    "type" : "library",
+    "license" : "MIT",
+    "authors" : [
+        {
+            "name" : "Henrik Bjornskov",
+            "email" : "henrik@bjrnskov.dk",
+            "homepage" : "http://henrik.bjrnskov.dk"
+        }
+    ],
     "autoload" : {
         "psr-0" : {
             "Stampie\\Tests" : "tests/",
