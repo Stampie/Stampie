@@ -2,7 +2,7 @@
     "name" : "henrikbjorn/stampie",
     "autoload" : {
         "psr-0" : {
-            "Stampie\\Tests" : "tests/"
+            "Stampie\\Tests" : "tests/",
             "Stampie"        : "lib/"
         }
     },
