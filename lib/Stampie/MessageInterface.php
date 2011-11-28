@@ -51,18 +51,12 @@ interface MessageInterface
     function getHeaders();
 
     /**
-     * @param array $headers
+     * @return string
      */
-    function setHeaders(array $headers);
+    function getHtml();
 
     /**
-     * @param string $name
-     * @param string $value
+     * @return string
      */
-    function addHeader($name, $value);
-
-    /**
-     * @param string $name
-     */
-    function getHeader($name);
+    function getText();
 }
