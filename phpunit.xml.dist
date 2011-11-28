@@ -15,13 +15,13 @@
 
     <testsuites>
         <testsuite name="Stampie Test Suite">
-            <directory>../tests/Stampie/Tests</directory>
+            <directory>./tests/Stampie/Tests</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>../lib</directory>
+            <directory>./lib</directory>
         </whitelist>
     </filter>
 
