@@ -1,0 +1,13 @@
+{
+    "name" : "henrikbjorn/stampie",
+    "autoload" : {
+        "psr-0" : {
+            "Stampie\\Tests" : "tests/"
+            "Stampie"        : "lib/"
+        }
+    },
+    "require" : {
+        "php"                : ">=5.3.8",
+        "kriswallsmith/buzz" : "*"
+    }
+}
