@@ -45,8 +45,8 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('post')
             ->with($this->equalTo(Mailer::ENDPOINT), $this->equalTo(array(
-                'X-Postmark-Server-Token' => $mailer->getServerToken(),
-                'Content-Type'            => 'application/json',
+                'Content-Type: application/json',
+                'X-Postmark-Server-Token: ' . $mailer->getServerToken(),
             )), json_encode(array(
                 'From'     => $from,
                 'To'       => $to,

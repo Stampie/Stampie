@@ -81,8 +81,8 @@ class Mailer implements MailerInterface
     public function send(MessageInterface $message)
     {
         $headers = array(
-            'X-Postmark-Server-Token' => $this->getServerToken(),
-            'Content-Type' => 'application/json',
+            'Content-Type: application/json',
+            'X-Postmark-Server-Token: ' . $this->getServerToken(),
         );
 
         if (!is_string($content = json_encode($this->prepare($message)))) {
