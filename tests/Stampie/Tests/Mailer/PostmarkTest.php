@@ -18,7 +18,9 @@ class PostmarkTest extends \PHPUnit_Framework_TestCase
         $mailer = new Postmark($this->adapter, self::SERVER_TOKEN);
         $this->assertEquals($this->adapter, $mailer->getAdapter());
         $this->assertEquals(self::SERVER_TOKEN, $mailer->getServerToken());
+        $this->assertEquals('http://api.postmarkapp.com/email', $mailer->getEndpoint());
     }
+
 
     /**
      * @expectedException InvalidArgumentException
