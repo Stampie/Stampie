@@ -10,13 +10,13 @@ class MailerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->buzz = $this->getMock('Buzz\Browser');
+        $this->adapter = $this->getMock('Stampie\Adapter\AdapterInterface');
     }
 
     public function testSettersAndGetters()
     {
-        $mailer = new Mailer($this->buzz);
-        $this->assertEquals($this->buzz, $mailer->getBrowser());
+        $mailer = new Mailer($this->adapter);
+        $this->assertEquals($this->adapter, $mailer->getAdapter());
         $this->assertEquals("POSTMARK_API_TEST", $mailer->getServerToken());
 
         $mailer->setServerToken(static::SERVER_TOKEN, $mailer->getServerToken());
@@ -27,33 +27,36 @@ class MailerTest extends \PHPUnit_Framework_TestCase
      */
     public function testServerTokenCannotBeEmpty()
     {
-        $mailer = new Mailer($this->buzz);
+        $mailer = new Mailer($this->adapter);
         $mailer->setServerToken('');
     }
 
     public function testSendWithTextAndOrHtmlIsSuccessful()
     {
+        $mailer  = new Mailer($this->adapter, 'mySecretToken');
         $message = $this->getMessageMock(
             $from = 'hb@peytz.dk', $to = 'henrik@bjrnskov.dk', $subject = 'Subject',
             $html = 'html', $text = 'text', $headers = array()
         );
 
-        $mailer  = new Mailer($this->buzz, 'mySecretToken');
+        $headers = array(
+            'Content-Type' => 'application/json',
+            'X-Postmark-Server-Token' => $mailer->getServerToken(),
+        );
+
+        $json = json_encode(array(
+            'From'     => $from,
+            'To'       => $to,
+            'Subject'  => $subject,
+            'TextBody' => $text,
+            'HtmlBody' => $html,
+        ));
 
         $this
-            ->buzz
+            ->adapter
             ->expects($this->once())
-            ->method('post')
-            ->with($this->equalTo(Mailer::ENDPOINT), $this->equalTo(array(
-                'Content-Type: application/json',
-                'X-Postmark-Server-Token: ' . $mailer->getServerToken(),
-            )), json_encode(array(
-                'From'     => $from,
-                'To'       => $to,
-                'Subject'  => $subject,
-                'TextBody' => $text,
-                'HtmlBody' => $html,
-            )))
+            ->method('send')
+            ->with($this->equalTo($json), $this->equalTo($headers))
             ->will($this->returnValue($this->getResponseMock(200, array())))
         ;
 
@@ -66,7 +69,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     public function testSendWithEmptyTextAndHtml()
     {
         $message = $this->getMessageMock('hb@peytz.dk', 'henrik@bjrnskov.dk', 'Sample Subject');
-        $mailer = new Mailer($this->buzz);
+        $mailer = new Mailer($this->adapter);
         $mailer->send($message);
     }
 
@@ -75,12 +78,12 @@ class MailerTest extends \PHPUnit_Framework_TestCase
      */
     public function testHttpErrorCodeResponse($statusCode, $description)
     {
-        $mailer = new Mailer($this->buzz);
+        $mailer = new Mailer($this->adapter);
 
         $this
-            ->buzz
+            ->adapter
             ->expects($this->any())
-            ->method('post')
+            ->method('send')
             ->will($this->returnValue($this->getResponseMock($statusCode, array())))
         ;
 
@@ -94,12 +97,12 @@ class MailerTest extends \PHPUnit_Framework_TestCase
      */
     public function testApiErrorCodeResponse($statusCode, $description)
     {
-        $mailer = new Mailer($this->buzz);
+        $mailer = new Mailer($this->adapter);
 
         $this
-            ->buzz
+            ->adapter
             ->expects($this->any())
-            ->method('post')
+            ->method('send')
             ->will($this->returnValue($this->getResponseMock(422, array(
                 'ErrorCode' => $statusCode,
                 'Message' => $description,
@@ -130,7 +133,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
 
     protected function getResponseMock($statusCode, array $content)
     {
-        $response = $this->getMock('Buzz\Message\Response');
+        $response = $this->getMock('Stampie\Adapter\ResponseInterface');
         $response
             ->expects($this->any())
             ->method('getStatusCode')

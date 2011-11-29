@@ -2,7 +2,7 @@
 
 namespace Stampie;
 
-use Buzz\Browser;
+use Stampie\Adapter\AdapterInterface;
 
 /**
  * Takes a MailerInterface and sends to to Postmark throgh Buzz
@@ -12,14 +12,14 @@ use Buzz\Browser;
 interface MailerInterface
 {
     /**
-     * @param Browser $browser
+     * @param AdapterInterface $adapter
      */
-    function setBrowser(Browser $browser);
+    function setAdapter(AdapterInterface $adapter);
 
     /**
-     * @return Browser
+     * @return AdapterInterface
      */
-    function getBrowser();
+    function getAdapter();
 
     /**
      * @param string $token

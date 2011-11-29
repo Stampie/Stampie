@@ -2,7 +2,7 @@
 
 namespace Stampie;
 
-use Buzz\Browser;
+use Stampie\Adapter\AdapterInterface;
 
 /**
  * Sends emails to Postmark server
@@ -17,9 +17,9 @@ class Mailer implements MailerInterface
     const ENDPOINT = 'http://api.postmarkapp.com/email';
 
     /**
-     * @var Browser $browser
+     * @var AdapterInterface $adapter
      */
-    protected $browser;
+    protected $adapter;
 
     /**
      * @var string
@@ -27,29 +27,29 @@ class Mailer implements MailerInterface
     protected $serverToken;
 
     /**
-     * @param Browser $browser
+     * @param AdapterInterface $adapter
      * @param string $serverToken
      */
-    public function __construct(Browser $browser, $serverToken = "POSTMARK_API_TEST")
+    public function __construct(AdapterInterface $adapter, $serverToken = "POSTMARK_API_TEST")
     {
-        $this->setBrowser($browser);
+        $this->setAdapter($adapter);
         $this->setServerToken($serverToken);
     }
 
     /**
-     * @param Browser $browser
+     * @param AdapterInterface $adapter
      */
-    public function setBrowser(Browser $browser)
+    public function setAdapter(AdapterInterface $adapter)
     {
-        $this->browser = $browser;
+        $this->adapter = $adapter;
     }
 
     /**
-     * @return Browser
+     * @return AdapterInterface
      */
-    public function getBrowser()
+    public function getAdapter()
     {
-        return $this->browser;
+        return $this->adapter;
     }
 
     /**
@@ -81,15 +81,15 @@ class Mailer implements MailerInterface
     public function send(MessageInterface $message)
     {
         $headers = array(
-            'Content-Type: application/json',
-            'X-Postmark-Server-Token: ' . $this->getServerToken(),
+            'Content-Type' => 'application/json',
+            'X-Postmark-Server-Token' => $this->getServerToken(),
         );
 
         if (!is_string($content = json_encode($this->prepare($message)))) {
             throw new \LogicException('Could not create json contents. php.net/json_last_error code:' . json_last_error());
         }
 
-        $response = $this->browser->post(static::ENDPOINT, $headers, $content);
+        $response = $this->adapter->send($content, $headers);
 
         // We are all clear if status is HTTP 200 OK
         if ($response->getStatusCode() === 200) {
