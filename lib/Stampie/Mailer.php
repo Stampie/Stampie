@@ -54,7 +54,7 @@ abstract class Mailer implements MailerInterface
     public function setServerToken($serverToken)
     {
         if (empty($serverToken)) {
-            throw new \InvalidArgumentException('The provided server token cannot be empty');
+            throw new \InvalidArgumentException('ServerToken cannot be empty');
         }
 
         $this->serverToken = $serverToken;
@@ -67,5 +67,14 @@ abstract class Mailer implements MailerInterface
     {
         return $this->serverToken;
     }
+
+    /**
+     * Format the given message into a body that can be used for sending 
+     * to the api
+     *
+     * @param MessageInterface $message
+     * @return string
+     */
+    abstract protected function format(MessageInterface $message);
     
 }

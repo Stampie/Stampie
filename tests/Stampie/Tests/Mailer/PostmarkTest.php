@@ -13,23 +13,6 @@ class PostmarkTest extends \PHPUnit_Framework_TestCase
         $this->adapter = $this->getMock('Stampie\Adapter\AdapterInterface');
     }
 
-    public function testSettersAndGetters()
-    {
-        $mailer = new Postmark($this->adapter, self::SERVER_TOKEN);
-        $this->assertEquals($this->adapter, $mailer->getAdapter());
-        $this->assertEquals(self::SERVER_TOKEN, $mailer->getServerToken());
-        $this->assertEquals('http://api.postmarkapp.com/email', $mailer->getEndpoint());
-    }
-
-
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function testServerTokenCannotBeEmpty()
-    {
-        $mailer = new Postmark($this->adapter, '');
-    }
-
     public function testSendWithTextAndOrHtmlIsSuccessful()
     {
         $mailer  = new Postmark($this->adapter, self::SERVER_TOKEN);
@@ -55,7 +38,11 @@ class PostmarkTest extends \PHPUnit_Framework_TestCase
             ->adapter
             ->expects($this->once())
             ->method('send')
-            ->with($this->equalTo($json), $this->equalTo($headers))
+            ->with(
+                $this->equalTo($mailer->getEndpoint()),
+                $this->equalTo($json),
+                $this->equalTo($headers)
+            )
             ->will($this->returnValue($this->getResponseMock(200, array())))
         ;
 

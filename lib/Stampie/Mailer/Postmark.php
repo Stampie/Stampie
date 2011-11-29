@@ -27,16 +27,10 @@ class Postmark extends Mailer
      */
     public function send(MessageInterface $message)
     {
-        $headers = array(
+        $response = $this->adapter->send($this->getEndpoint(), $this->format($message), array(
             'Content-Type' => 'application/json',
             'X-Postmark-Server-Token' => $this->getServerToken(),
-        );
-
-        if (!is_string($content = json_encode($this->prepare($message)))) {
-            throw new \LogicException('Could not create json contents. php.net/json_last_error code:' . json_last_error());
-        }
-
-        $response = $this->adapter->send($content, $headers);
+        ));
 
         // We are all clear if status is HTTP 200 OK
         if ($response->getStatusCode() === 200) {
@@ -58,10 +52,9 @@ class Postmark extends Mailer
 
     /**
      * @param MessageInterface $message
-     * @throws \InvalidArgumentException
-     * @return array
+     * @return string
      */
-    protected function prepare(MessageInterface $message)
+    protected function format(MessageInterface $message)
     {
         $parameters = array_filter(array(
             'From'     => $message->getFrom(),
@@ -76,6 +69,6 @@ class Postmark extends Mailer
             throw new \InvalidArgumentException('You cannot send empty emails');
         }
 
-        return $parameters;
+        return json_encode($parameters);
     }
 }

@@ -17,6 +17,6 @@ $message = new Message();
 $message->setText('text');
 $message->setHtml('html');
 
-$mailer = new \Stampie\Mailer(new \Stampie\Adapter\Buzz(new \Buzz\Browser()));
+$mailer = new \Stampie\Mailer\Postmark(new \Stampie\Adapter\Buzz(new \Buzz\Browser()));
 $mailer->send($message);
 ```
