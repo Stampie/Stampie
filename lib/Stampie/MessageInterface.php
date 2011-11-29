@@ -38,11 +38,6 @@ interface MessageInterface
     /**
      * @return string
      */
-    function getTag();
-
-    /**
-     * @return string
-     */
     function getReplyTo();
 
     /**

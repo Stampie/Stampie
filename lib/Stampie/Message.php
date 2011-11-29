@@ -83,14 +83,6 @@ abstract class Message implements MessageInterface
     }
 
     /**
-     * @return null
-     */
-    public function getTag()
-    {
-        return null;
-    }
-
-    /**
      * @return true
      */
     public function getHeaders()

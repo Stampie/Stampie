@@ -39,7 +39,6 @@ class MessageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('<br />html', $message->getHtml());
         $this->assertEquals('text', $message->getText());
         $this->assertEquals(array(), $message->getHeaders());
-        $this->assertEquals(null, $message->getTag());
         $this->assertEquals(null, $message->getCc());
         $this->assertEquals(null, $message->getBcc());
     }
