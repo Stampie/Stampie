@@ -2,6 +2,16 @@
 
 This is Stampie a Postmark API Consumer. It is dead simple and stupid.
 
+## Supported companies
+
+* SendGrid
+* PostMark
+
+## Supported http libraries
+
+* Buzz
+* Guzzle
+
 ## Usage
 
 ``` php
@@ -17,6 +27,6 @@ $message = new Message();
 $message->setText('text');
 $message->setHtml('html');
 
-$mailer = new \Stampie\Mailer\Postmark(new \Stampie\Adapter\Buzz(new \Buzz\Browser()));
+$mailer = new \Stampie\Mailer\Postmark(new \Stampie\Adapter\Buzz(new \Buzz\Browser()), 'ServerToken');
 $mailer->send($message);
 ```
