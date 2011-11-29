@@ -5,6 +5,7 @@ namespace Stampie\Mailer;
 use Stampie\Mailer;
 use Stampie\MessageInterface;
 use Stampie\Adapter\AdapterInterface;
+use Stampie\Adapter\ResponseInterface;
 
 /**
  * Sends emails to Postmark server
