@@ -18,4 +18,9 @@ interface ResponseInterface
      * @return string
      */
     function getContent();
+
+    /**
+     * @return string
+     */
+    function getStatusText();
 }

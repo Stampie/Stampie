@@ -5,23 +5,23 @@ namespace Stampie\Tests\Mailer;
 use Stampie\Mailer\SendGrid;
 use Stampie\Adapter\Response;
 
-class SendGridTest extends \PHPUnit_Framework_TestCase
+class SendGridTest extends \Stampie\Tests\BaseMailerTest
 {
     public function testServerTokenMissingDelimiter()
     {
         $this->setExpectedException('InvalidArgumentException', 'SendGrid uses a "username:password" based ServerToken');
-        $mailer = new SendGrid($this->getAdapterMock(), '');
+        $mailer = new SendGrid($this->adapter, '');
     }
 
     public function testValidServerToken()
     {
-        $mailer = new SendGrid($this->getAdapterMock(), 'username:password');
+        $mailer = new SendGrid($this->adapter, 'username:password');
         $this->assertEquals('username:password', $mailer->getServerToken());
     }
 
     public function testSend()
     {
-        $mailer = new SendGrid($this->getAdapterMock(), 'username:password');
+        $mailer = new SendGrid($this->adapter, 'username:password');
         $message = $this->getMessageMock(
             $from = 'hb@peytz.dk', $to = 'henrik@bjrnskov.dk', $subject = 'subject', $html = 'html', $text = 'text', $headers = array('X-Header' => 'Value')
         );
@@ -43,50 +43,52 @@ class SendGridTest extends \PHPUnit_Framework_TestCase
         $mailer->send($message);
     }
 
-    protected function getAdapterMock()
+    public function test400ResponseFails()
     {
-        return $this->getMock('Stampie\Adapter\AdapterInterface');
+
+        $mailer = new SendGrid($this->adapter, 'username:password');
+        $adapter = $this->adapter;
+
+        $adapter
+            ->expects($this->any())
+            ->method('send')
+            ->will($this->returnValue(new Response(400, '')))
+        ;
+
+        $this->setExpectedException('Stampie\Exception\ApiException');
+
+        $mailer->send($this->getMessageMock('hb@peytz.dk', 'henrik@bjrnskov.dk', 'subject', 'html'));
     }
 
-    protected function getMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = array())
+    /**
+     * @dataProvider getValuesFor500Fails
+     */
+    public function test500ReponseFails($statusCode, $statusText)
     {
-        $message = $this->getMock('Stampie\MessageInterface');
-        $message
+        $mailer = new SendGrid($this->adapter, 'username:password');
+        $adapter = $this->adapter;
+
+        $adapter
             ->expects($this->any())
-            ->method('getFrom')
-            ->will($this->returnValue($from))
+            ->method('send')
+            ->will($this->returnValue(new Response($statusCode, '')))
         ;
 
-        $message
-            ->expects($this->any())
-            ->method('getTo')
-            ->will($this->returnValue($to))
-        ;
+        $this->setExpectedException('Stampie\Exception\HttpException', $statusText);
 
-        $message
-            ->expects($this->any())
-            ->method('getSubject')
-            ->will($this->returnValue($subject))
-        ;
+        $mailer->send($this->getMessageMock('hb@peytz.dk', 'henrik@bjrnskov.dk', 'subject', 'html'));
 
-        $message
-            ->expects($this->any())
-            ->method('getHtml')
-            ->will($this->returnValue($html))
-        ;
+    }
 
-        $message
-            ->expects($this->any())
-            ->method('getText')
-            ->will($this->returnValue($text))
-        ;
-
-        $message
-            ->expects($this->any())
-            ->method('getHeaders')
-            ->will($this->returnValue($headers))
-        ;
-
-        return $message;
+    public function getValuesFor500Fails()
+    {
+        return array(
+            array(500, 'Internal Server Error'),
+            array(501, 'Not Implemented'),
+            array(502, 'Bad Gateway'),
+            array(503, 'Service Unavailable'),
+            array(504, 'Gateway Timeout'),
+            array(505, 'HTTP Version Not Supported'),
+        );
     }
 }

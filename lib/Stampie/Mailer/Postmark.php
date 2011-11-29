@@ -4,8 +4,9 @@ namespace Stampie\Mailer;
 
 use Stampie\Mailer;
 use Stampie\MessageInterface;
-use Stampie\Adapter\AdapterInterface;
 use Stampie\Adapter\ResponseInterface;
+use Stampie\Exception\HttpException;
+use Stampie\Exception\ApiException;
 
 /**
  * Sends emails to Postmark server
@@ -28,17 +29,19 @@ class Postmark extends Mailer
      */
     protected function handle(ResponseInterface $response)
     {
-        // 401 Unauthorized 
-        // 500 Internal Server Error
-        if (in_array($statusCode = $response->getStatusCode(), array(401, 500))) {
-            throw new \LogicException($statusCode == 401 ? 'Unauthorized' : 'Internal Server Error', $statusCode);
+        $statusCode = $response->getStatusCode();
+        $httpException = new HttpException($response->getStatusCode(), $response->getStatusText());
+
+        // Not 422 contains information about API Error
+        if ($statusCode !== 422) {
+            throw $httpException;
         }
 
         // The error is returned in JSON with {ErrorCode : 405, Message: "Details"}
         $error = json_decode($response->getContent());
 
         // 422 Unprocessable Entity
-        throw new \LogicException($error->Message, $error->ErrorCode);
+        throw new ApiException(sprintf('[%d]: %s', $error->ErrorCode, $error->Message), $httpException);
     }
 
     /**

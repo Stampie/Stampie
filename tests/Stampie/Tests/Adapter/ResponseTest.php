@@ -12,5 +12,14 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('Content', $response->getContent());
+        $this->assertEquals('OK', $response->getStatusText());
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testUnknownStatusCode()
+    {
+        $response = new Response(0, 'Content');
     }
 }

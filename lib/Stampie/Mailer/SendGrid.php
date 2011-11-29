@@ -5,6 +5,8 @@ namespace Stampie\Mailer;
 use Stampie\Mailer;
 use Stampie\MessageInterface;
 use Stampie\Adapter\ResponseInterface;
+use Stampie\Exception\HttpException;
+use Stampie\Exception\ApiException;
 
 /**
  * Mailer to be used with SendGrid Web API
@@ -40,13 +42,15 @@ class SendGrid extends Mailer
     protected function handle(ResponseInterface $response)
     {
         $statusCode = $response->getStatusCode();
+        $httpException = new HttpException($statusCode, $response->getStatusText());
 
-        if ($statusCode > 500) {
-            throw new \LogicException('The API call was unsuccessful. You should retry later', $statusCode);
+        if (substr($statusCode, 0, 1) == 5) {
+            throw $httpException;
         }
 
         $error = json_decode($response->getContent());
-        throw new \LogicException(implode(', ', $error->messages), $statusCode);
+        $errors = isset($error->messages) ? (array) $error->messages : array();
+        throw new ApiException(implode(', ', $errors), $httpException);
     }
 
     /**
