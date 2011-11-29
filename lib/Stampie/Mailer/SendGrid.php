@@ -49,7 +49,8 @@ class SendGrid extends Mailer
         }
 
         $error = json_decode($response->getContent());
-        $errors = isset($error->messages) ? (array) $error->messages : array();
+        $errors = isset($error->errors) ? (array) $error->errors : array();
+
         throw new ApiException(implode(', ', $errors), $httpException);
     }
 
@@ -60,17 +61,19 @@ class SendGrid extends Mailer
     protected function format(MessageInterface $message)
     {
         // We should split up the ServerToken on : to get username and password
-        list($user, $password) = explode(':', $this->getServerToken());
+        list($username, $password) = explode(':', $this->getServerToken());
 
         $parameters = array(
-            'to'      => $message->getTo(),
-            'from'    => $message->getFrom(),
-            'subject' => $message->getSubject(),
-            'text'    => $message->getText(),
-            'html'    => $message->getHtml(),
-            'bcc'     => $message->getBcc(),
-            'replyto' => $message->getReplyTo(),
-            'headers' => json_encode($message->getHeaders()),
+            'api_user' => $username,
+            'api_key'  => $password,
+            'to'       => $message->getTo(),
+            'from'     => $message->getFrom(),
+            'subject'  => $message->getSubject(),
+            'text'     => $message->getText(),
+            'html'     => $message->getHtml(),
+            'bcc'      => $message->getBcc(),
+            'replyto'  => $message->getReplyTo(),
+            'headers'  => json_encode($message->getHeaders()),
         );
 
         return http_build_query(array_filter($parameters));
@@ -81,8 +84,6 @@ class SendGrid extends Mailer
      */
     protected function getHeaders()
     {
-        return array(
-            'Content-Type' => 'multipart/form-data',
-        );
+        return array();
     }
 }

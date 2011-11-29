@@ -32,10 +32,8 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
             ->method('send')
             ->with(
                 $this->equalTo($mailer->getEndpoint()),
-                $this->equalTo('to=henrik%40bjrnskov.dk&from=hb%40peytz.dk&subject=subject&text=text&html=html&headers=%7B%22X-Header%22%3A%22Value%22%7D'),
-                $this->equalTo(array(
-                    'Content-Type' => 'multipart/form-data',
-                ))
+                $this->equalTo('api_user=username&api_key=password&to=henrik%40bjrnskov.dk&from=hb%40peytz.dk&subject=subject&text=text&html=html&headers=%7B%22X-Header%22%3A%22Value%22%7D'),
+                $this->equalTo(array())
             )
             ->will($this->returnValue(new Response(200, '')))
         ;
