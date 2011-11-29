@@ -1,10 +1,10 @@
 <?php
 
-namespace Stampie\Tests;
+namespace Stampie\Tests\Mailer;
 
-use Stampie\Mailer;
+use Stampie\Mailer\Postmark;
 
-class MailerTest extends \PHPUnit_Framework_TestCase
+class PostmarkTest extends \PHPUnit_Framework_TestCase
 {
     const SERVER_TOKEN = "mySuperSecretServerToken";
 
@@ -15,11 +15,9 @@ class MailerTest extends \PHPUnit_Framework_TestCase
 
     public function testSettersAndGetters()
     {
-        $mailer = new Mailer($this->adapter);
+        $mailer = new Postmark($this->adapter, self::SERVER_TOKEN);
         $this->assertEquals($this->adapter, $mailer->getAdapter());
-        $this->assertEquals("POSTMARK_API_TEST", $mailer->getServerToken());
-
-        $mailer->setServerToken(static::SERVER_TOKEN, $mailer->getServerToken());
+        $this->assertEquals(self::SERVER_TOKEN, $mailer->getServerToken());
     }
 
     /**
@@ -27,13 +25,12 @@ class MailerTest extends \PHPUnit_Framework_TestCase
      */
     public function testServerTokenCannotBeEmpty()
     {
-        $mailer = new Mailer($this->adapter);
-        $mailer->setServerToken('');
+        $mailer = new Postmark($this->adapter, '');
     }
 
     public function testSendWithTextAndOrHtmlIsSuccessful()
     {
-        $mailer  = new Mailer($this->adapter, 'mySecretToken');
+        $mailer  = new Postmark($this->adapter, self::SERVER_TOKEN);
         $message = $this->getMessageMock(
             $from = 'hb@peytz.dk', $to = 'henrik@bjrnskov.dk', $subject = 'Subject',
             $html = 'html', $text = 'text', $headers = array()
@@ -69,7 +66,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     public function testSendWithEmptyTextAndHtml()
     {
         $message = $this->getMessageMock('hb@peytz.dk', 'henrik@bjrnskov.dk', 'Sample Subject');
-        $mailer = new Mailer($this->adapter);
+        $mailer = new Postmark($this->adapter, self::SERVER_TOKEN);
         $mailer->send($message);
     }
 
@@ -78,7 +75,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
      */
     public function testHttpErrorCodeResponse($statusCode, $description)
     {
-        $mailer = new Mailer($this->adapter);
+        $mailer = new Postmark($this->adapter, self::SERVER_TOKEN);
 
         $this
             ->adapter
@@ -97,7 +94,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
      */
     public function testApiErrorCodeResponse($statusCode, $description)
     {
-        $mailer = new Mailer($this->adapter);
+        $mailer = new Postmark($this->adapter, self::SERVER_TOKEN);
 
         $this
             ->adapter

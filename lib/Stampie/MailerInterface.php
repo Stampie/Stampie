@@ -32,6 +32,11 @@ interface MailerInterface
     function getServerToken();
 
     /**
+     * @return string
+     */
+    function getEndpoint();
+
+    /**
      * @param MailerInterface $message
      * @return Boolean
      */

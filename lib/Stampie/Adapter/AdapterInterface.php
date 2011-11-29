@@ -10,9 +10,10 @@ namespace Stampie\Adapter;
 interface AdapterInterface
 {
     /**
+     * @param string $endpoint
      * @param string $content
      * @param array $headers
      * @return mixed
      */
-    function send($content, array $headers = array());
+    function send($endpoint, $content, array $headers = array());
 }

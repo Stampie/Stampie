@@ -2,7 +2,7 @@
 
 namespace Stampie\Tests\Adapter;
 
-use Stampie\Mailer;
+use Stampie\Mailer\Postmark;
 use Stampie\Adapter\Buzz;
 
 class BuzzTest extends \PHPUnit_Framework_TestCase
@@ -39,7 +39,7 @@ class BuzzTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('post')
             ->with(
-                $this->equalTo(Mailer::ENDPOINT),
+                $this->equalTo('http://test.local/email'),
                 $this->equalTo(array(
                     'Content-Type: application/json',
                     'X-Postmark-Server-Token: MySuperToken', 
@@ -51,7 +51,7 @@ class BuzzTest extends \PHPUnit_Framework_TestCase
             )
         ;
 
-        $adapter->send('content', array(
+        $adapter->send('http://test.local/email', 'content', array(
             'Content-Type' => 'application/json',
             'X-Postmark-Server-Token' => 'MySuperToken',
         ));
