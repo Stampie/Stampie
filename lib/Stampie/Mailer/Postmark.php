@@ -20,23 +20,13 @@ class Postmark extends Mailer
     {
         return 'http://api.postmarkapp.com/email';
     }
+
     /**
-     * @param MessageInterface $message
+     * @param ResponseInterace
      * @throws \LogicException
-     * @return Boolean
      */
-    public function send(MessageInterface $message)
+    protected function handle(ResponseInterface $response)
     {
-        $response = $this->adapter->send($this->getEndpoint(), $this->format($message), array(
-            'Content-Type' => 'application/json',
-            'X-Postmark-Server-Token' => $this->getServerToken(),
-        ));
-
-        // We are all clear if status is HTTP 200 OK
-        if ($response->getStatusCode() === 200) {
-            return true;
-        }
-
         // 401 Unauthorized 
         // 500 Internal Server Error
         if (in_array($statusCode = $response->getStatusCode(), array(401, 500))) {
@@ -48,6 +38,17 @@ class Postmark extends Mailer
 
         // 422 Unprocessable Entity
         throw new \LogicException($error->Message, $error->ErrorCode);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getHeaders()
+    {
+        return array(
+            'Content-Type' => 'application/json',
+            'X-Postmark-Server-Token' => $this->getServerToken(),
+        );
     }
 
     /**

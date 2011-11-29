@@ -3,6 +3,7 @@
 namespace Stampie;
 
 use Stampie\Adapter\AdapterInterface;
+use Stampie\Adapter\ResponseInterface;
 
 /**
  * Minimal implementation of a MailerInterface
@@ -69,6 +70,28 @@ abstract class Mailer implements MailerInterface
     }
 
     /**
+     * @param MessageInterface $message
+     * @throws \LogicException
+     * @return Boolean
+     */
+    public function send(MessageInterface $message)
+    {
+        $response = $this->getAdapter()->send(
+            $this->getEndpoint(),
+            $this->format($message),
+            $this->getHeaders()
+        );
+
+        // We are all clear if status is HTTP 200 OK
+        if ($response->getStatusCode() === 200) {
+            return true;
+        }
+
+        return $this->handle($response);
+    }
+    
+
+    /**
      * Format the given message into a body that can be used for sending 
      * to the api
      *
@@ -76,5 +99,23 @@ abstract class Mailer implements MailerInterface
      * @return string
      */
     abstract protected function format(MessageInterface $message);
+
+    /**
+     * Handle an error response where ResponseInterface::getStatusCode() is not 200
+     *
+     * @param ResponseInterface $response
+     * @return boolean
+     */
+    abstract protected function handle(ResponseInterface $response);
+
+    /**
+     * Return an array of headers needed for this mailer. 
+     *
+     * example:
+     *     array("HeaderName" => "HeaderValue");
+     *
+     * @return array
+     */
+    abstract protected function getHeaders();
     
 }
