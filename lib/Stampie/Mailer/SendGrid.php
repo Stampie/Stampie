@@ -39,7 +39,14 @@ class SendGrid extends Mailer
      */
     protected function handle(ResponseInterface $response)
     {
-        print_r($response);die;
+        $statusCode = $response->getStatusCode();
+
+        if ($statusCode > 500) {
+            throw new \LogicException('The API call was unsuccessful. You should retry later', $statusCode);
+        }
+
+        $error = json_decode($response->getContent());
+        throw new \LogicException(implode(', ', $error->messages), $statusCode);
     }
 
     /**
