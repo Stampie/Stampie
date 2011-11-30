@@ -24,7 +24,7 @@ $mailer = new Stampie\Mailer\SendGrid($adapter, 'username:password');
 $mailer->send(new Message('reciever@domain.tld'));
 ```
 
-This simple example shows a few different things about how Stampis works under the hood and is developed. Because others are **so much** better than us to do Http communication Stampie uses a [Adapter Pattern](http://en.wikipedia.org/wiki/Adapter_pattern) to integrate with known libraries such as (Buzz)[http://github.com/kriswallsmith/Buzz] and [Guzzle](http://guzzlephp.org).
+This simple example shows a few different things about how Stampis works under the hood and is developed. Because others are **so much** better than us to do Http communication Stampie uses a [Adapter Pattern](http://en.wikipedia.org/wiki/Adapter_pattern) to integrate with known libraries such as [Buzz](http://github.com/kriswallsmith/Buzz) and [Guzzle](http://guzzlephp.org).
 
 Every mailer takes a `$serverToken` as the second argument in their constructor. This is what is used for authentication. In the Postmark mailer this is a hash but in SendGrid it is a `username:password` pattern that is split into two pieces and send as arguments. A Mailer is responsible for formatting the request needed for a given API.
 
