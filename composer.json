@@ -18,9 +18,7 @@
         }
     },
     "require" : {
-        "php"                : ">=5.3.8"
-    },
-    "suggest" : {
+        "php"                : ">=5.3.8",
         "kriswallsmith/buzz" : "*",
         "guzzle/guzzle"      : "*"
     }
