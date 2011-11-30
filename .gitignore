@@ -3,3 +3,4 @@ coverage
 composer.lock
 composer.phar
 phpunit.xml
+test.php
