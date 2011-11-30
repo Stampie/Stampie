@@ -16,7 +16,7 @@ class Message extends \Stampie\Message
 	public function getText() { return 'So what do you think about it?'; }
 }
 
-$adapter = new Stampie\Adatper\Buzz(new Buzz\Browser());
+$adapter = new Stampie\Adapter\Buzz(new Buzz\Browser());
 $mailer = new Stampie\Mailer\SendGrid($adapter, 'username:password');
 
 // Returns Boolean true on success or throws an HttpException for error
