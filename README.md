@@ -9,6 +9,9 @@ It is very easy to use and to integrate into your application as demonstrated be
 ``` php
 <?php
 
+// Stampie.phar does Autoloading through its Stup.php 
+require '/path/to/stampie.phar';
+
 class Message extends \Stampie\Message
 {
 	public function getFrom() { return 'alias@domain.tld'; }
