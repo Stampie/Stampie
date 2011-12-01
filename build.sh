@@ -10,7 +10,6 @@ Phar::mapPhar();
 
 spl_autoload_register(function (\$className) {
     if (0 !== strpos(\$className, 'Stampie\\\')) {
-        die('adad');
         return false;
     }
 
