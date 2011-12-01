@@ -78,12 +78,4 @@ class SendGrid extends Mailer
 
         return http_build_query(array_filter($parameters));
     }
-
-    /**
-     * @return array
-     */
-    protected function getHeaders()
-    {
-        return array();
-    }
 }

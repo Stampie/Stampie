@@ -4,15 +4,26 @@ namespace Stampie\Tests;
 
 class MailerTest extends \PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        $this->mailer = $this->getMailerMock(array(
+            $this->adapter = $this->getAdapterMock(),
+            'Token',
+        ));
+    }
+
     public function testSettersAndGetters()
     {
-        $mailer = $this->getMailerMock(array($adapter =$this->getAdapterMock(), 'Token'));
 
-        $this->assertEquals('Token', $mailer->getServerToken());
-        $this->assertEquals($adapter, $mailer->getAdapter());
+        $this->assertEquals('Token', $this->mailer->getServerToken());
+        $this->assertEquals($this->adapter, $this->mailer->getAdapter());
 
+    }
+
+    public function testServerTokenCannotBeEmpty()
+    {
         $this->setExpectedException('InvalidArgumentException', 'ServerToken cannot be empty');
-        $mailer->setServerToken('');
+        $this->mailer->setServerToken('');
     }
 
     protected function getAdapterMock()

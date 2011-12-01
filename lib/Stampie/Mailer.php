@@ -90,6 +90,18 @@ abstract class Mailer implements MailerInterface
         return $this->handle($response);
     }
     
+    /**
+     * Return an array of headers needed for this mailer. 
+     *
+     * example:
+     *     array("HeaderName" => "HeaderValue");
+     *
+     * @return array
+     */
+    protected function getHeaders()
+    {
+        return array();
+    }
 
     /**
      * Format the given message into a body that can be used for sending 
@@ -107,15 +119,5 @@ abstract class Mailer implements MailerInterface
      * @return boolean
      */
     abstract protected function handle(ResponseInterface $response);
-
-    /**
-     * Return an array of headers needed for this mailer. 
-     *
-     * example:
-     *     array("HeaderName" => "HeaderValue");
-     *
-     * @return array
-     */
-    abstract protected function getHeaders();
     
 }
