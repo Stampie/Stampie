@@ -17,8 +17,10 @@
             "Stampie"        : "lib/"
         }
     },
-    "require" : {
-        "php"                : ">=5.3.8",
+    "required" : {
+        "php"                : ">=5.3.8"
+    },
+    "suggest" : {
         "kriswallsmith/buzz" : "*",
         "guzzle/guzzle"      : "*"
     }
