@@ -9,6 +9,10 @@ class GuzzleTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
+        if (!class_exists('Guzzle\Service\Client')) {
+            $this->markTestSkipped('Cannot find Guzzle\Service\Client');
+        }
+
         $this->client = $this->getMock('Guzzle\Service\Client');
     }
 

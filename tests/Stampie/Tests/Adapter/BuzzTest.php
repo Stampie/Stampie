@@ -9,6 +9,10 @@ class BuzzTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
+        if (!class_exists('Buzz\Browser')) {
+            $this->markTestSkippet('Cannot find Buzz\Browser');
+        }
+
         $this->browser = $this->getMock('Buzz\Browser');
     }
 
