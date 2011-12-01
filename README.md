@@ -6,6 +6,12 @@ Stampie is a simple API Wrapper for different email providers such as [Postmark]
 
 It is very easy to use and to integrate into your application as demonstrated below with a `SendGrid` mailer.
 
+## Providers
+
+* [Postmark](http://postmarkapp.com)
+* [SendGrid](http://sendgrid.com)
+* [MailChimp](http://mailchimp.com) Their STS Api
+
 ``` php
 <?php
 
