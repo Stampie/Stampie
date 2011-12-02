@@ -24,7 +24,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getSuccessfulValues
+     * @dataProvider isSuccessfullDataProvider
      */
     public function testIsSuccessfull($statusCode)
     {
@@ -32,10 +32,10 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($response->isSuccessful());
     }
 
-    public function getSuccessfulValues()
+    public function isSuccessfullDataProvider()
     {
         return array(
-            range(200, 300),
+            range(200, 206)
         );
     }
 }

@@ -7,85 +7,66 @@ use Stampie\Adapter\Response;
 
 class PostmarkTest extends \Stampie\Tests\BaseMailerTest
 {
-    const SERVER_TOKEN = "mySuperSecretServerToken";
+    const SERVER_TOKEN = '5daa75d9-8fad-4211-9b18-49124642732e';
 
-    public function testSendWithTextAndOrHtmlIsSuccessful()
+    public function setUp()
     {
-        $mailer  = new Postmark($this->adapter, self::SERVER_TOKEN);
-        $message = $this->getMessageMock(
-            $from = 'hb@peytz.dk', $to = 'henrik@bjrnskov.dk', $subject = 'Subject',
-            $html = 'html', $text = 'text', $headers = array()
-        );
+        parent::setUp();
 
-        $headers = array(
+        $this->mailer = new Postmark(
+            $this->adapter,
+            self::SERVER_TOKEN
+        );
+    }
+
+    public function testEndpoint()
+    {
+        $this->assertEquals('http://api.postmarkapp.com/email', $this->mailer->getEndpoint());
+    }
+
+    public function testHeaders()
+    {
+        $this->assertEquals(array(
             'Content-Type' => 'application/json',
-            'X-Postmark-Server-Token' => $mailer->getServerToken(),
+            'X-Postmark-Server-Token' => $this->mailer->getServerToken(),
+        ), $this->mailer->getHeaders());
+    }
+
+    public function testFormat()
+    {
+        $message = $this->getMessageMock(
+            $from = 'hb@peytz.dk',
+            $to = 'henrik@bjrnskov.dk',
+            $subject = 'Stampie is awesome',
+            $html = 'So what do you thing'
         );
 
-        $json = json_encode(array(
-            'From'     => $from,
-            'To'       => $to,
-            'Subject'  => $subject,
-            'TextBody' => $text,
+        $this->assertEquals(json_encode(array(
+            'From' => $from,
+            'To' => $to,
+            'Subject' => $subject,
             'HtmlBody' => $html,
-        ));
-
-        $this
-            ->adapter
-            ->expects($this->once())
-            ->method('send')
-            ->with(
-                $this->equalTo($mailer->getEndpoint()),
-                $this->equalTo($json),
-                $this->equalTo($headers)
-            )
-            ->will($this->returnValue(new Response(200, '')))
-        ;
-
-        $this->assertTrue($mailer->send($message));
-    }
-
-    public function testUnprocessableEntitySend()
-    {
-        $mailer = new Postmark($this->adapter, self::SERVER_TOKEN);
-        $adapter = $this->adapter;
-
-        $adapter
-            ->expects($this->any())
-            ->method('send')
-            ->will($this->returnValue(new Response(422, '{ "ErrorCode" : 0, "Message" : "Invalid API"}')))
-        ;
-
-        $this->setExpectedException('Stampie\Exception\ApiException', 'Invalid API');
-
-        $mailer->send($this->getMessageMock('hb@peytz.dk', 'henrik@bjrnskov.dk', 'subject', 'html'));
-        
-    }
-
-    public function testErrorHttpCodeSend()
-    {
-        $mailer = new Postmark($this->adapter, self::SERVER_TOKEN);
-        $adapter = $this->adapter;
-
-        $adapter
-            ->expects($this->any())
-            ->method('send')
-            ->will($this->returnValue(new Response(500, '')))
-        ;
-
-        $this->setExpectedException('Stampie\Exception\HttpException', 'Internal Server Error');
-
-        $mailer->send($this->getMessageMock('hb@peytz.dk', 'henrik@bjrnskov.dk', 'subject', 'html'));
-        
+        )), $this->mailer->format($message));
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @dataProvider handleDataProvider
      */
-    public function testSendWithEmptyTextAndHtml()
+    public function testHandle($statusCode, $content, $exceptionType, $exceptionMessage)
     {
-        $message = $this->getMessageMock('hb@peytz.dk', 'henrik@bjrnskov.dk', 'Sample Subject');
-        $mailer = new Postmark($this->adapter, self::SERVER_TOKEN);
-        $mailer->send($message);
+        $response = new Response($statusCode, $content);
+
+        $this->setExpectedException($exceptionType, $exceptionMessage);
+
+        $this->mailer->handle($response);
+    }
+
+    public function handleDataProvider()
+    {
+        return array(
+            array(500, '', 'Stampie\Exception\HttpException', 'Internal Server Error'),
+            array(400, '', 'Stampie\Exception\HttpException', 'Bad Request'),
+            array(422, '{ "Message" : "Bad Credentials" }', 'Stampie\Exception\ApiException', 'Bad Credentials'),
+        );
     }
 }

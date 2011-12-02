@@ -41,17 +41,15 @@ class SendGrid extends Mailer
      */
     public function handle(ResponseInterface $response)
     {
-        $statusCode = $response->getStatusCode();
-        $httpException = new HttpException($statusCode, $response->getStatusText());
+        $httpException = new HttpException($response->getStatusCode(), $response->getStatusText());
 
-        if (substr($statusCode, 0, 1) == 5) {
+        // 4xx will containt error information in the body encoded as JSON
+        if (in_array($response->getStatusCode(), range(400, 417))) {
             throw $httpException;
         }
 
         $error = json_decode($response->getContent());
-        $errors = isset($error->errors) ? (array) $error->errors : array();
-
-        throw new ApiException(implode(', ', $errors), $httpException);
+        throw new ApiException(implode(', ', (array) $error->errors), $httpException);
     }
 
     /**

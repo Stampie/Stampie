@@ -29,19 +29,15 @@ class Postmark extends Mailer
      */
     public function handle(ResponseInterface $response)
     {
-        $statusCode = $response->getStatusCode();
         $httpException = new HttpException($response->getStatusCode(), $response->getStatusText());
 
         // Not 422 contains information about API Error
-        if ($statusCode !== 422) {
-            throw $httpException;
+        if ($response->getStatusCode() == 422) {
+            $error = json_decode($response->getContent());
+            throw new ApiException($error->Message, $httpException);
         }
 
-        // The error is returned in JSON with {ErrorCode : 405, Message: "Details"}
-        $error = json_decode($response->getContent());
-
-        // 422 Unprocessable Entity
-        throw new ApiException(sprintf('[%d]: %s', $error->ErrorCode, $error->Message), $httpException);
+        throw $httpException;
     }
 
     /**
@@ -69,10 +65,6 @@ class Postmark extends Mailer
             'TextBody' => $message->getText(),
             'HtmlBody' => $message->getHtml(),
         ));
-
-        if (empty($parameters['HtmlBody']) && empty($parameters['TextBody'])) {
-            throw new \InvalidArgumentException('You cannot send empty emails');
-        }
 
         return json_encode($parameters);
     }
