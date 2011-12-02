@@ -82,8 +82,8 @@ abstract class Mailer implements MailerInterface
             $this->getHeaders()
         );
 
-        // We are all clear if status is HTTP 200 OK
-        if ($response->getStatusCode() === 200) {
+        // We are all clear if status is HTTP 2xx OK
+        if ($response->isSuccessful()) {
             return true;
         }
 

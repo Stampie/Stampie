@@ -22,4 +22,20 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     {
         $response = new Response(0, 'Content');
     }
+
+    /**
+     * @dataProvider getSuccessfulValues
+     */
+    public function testIsSuccessfull($statusCode)
+    {
+        $response = new Response($statusCode, '');
+        $this->assertTrue($response->isSuccessful());
+    }
+
+    public function getSuccessfulValues()
+    {
+        return array(
+            range(200, 300),
+        );
+    }
 }

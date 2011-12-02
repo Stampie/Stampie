@@ -39,7 +39,7 @@ class PostmarkTest extends \Stampie\Tests\BaseMailerTest
                 $this->equalTo($json),
                 $this->equalTo($headers)
             )
-            ->will($this->returnValue($this->getResponseMock(200, array())))
+            ->will($this->returnValue(new Response(200, '')))
         ;
 
         $this->assertTrue($mailer->send($message));

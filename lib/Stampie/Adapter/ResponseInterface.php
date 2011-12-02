@@ -23,4 +23,9 @@ interface ResponseInterface
      * @return string
      */
     function getStatusText();
+
+    /**
+     * @return Boolean
+     */
+    function isSuccessful();
 }
