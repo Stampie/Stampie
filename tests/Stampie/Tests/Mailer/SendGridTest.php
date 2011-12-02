@@ -30,6 +30,17 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
         $this->assertEquals('https://sendgrid.com/api/mail.send.json', $this->mailer->getEndpoint());
     }
 
+    /**
+     * @dataProvider handleDataProvider
+     */
+    public function testHandle($statusCode, $content, $exceptionType)
+    {
+        $response = new Response($statusCode, $content);
+        $this->setExpectedException($exceptionType);
+
+        $this->mailer->handle($response);
+    }
+
     public function testFormat()
     {
         $api_user = 'rudolph';
@@ -64,5 +75,13 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
         $this->assertEquals(http_build_query(
             $query
         ), $this->mailer->format($message));
+    }
+
+    public function handleDataProvider()
+    {
+        return array(
+            array(400, '{ "errors" : ["Error In an Array"] }', 'Stampie\Exception\ApiException'),
+            array(500, '', 'Stampie\Exception\HttpException')
+        );
     }
 }

@@ -44,7 +44,7 @@ class SendGrid extends Mailer
         $httpException = new HttpException($response->getStatusCode(), $response->getStatusText());
 
         // 4xx will containt error information in the body encoded as JSON
-        if (in_array($response->getStatusCode(), range(400, 417))) {
+        if (!in_array($response->getStatusCode(), range(400, 417))) {
             throw $httpException;
         }
 
