@@ -32,7 +32,7 @@ class MailChimpSts extends Mailer
      * @param MessageInterface $message
      * @return string
      */
-    protected function format(MessageInterface $message)
+    public function format(MessageInterface $message)
     {
         $parameters = array(
             'apikey'  => $this->getServerToken(),
@@ -53,7 +53,7 @@ class MailChimpSts extends Mailer
      *
      * @param ResponseInterface $response
      */
-    protected function handle(ResponseInterface $response)
+    public function handle(ResponseInterface $response)
     {
         $httpException = new HttpException($response->getStatusCode());
         $error         = json_decode($response->getContent());

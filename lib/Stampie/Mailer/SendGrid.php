@@ -39,7 +39,7 @@ class SendGrid extends Mailer
     /**
      * @param ResponseInterface
      */
-    protected function handle(ResponseInterface $response)
+    public function handle(ResponseInterface $response)
     {
         $statusCode = $response->getStatusCode();
         $httpException = new HttpException($statusCode, $response->getStatusText());
@@ -58,7 +58,7 @@ class SendGrid extends Mailer
      * @param MessageInterface
      * @return string
      */
-    protected function format(MessageInterface $message)
+    public function format(MessageInterface $message)
     {
         // We should split up the ServerToken on : to get username and password
         list($username, $password) = explode(':', $this->getServerToken());

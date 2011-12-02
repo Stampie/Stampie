@@ -98,26 +98,8 @@ abstract class Mailer implements MailerInterface
      *
      * @return array
      */
-    protected function getHeaders()
+    public function getHeaders()
     {
         return array();
     }
-
-    /**
-     * Format the given message into a body that can be used for sending 
-     * to the api
-     *
-     * @param MessageInterface $message
-     * @return string
-     */
-    abstract protected function format(MessageInterface $message);
-
-    /**
-     * Handle an error response where ResponseInterface::getStatusCode() is not 200
-     *
-     * @param ResponseInterface $response
-     * @return boolean
-     */
-    abstract protected function handle(ResponseInterface $response);
-    
 }

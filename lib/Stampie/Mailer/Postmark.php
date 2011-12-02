@@ -27,7 +27,7 @@ class Postmark extends Mailer
      * @param ResponseInterace
      * @throws \LogicException
      */
-    protected function handle(ResponseInterface $response)
+    public function handle(ResponseInterface $response)
     {
         $statusCode = $response->getStatusCode();
         $httpException = new HttpException($response->getStatusCode(), $response->getStatusText());
@@ -47,7 +47,7 @@ class Postmark extends Mailer
     /**
      * @return array
      */
-    protected function getHeaders()
+    public function getHeaders()
     {
         return array(
             'Content-Type' => 'application/json',
@@ -59,7 +59,7 @@ class Postmark extends Mailer
      * @param MessageInterface $message
      * @return string
      */
-    protected function format(MessageInterface $message)
+    public function format(MessageInterface $message)
     {
         $parameters = array_filter(array(
             'From'     => $message->getFrom(),
