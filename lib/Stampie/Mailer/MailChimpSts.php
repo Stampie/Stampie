@@ -55,7 +55,7 @@ class MailChimpSts extends Mailer
      */
     public function handle(ResponseInterface $response)
     {
-        $httpException = new HttpException($response->getStatusCode());
+        $httpException = new HttpException($response->getStatusCode(), $response->getStatusText());
         $error         = json_decode($response->getContent());
 
         throw new ApiException($error->message, $httpException);

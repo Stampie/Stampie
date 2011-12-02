@@ -8,104 +8,83 @@ use Stampie\Adapter\Response;
 
 class MailChimpStsTest extends BaseMailerTest
 {
+    const SERVER_TOKEN = '21381c475f2bccabdc860aa6dbe1c362d48688d7-us4';
+
     public function setUp()
     {
         parent::setUp();
 
-        $this->mailer = new MailChimpSts($this->adapter, 'Token-uk2');
-    }
-
-    public function getEndpointValues()
-    {
-        return array(
-            array('s2038293723-uk', 'uk'),
-            array('dk', 'dk'),
-            array('asdq372923', 'asdq372923'),
-            array('one-two-three', 'three'),
-        );
-    }
-
-    public function testSendSuccess()
-    {
-        $message = $this->getMessageMock('henrik@bjrnskov', 'henrik@bearwoods.dk', 'content');
-        $mailer = $this->mailer;
-        $adapter = $this->adapter;
-        $adapter
-            ->expects($this->once())
-            ->method('send')
-            ->with(
-                $this->equalTo($mailer->getEndpoint()),
-                $this->equalTo(http_build_query(array(
-                    'apikey' => $mailer->getServerToken(),
-                    'message' => array_filter(array(
-                        'html' => $message->getHtml(),
-                        'text' => $message->getText(),
-                        'subject' => $message->getSubject(),
-                        'to_email' => $message->getTo(),
-                        'from_email' => $message->getFrom(),
-                    )),
-                ))),
-                $this->equalTo(array())
-            )
-            ->will(
-                $this->returnValue(new Response(200, ''))
-            )
-        ;
-
-        $mailer->send($message);
-    }
-
-    /**
-     * @dataProvider getExceptionErrorCodes
-     */
-    public function testSendThrowsApiException($code, $messageText)
-    {
-
-        $message = $this->getMessageMock('henrik@bjrnskov', 'henrik@bearwoods.dk', 'content');
-        $mailer = $this->mailer;
-        $adapter = $this->adapter;
-        $adapter
-            ->expects($this->once())
-            ->method('send')
-            ->with(
-                $this->equalTo($mailer->getEndpoint()),
-                $this->equalTo(http_build_query(array(
-                    'apikey' => $mailer->getServerToken(),
-                    'message' => array_filter(array(
-                        'html' => $message->getHtml(),
-                        'text' => $message->getText(),
-                        'subject' => $message->getSubject(),
-                        'to_email' => $message->getTo(),
-                        'from_email' => $message->getFrom(),
-                    )),
-                ))),
-                $this->equalTo(array())
-            )
-            ->will(
-                $this->returnValue(new Response($code, '{ "message" : "' . $messageText . '"}'))
-            )
-        ;
-
-        $this->setExpectedException('Stampie\Exception\ApiException', $messageText);
-
-        $mailer->send($message);
-    }
-
-    public function getExceptionErrorCodes()
-    {
-        return array(
-            array(400, 'Something is wrong'),
-            array(500, 'Something is wrong'),
-            array(404, 'Not found'),
+        $this->mailer = new MailChimpSts(
+            $this->adapter,
+            self::SERVER_TOKEN
         );
     }
 
     /**
-     * @dataProvider getEndpointValues
+     * @dataProvider endpointDataProvider
      */
-    public function testGetEndPointSplitsServerToken($serverToken, $initials)
+    public function testEndpoint($serverToken)
     {
+        list(, $dc) = explode('-', $serverToken);
         $this->mailer->setServerToken($serverToken);
-        $this->assertEquals('http://' . $initials . '.sts.mailchimp.com/1.0/SendEmail.json', $this->mailer->getEndpoint());
+        $this->assertEquals('http://' . $dc . '.sts.mailchimp.com/1.0/SendEmail.json', $this->mailer->getEndpoint());
+    }
+
+    public function testFormat()
+    {
+        $message = $this->getMessageMock(
+            $from = 'henrik@bjrnskov.dk',
+            $to = 'hb@peytz.dk',
+            $subject = 'Stampie is awesome',
+            $html = 'asdad',
+            $text = ''
+        );
+
+        $this->assertEquals(http_build_query(array(
+            'apikey' => self::SERVER_TOKEN,
+            'message' => array(
+                'html' => $html,
+                'subject' => $subject,
+                'to_email' => $to,
+                'from_email' => $from,
+            ),
+        )), $this->mailer->format($message));
+    }
+
+    /**
+     * @dataProvider handleDataProvider
+     */
+    public function testHandle($statusCode, $content)
+    {
+        $response = new Response($statusCode, json_encode(array('message' => $content)));
+
+        try {
+            $this->mailer->handle($response);
+        } catch (\Stampie\Exception\ApiException $e) {
+            $this->assertInstanceOf('Stampie\Exception\HttpException', $e->getPrevious());
+            $this->assertEquals($e->getPrevious()->getMessage(), $content);
+            $this->assertEquals($e->getMessage(), $content);
+            return;
+        }
+
+        $this->fail('Expected Stampie\Exception\ApiException to be trown');
+    }
+
+    public function endpointDataProvider()
+    {
+        return array(
+           array('82ce197df3e18234bc1535ccf5780f9f3cc79f92-uk1'),
+           array('4cbd1e10f62a197d8397df258b04842ba10fced7-us3'),
+           array('e02c993a61d86419f0e5ce8ee01a6e1373bb5623-us6'),
+        );
+    }
+
+    public function handleDataProvider()
+    {
+        return array(
+            array(400, 'Bad Request'),
+            array(401, 'Unauthorized'),
+            array(504, 'Gateway Timeout'),
+        );
     }
 }
