@@ -43,9 +43,11 @@ Last their is an Interface for every type of class or abstract implementation th
 
 ## Framework integration
 
-Their is currently no integration to any framework and the will not be any framework specific classes or usage of in this library. Any integration will in the future be provided in framework specific plugins in their own repositories.
+Stampie is itself completly decoupled and does not depend on any framework.
 
-Currently only a [Symfony2](http://symfony.com) bundle is planned.
+### Integrations
+
+* [HBStampieBundle](http://github.com/henrikbjorn/HBStampieBundle) it is also [on packagist](http://packagist.org/packages/henrikbjorn/stampie-bundle)
 
 ## Testing
 
