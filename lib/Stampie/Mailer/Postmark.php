@@ -48,6 +48,7 @@ class Postmark extends Mailer
         return array(
             'Content-Type' => 'application/json',
             'X-Postmark-Server-Token' => $this->getServerToken(),
+            'Accept' => 'application/json',
         );
     }
 

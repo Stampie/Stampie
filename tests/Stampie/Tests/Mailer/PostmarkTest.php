@@ -29,6 +29,7 @@ class PostmarkTest extends \Stampie\Tests\BaseMailerTest
         $this->assertEquals(array(
             'Content-Type' => 'application/json',
             'X-Postmark-Server-Token' => $this->mailer->getServerToken(),
+            'Accept' => 'application/json',
         ), $this->mailer->getHeaders());
     }
 
