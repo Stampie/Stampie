@@ -1,0 +1,589 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Stampie</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><link rel="stylesheet" href="css/black-tie/jquery-ui-1.8.2.custom.css" type="text/css"></link><link rel="stylesheet" href="css/jquery.treeview.css" type="text/css"></link><link rel="stylesheet" href="css/default.css" type="text/css"></link><script type="text/javascript" src="js/jquery-1.4.2.min.js"></script><script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script><script type="text/javascript" src="js/jquery.cookie.js"></script><script type="text/javascript" src="js/jquery.treeview.js"></script></head><body><script type="text/javascript">
+          $(document).ready(function()
+          {
+            $(".filetree").treeview({
+              animated: "fast",
+              collapsed: true,
+              persist: "cookie"
+            });
+          });
+
+          function jq_escape(myid)
+          {
+            return '#' + myid.replace(/(#|\$|:|\.|\(|\))/g, '\\$1');
+          }
+
+          function applySearchHash()
+          {
+            hashes = document.location.hash.substr(1, document.location.hash.length);
+            if (hashes != "")
+            {
+              hashes = hashes.split('/');
+              $.each(hashes, function(index, hash)
+              {
+                node = $(jq_escape(hash));
+                switch (node[0].nodeName)
+                {
+                  case 'DIV':
+                    tabs = node.parents('.tabs');
+                    $(tabs[0]).tabs('select', '#' + hash)
+                    break;
+                  case 'A':
+                    window.scrollTo(0, node.offset().top);
+                    break;
+                }
+              });
+            }
+          }
+
+          jQuery(function()
+          {
+            jQuery(".tabs").tabs();
+            applySearchHash();
+          });
+        </script><div id="maincontainer"><div id="header"><h1>Stampie</h1></div><ul xmlns="" id="menu">
+<li><a href="graph.html">Class diagram</a></li>
+<li><a href="markers.html">TODO / Markers</a></li>
+<li><a href="parse_markers.html">Errors</a></li>
+</ul>
+<div id="content_container"><div xmlns="" id="content">
+<h1>Stampie/Mailer/MailChimpSts.php</h1>
+<div class="file_menu"><a href="#classes">Classes</a></div>
+<a name="classes"></a><h2>Classes</h2>
+<div id="MailChimpSts" class="class">
+<h1>MailChimpSts</h1>
+<div class="properties">
+<h1>Properties</h1>
+<label class="property-key">Extends</label><div class="property-value">
+<a href="db_Stampie_Mailer.html#%5CStampie%5CMailer">\Stampie\Mailer</a>
+         </div>
+<label class="property-key">Implements</label><div class="property-value"> 
+      </div>
+<label class="property-key">author</label><div class="property-value">
+<a title="" href="mailto:henrik@bjrnskov.dk">Henrik Bjornskov</a>
+             
+        </div>
+<label class="property-key">Abstract</label><div class="property-value">No 
+      </div>
+<label class="property-key">Final</label><div class="property-value">No 
+      </div>
+</div>
+<h3>Description</h3>
+<em>A Mailer for MailChimp STS http://mailchimp.com/features/simple-transactional-service/</em><br>
+<br><div id="methods_MailChimpSts">
+<h3>Methods</h3>
+<table class="methods">
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>
+<img src="./images/icons/method.png" style="width: 16px; height: 16px; margin: 0 5px 0 0;"><span style="width: 16px; height: 16px; margin: 0 5px 0 0; display: inline-block;"></span><a href="#MailChimpSts::__construct()">__construct</a>
+</td>
+<td>n/a</td>
+<td></td>
+</tr>
+<tr>
+<td>
+<img src="./images/icons/method.png" style="width: 16px; height: 16px; margin: 0 5px 0 0;"><span style="width: 16px; height: 16px; margin: 0 5px 0 0; display: inline-block;"></span><a href="#MailChimpSts::format()">format</a>
+</td>
+<td>string</td>
+<td>Return a a string formatted for the correct Mailer endpoint.</td>
+</tr>
+<tr>
+<td>
+<img src="./images/icons/method.png" style="width: 16px; height: 16px; margin: 0 5px 0 0;"><span style="width: 16px; height: 16px; margin: 0 5px 0 0; display: inline-block;"></span><a href="#MailChimpSts::getAdapter()">getAdapter</a>
+</td>
+<td>\Stampie\Adapter\AdapterInterface</td>
+<td></td>
+</tr>
+<tr>
+<td>
+<img src="./images/icons/method.png" style="width: 16px; height: 16px; margin: 0 5px 0 0;"><span style="width: 16px; height: 16px; margin: 0 5px 0 0; display: inline-block;"></span><a href="#MailChimpSts::getEndpoint()">getEndpoint</a>
+</td>
+<td>string</td>
+<td>Splits the ServerToken up and uses the last part as the <dc>. More information
+is at http://apidocs.mailchimp.com/sts/rtfm/</td>
+</tr>
+<tr>
+<td>
+<img src="./images/icons/method.png" style="width: 16px; height: 16px; margin: 0 5px 0 0;"><span style="width: 16px; height: 16px; margin: 0 5px 0 0; display: inline-block;"></span><a href="#MailChimpSts::getHeaders()">getHeaders</a>
+</td>
+<td>array</td>
+<td>Return an array of headers needed for this mailer.</td>
+</tr>
+<tr>
+<td>
+<img src="./images/icons/method.png" style="width: 16px; height: 16px; margin: 0 5px 0 0;"><span style="width: 16px; height: 16px; margin: 0 5px 0 0; display: inline-block;"></span><a href="#MailChimpSts::getServerToken()">getServerToken</a>
+</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>
+<img src="./images/icons/method.png" style="width: 16px; height: 16px; margin: 0 5px 0 0;"><span style="width: 16px; height: 16px; margin: 0 5px 0 0; display: inline-block;"></span><a href="#MailChimpSts::handle()">handle</a>
+</td>
+<td>n/a</td>
+<td>"You can consider any non-200 HTTP response code an error - the returned data will contain more detailed information"</td>
+</tr>
+<tr>
+<td>
+<img src="./images/icons/method.png" style="width: 16px; height: 16px; margin: 0 5px 0 0;"><span style="width: 16px; height: 16px; margin: 0 5px 0 0; display: inline-block;"></span><a href="#MailChimpSts::send()">send</a>
+</td>
+<td>Boolean</td>
+<td></td>
+</tr>
+<tr>
+<td>
+<img src="./images/icons/method.png" style="width: 16px; height: 16px; margin: 0 5px 0 0;"><span style="width: 16px; height: 16px; margin: 0 5px 0 0; display: inline-block;"></span><a href="#MailChimpSts::setAdapter()">setAdapter</a>
+</td>
+<td>n/a</td>
+<td></td>
+</tr>
+<tr>
+<td>
+<img src="./images/icons/method.png" style="width: 16px; height: 16px; margin: 0 5px 0 0;"><span style="width: 16px; height: 16px; margin: 0 5px 0 0; display: inline-block;"></span><a href="#MailChimpSts::setServerToken()">setServerToken</a>
+</td>
+<td>n/a</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div id="properties_MailChimpSts">
+<h4>Properties</h4>
+<table class="methods">
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default Value</th>
+</tr>
+<tr>
+<td style="padding-bottom: 2px;">
+<img src="./images/icons/property.png" style="width: 16px; height: 16px; margin: 0 5px 0 0;"><img src="./images/icons/constant.png" style="width: 16px; height: 16px; margin: 0 5px 0 0;"><a href="#MailChimpSts::%24adapter">$adapter</a>
+</td>
+<td>\Stampie\Adapter\AdapterInterface 
+          </td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="padding-bottom: 2px;">
+<img src="./images/icons/property.png" style="width: 16px; height: 16px; margin: 0 5px 0 0;"><img src="./images/icons/constant.png" style="width: 16px; height: 16px; margin: 0 5px 0 0;"><a href="#MailChimpSts::%24serverToken">$serverToken</a>
+</td>
+<td>string 
+          </td>
+<td></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div id="methods_MailChimpSts_full">
+<h3>Methods</h3>
+<div class="method">
+<a id="MailChimpSts::__construct()"></a><h3>__construct<span class="nb-faded-text">(
+          <a href="db_Stampie_Adapter_AdapterInterface.html#%5CStampie%5CAdapter%5CAdapterInterface">\Stampie\Adapter\AdapterInterface</a>
+             
+            $adapter,
+          \Stampie\string
+             
+            $serverToken,
+          
+          )
+        </span>
+        :
+        <span class="nb-faded-text">n/a</span>
+</h3>
+<table class="params"><tbody>
+<tr>
+<td width="15%">$adapter</td>
+<td style="white-space: normal;" width="10%"><a href="db_Stampie_Adapter_AdapterInterface.html#%5CStampie%5CAdapter%5CAdapterInterface">\Stampie\Adapter\AdapterInterface</a></td>
+<td width="60%"></td>
+<td width="15%"></td>
+</tr>
+<tr>
+<td width="15%">$serverToken</td>
+<td style="white-space: normal;" width="10%">\Stampie\string</td>
+<td width="60%"></td>
+<td width="15%"></td>
+</tr>
+<tr>
+<td width="15%"><b>@return</b></td>
+<td width="10%">n/a</td>
+<td width="75%" colspan="2">n/a</td>
+</tr>
+</tbody></table>
+<small>
+</small><br><h4>Tags</h4>
+<table>
+<thead><tr>
+<th>Name</th>
+<th>Description</th>
+</tr></thead>
+<tbody><tr>
+<td>inherited_from</td>
+<td><a href="db_Stampie_Mailer.html#%5CStampie%5CMailer::__construct()"><small>\Stampie\Mailer::__construct()</small></a></td>
+</tr></tbody>
+</table>
+</div>
+<div class="method">
+<a id="MailChimpSts::format()"></a><h3>format<span class="nb-faded-text">(
+          <a href="db_Stampie_MessageInterface.html#%5CStampie%5CMessageInterface">\Stampie\MessageInterface</a>
+             
+            $message,
+          
+          )
+        </span>
+        :
+        <span class="nb-faded-text">string</span>
+</h3>
+<table class="params"><tbody>
+<tr>
+<td width="15%">$message</td>
+<td style="white-space: normal;" width="10%"><a href="db_Stampie_MessageInterface.html#%5CStampie%5CMessageInterface">\Stampie\MessageInterface</a></td>
+<td width="60%"></td>
+<td width="15%"></td>
+</tr>
+<tr>
+<td width="15%"><b>@return</b></td>
+<td width="10%">string</td>
+<td width="75%" colspan="2"></td>
+</tr>
+</tbody></table>
+<em>Return a a string formatted for the correct Mailer endpoint.</em><br><small><p>Postmark this is Json, SendGrid it is a urlencoded parameter list</p>
+</small><br>
+</div>
+<div class="method">
+<a id="MailChimpSts::getAdapter()"></a><h3>getAdapter<span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+        <span class="nb-faded-text">\Stampie\Adapter\AdapterInterface</span>
+</h3>
+<table class="params"><tbody><tr>
+<td width="15%"><b>@return</b></td>
+<td width="10%">\Stampie\Adapter\AdapterInterface</td>
+<td width="75%" colspan="2"></td>
+</tr></tbody></table>
+<small>
+</small><br><h4>Tags</h4>
+<table>
+<thead><tr>
+<th>Name</th>
+<th>Description</th>
+</tr></thead>
+<tbody><tr>
+<td>inherited_from</td>
+<td><a href="db_Stampie_Mailer.html#%5CStampie%5CMailer::getAdapter()"><small>\Stampie\Mailer::getAdapter()</small></a></td>
+</tr></tbody>
+</table>
+</div>
+<div class="method">
+<a id="MailChimpSts::getEndpoint()"></a><h3>getEndpoint<span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+        <span class="nb-faded-text">string</span>
+</h3>
+<table class="params"><tbody><tr>
+<td width="15%"><b>@return</b></td>
+<td width="10%">string</td>
+<td width="75%" colspan="2"></td>
+</tr></tbody></table>
+<em>Splits the ServerToken up and uses the last part as the <dc>. More information
+is at http://apidocs.mailchimp.com/sts/rtfm/</em><br><small>
+</small><br>
+</div>
+<div class="method">
+<a id="MailChimpSts::getHeaders()"></a><h3>getHeaders<span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+        <span class="nb-faded-text">array</span>
+</h3>
+<table class="params"><tbody><tr>
+<td width="15%"><b>@return</b></td>
+<td width="10%">array</td>
+<td width="75%" colspan="2"></td>
+</tr></tbody></table>
+<em>Return an array of headers needed for this mailer.</em><br><small><p>example:
+    array("HeaderName" => "HeaderValue");</p>
+</small><br><h4>Tags</h4>
+<table>
+<thead><tr>
+<th>Name</th>
+<th>Description</th>
+</tr></thead>
+<tbody><tr>
+<td>inherited_from</td>
+<td><a href="db_Stampie_Mailer.html#%5CStampie%5CMailer::getHeaders()"><small>\Stampie\Mailer::getHeaders()</small></a></td>
+</tr></tbody>
+</table>
+</div>
+<div class="method">
+<a id="MailChimpSts::getServerToken()"></a><h3>getServerToken<span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+        <span class="nb-faded-text">string</span>
+</h3>
+<table class="params"><tbody><tr>
+<td width="15%"><b>@return</b></td>
+<td width="10%">string</td>
+<td width="75%" colspan="2"></td>
+</tr></tbody></table>
+<small>
+</small><br><h4>Tags</h4>
+<table>
+<thead><tr>
+<th>Name</th>
+<th>Description</th>
+</tr></thead>
+<tbody><tr>
+<td>inherited_from</td>
+<td><a href="db_Stampie_Mailer.html#%5CStampie%5CMailer::getServerToken()"><small>\Stampie\Mailer::getServerToken()</small></a></td>
+</tr></tbody>
+</table>
+</div>
+<div class="method">
+<a id="MailChimpSts::handle()"></a><h3>handle<span class="nb-faded-text">(
+          <a href="db_Stampie_Adapter_ResponseInterface.html#%5CStampie%5CAdapter%5CResponseInterface">\Stampie\Adapter\ResponseInterface</a>
+             
+            $response,
+          
+          )
+        </span>
+        :
+        <span class="nb-faded-text">n/a</span>
+</h3>
+<table class="params"><tbody>
+<tr>
+<td width="15%">$response</td>
+<td style="white-space: normal;" width="10%"><a href="db_Stampie_Adapter_ResponseInterface.html#%5CStampie%5CAdapter%5CResponseInterface">\Stampie\Adapter\ResponseInterface</a></td>
+<td width="60%"></td>
+<td width="15%"></td>
+</tr>
+<tr>
+<td width="15%"><b>@return</b></td>
+<td width="10%">n/a</td>
+<td width="75%" colspan="2">n/a</td>
+</tr>
+</tbody></table>
+<em>"You can consider any non-200 HTTP response code an error - the returned data will contain more detailed information"</em><br><small>
+</small><br><h4>Tags</h4>
+<table>
+<thead><tr>
+<th>Name</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>throws</td>
+<td></td>
+</tr>
+<tr>
+<td>throws</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="method">
+<a id="MailChimpSts::send()"></a><h3>send<span class="nb-faded-text">(
+          <a href="db_Stampie_MessageInterface.html#%5CStampie%5CMessageInterface">\Stampie\MessageInterface</a>
+             
+            $message,
+          
+          )
+        </span>
+        :
+        <span class="nb-faded-text">Boolean</span>
+</h3>
+<table class="params"><tbody>
+<tr>
+<td width="15%">$message</td>
+<td style="white-space: normal;" width="10%"><a href="db_Stampie_MessageInterface.html#%5CStampie%5CMessageInterface">\Stampie\MessageInterface</a></td>
+<td width="60%"></td>
+<td width="15%"></td>
+</tr>
+<tr>
+<td width="15%"><b>@return</b></td>
+<td width="10%">Boolean</td>
+<td width="75%" colspan="2"></td>
+</tr>
+</tbody></table>
+<small>
+</small><br><h4>Tags</h4>
+<table>
+<thead><tr>
+<th>Name</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>throws</td>
+<td></td>
+</tr>
+<tr>
+<td>inherited_from</td>
+<td><a href="db_Stampie_Mailer.html#%5CStampie%5CMailer::send()"><small>\Stampie\Mailer::send()</small></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="method">
+<a id="MailChimpSts::setAdapter()"></a><h3>setAdapter<span class="nb-faded-text">(
+          <a href="db_Stampie_Adapter_AdapterInterface.html#%5CStampie%5CAdapter%5CAdapterInterface">\Stampie\Adapter\AdapterInterface</a>
+             
+            $adapter,
+          
+          )
+        </span>
+        :
+        <span class="nb-faded-text">n/a</span>
+</h3>
+<table class="params"><tbody>
+<tr>
+<td width="15%">$adapter</td>
+<td style="white-space: normal;" width="10%"><a href="db_Stampie_Adapter_AdapterInterface.html#%5CStampie%5CAdapter%5CAdapterInterface">\Stampie\Adapter\AdapterInterface</a></td>
+<td width="60%"></td>
+<td width="15%"></td>
+</tr>
+<tr>
+<td width="15%"><b>@return</b></td>
+<td width="10%">n/a</td>
+<td width="75%" colspan="2">n/a</td>
+</tr>
+</tbody></table>
+<small>
+</small><br><h4>Tags</h4>
+<table>
+<thead><tr>
+<th>Name</th>
+<th>Description</th>
+</tr></thead>
+<tbody><tr>
+<td>inherited_from</td>
+<td><a href="db_Stampie_Mailer.html#%5CStampie%5CMailer::setAdapter()"><small>\Stampie\Mailer::setAdapter()</small></a></td>
+</tr></tbody>
+</table>
+</div>
+<div class="method">
+<a id="MailChimpSts::setServerToken()"></a><h3>setServerToken<span class="nb-faded-text">(
+          \Stampie\string
+             
+            $serverToken,
+          
+          )
+        </span>
+        :
+        <span class="nb-faded-text">n/a</span>
+</h3>
+<table class="params"><tbody>
+<tr>
+<td width="15%">$serverToken</td>
+<td style="white-space: normal;" width="10%">\Stampie\string</td>
+<td width="60%"></td>
+<td width="15%"></td>
+</tr>
+<tr>
+<td width="15%"><b>@return</b></td>
+<td width="10%">n/a</td>
+<td width="75%" colspan="2">n/a</td>
+</tr>
+</tbody></table>
+<small>
+</small><br><h4>Tags</h4>
+<table>
+<thead><tr>
+<th>Name</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>throws</td>
+<td></td>
+</tr>
+<tr>
+<td>inherited_from</td>
+<td><a href="db_Stampie_Mailer.html#%5CStampie%5CMailer::setServerToken()"><small>\Stampie\Mailer::setServerToken()</small></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="properties_MailChimpSts_full">
+<h4>Properties</h4>
+<div class="method">
+<a id="MailChimpSts::$adapter"></a><h3>
+<span class="nb-faded-text">\Stampie\Adapter\AdapterInterface 
+          protected 
+          </span>$adapter
+          =
+          </h3>
+<em></em><br><small>
+</small><br><br>
+</div>
+<div class="method">
+<a id="MailChimpSts::$serverToken"></a><h3>
+<span class="nb-faded-text">string 
+          protected 
+          </span>$serverToken
+          =
+          </h3>
+<em></em><br><small>
+</small><br><br>
+</div>
+</div>
+<div style="clear: both"></div>
+</div>
+</div>
+<small xmlns="" class="footer">Documentation was generated by <a href="http://docblox-project.org">DocBlox 0.16.0</a>.</small></div><div id="index"><div class="padder"><input id="search_box"></input><div class="section">
+<h1>Namespaces</h1>
+<ul id="namespaces-" class="filetree"><li class="closed">
+<span class="folder">Stampie</span><ul>
+<li><span class="class"><a href="db_Stampie_Mailer.html#Mailer">Mailer</a><br><small>Minimal implementation of a MailerInterface</small></span></li>
+<li><span class="interface"><a href="db_Stampie_MailerInterface.html#MailerInterface">MailerInterface</a><br><small>Takes a MailerInterface and sends to to Postmark throgh Buzz</small></span></li>
+<li><span class="class"><a href="db_Stampie_Message.html#Message">Message</a><br><small>Implementation of MessageInterface where only getFrom() and getSubject()
+is required to be implemented.</small></span></li>
+<li><span class="interface"><a href="db_Stampie_MessageInterface.html#MessageInterface">MessageInterface</a><br><small>Represents a simple Message. A Message is a storage og a message that
+will be converted into an API call</small></span></li>
+<li><span class="class"><a href="db_Stampie_Version.html#Version">Version</a><br><small></small></span></li>
+<li class="closed">
+<span class="folder">Adapter</span><ul>
+<li><span class="interface"><a href="db_Stampie_Adapter_AdapterInterface.html#AdapterInterface">AdapterInterface</a><br><small>Interface all adapters must implement.</small></span></li>
+<li><span class="class"><a href="db_Stampie_Adapter_Buzz.html#Buzz">Buzz</a><br><small>Adapter for Kriss Wallsmith&#39;s Buzz library</small></span></li>
+<li><span class="class"><a href="db_Stampie_Adapter_Guzzle.html#Guzzle">Guzzle</a><br><small>Guzzle Adapter (guzzlephp.org)</small></span></li>
+<li><span class="class"><a href="db_Stampie_Adapter_Response.html#Response">Response</a><br><small>Immutable implementation of ResponseInterface</small></span></li>
+<li><span class="interface"><a href="db_Stampie_Adapter_ResponseInterface.html#ResponseInterface">ResponseInterface</a><br><small>Interface for returned content by adapters</small></span></li>
+</ul>
+</li>
+<li class="closed">
+<span class="folder">Exception</span><ul>
+<li><span class="class"><a href="db_Stampie_Exception_ApiException.html#ApiException">ApiException</a><br><small>SubException</small></span></li>
+<li><span class="class"><a href="db_Stampie_Exception_HttpException.html#HttpException">HttpException</a><br><small>Exception thrown for all HTTP Error codes where the Api&#39;s dosent them selves provide an error
+message.</small></span></li>
+</ul>
+</li>
+<li class="closed">
+<span class="folder">Mailer</span><ul>
+<li><span class="class"><a href="db_Stampie_Mailer_MailChimpSts.html#MailChimpSts">MailChimpSts</a><br><small>A Mailer for MailChimp STS http://mailchimp.com/features/simple-transactional-service/</small></span></li>
+<li><span class="class"><a href="db_Stampie_Mailer_Postmark.html#Postmark">Postmark</a><br><small>Sends emails to Postmark server</small></span></li>
+<li><span class="class"><a href="db_Stampie_Mailer_SendGrid.html#SendGrid">SendGrid</a><br><small>Mailer to be used with SendGrid Web API</small></span></li>
+</ul>
+</li>
+</ul>
+</li></ul>
+</div><div class="section">
+<h1>Packages</h1>
+<ul id="packages-" class="deadtree"><li class="closed">
+<span class="folder">Default</span><ul id="packages_Default" class="filetree"></ul>
+</li></ul>
+</div>
+</div></div><div id="footer"><div class="padder"></div></div></div></body></html>

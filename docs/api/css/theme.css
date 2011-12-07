@@ -1,0 +1,20 @@
+@import url('navigation.css');
+@import url('api-content.css');
+@import url('default.css');
+
+body {
+    margin:  0px;
+    padding: 0px;
+}
+
+.filetree {
+    font-size: 0.8em;
+}
+
+#db-header {
+    height: 80px;
+}
+
+#db-footer {
+    height: 1px;
+}
