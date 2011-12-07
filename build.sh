@@ -26,6 +26,10 @@ spl_autoload_register(function (\$className) {
 __HALT_COMPILER();
 "
 
+# Generate PHAR file
 echo $STUB > $FILE
 phar-build --ns --src=$SOURCE --phar=$OUTPUT --stub=$FILE
 rm $FILE
+
+# Build API Docs.
+docblox
