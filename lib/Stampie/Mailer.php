@@ -3,7 +3,6 @@
 namespace Stampie;
 
 use Stampie\Adapter\AdapterInterface;
-use Stampie\Adapter\ResponseInterface;
 
 /**
  * Minimal implementation of a MailerInterface

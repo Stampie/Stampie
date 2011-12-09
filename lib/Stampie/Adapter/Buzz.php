@@ -2,8 +2,6 @@
 
 namespace Stampie\Adapter;
 
-use Stampie\Mailer\Postmark;
-use Stampie\MailerInterface;
 use Buzz\Browser;
 
 /**
