@@ -30,6 +30,3 @@ __HALT_COMPILER();
 echo $STUB > $FILE
 phar-build --ns --src=$SOURCE --phar=$OUTPUT --stub=$FILE
 rm $FILE
-
-# Build API Docs.
-docblox
