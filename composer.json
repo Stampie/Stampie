@@ -17,7 +17,7 @@
             "Stampie"        : "lib/"
         }
     },
-    "required" : {
+    "require" : {
         "php"                : ">=5.3.8"
     },
     "suggest" : {
