@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-FILE="stub.php"
+FILE=$(mktemp /tmp/stub.php.XXXX)
 OUTPUT="build/stampie.phar"
 SOURCE="lib"
 
@@ -28,5 +28,5 @@ __HALT_COMPILER();
 
 # Generate PHAR file
 echo $STUB > $FILE
-phar-build --ns --src=$SOURCE --phar=$OUTPUT --stub=$FILE
+phar-build --ns --src=$SOURCE --phar=$OUTPUT --stub=$FILE --strip-files '.php$'
 rm $FILE
