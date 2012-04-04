@@ -26,32 +26,75 @@
         </ul>
       </header>
       <section>
-        <h3>Welcome to GitHub Pages.</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+    <h1>Stampie</h1>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<p><a href="http://travis-ci.org/henrikbjorn/Stampie"><img src="https://secure.travis-ci.org/henrikbjorn/Stampie.png" alt="Build Status"></a></p>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>Stampie is a simple API Wrapper for different email providers such as <a href="http://postmarkapp.com">Postmark</a> and <a href="http://sendgrid.com">SendGrid</a>.</p>
 
-<h3>Designer Templates</h3>
+<p>It is very easy to use and to integrate into your application as demonstrated below with a <code>SendGrid</code> mailer.</p>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<h2>Providers</h2>
 
-<h3>Rather Drive Stick?</h3>
+<ul>
+<li><a href="http://postmarkapp.com">Postmark</a></li>
+<li><a href="http://sendgrid.com">SendGrid</a></li>
+<li>
+<a href="http://mailchimp.com">MailChimp</a> Their STS Api</li>
+</ul><div class="highlight">
+<pre><span class="cp">&lt;?php</span>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<span class="c1">// Stampie.phar does Autoloading through its Stup.php </span>
+<span class="k">require</span> <span class="s1">'/path/to/stampie.phar'</span><span class="p">;</span>
 
-<h3>Authors and Contributors</h3>
+<span class="k">class</span> <span class="nc">Message</span> <span class="k">extends</span> <span class="nx">\Stampie\Message</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getFrom</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s1">'alias@domain.tld'</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getSubject</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s1">'You are trying out Stampie'</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getText</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s1">'So what do you think about it?'</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<span class="nv">$adapter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Stampie\Adapter\Buzz</span><span class="p">(</span><span class="k">new</span> <span class="nx">Buzz\Browser</span><span class="p">());</span>
+<span class="nv">$mailer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Stampie\Mailer\SendGrid</span><span class="p">(</span><span class="nv">$adapter</span><span class="p">,</span> <span class="s1">'username:password'</span><span class="p">);</span>
 
-<h3>Support or Contact</h3>
+<span class="c1">// Returns Boolean true on success or throws an HttpException for error</span>
+<span class="c1">// messages not recognized by SendGrid api or ApiException for known errors.</span>
+<span class="nv">$mailer</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">(</span><span class="k">new</span> <span class="nx">Message</span><span class="p">(</span><span class="s1">'reciever@domain.tld'</span><span class="p">));</span>
+</pre>
+</div>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact support@github.com and we’ll help you sort it out.</p>
+
+<p>This simple example shows a few different things about how Stampis works under the hood and is developed. Because others are <strong>so much</strong> better than us to do Http communication Stampie uses a <a href="http://en.wikipedia.org/wiki/Adapter_pattern">Adapter Pattern</a> to integrate with known libraries such as <a href="http://github.com/kriswallsmith/Buzz">Buzz</a> and <a href="http://guzzlephp.org">Guzzle</a>.</p>
+
+<p>Every mailer takes a <code>$serverToken</code> as the second argument in their constructor. This is what is used for authentication. In the Postmark mailer this is a hash but in SendGrid it is a <code>username:password</code> pattern that is split into two pieces and send as arguments. A Mailer is responsible for formatting the request needed for a given API.</p>
+
+<p>A <code>Message</code> or <code>MessageInterface</code> is a simple storage class that holds information about the message sent to an API such as the email address this is from and who should recieve it together with html and text bodies.</p>
+
+<p>Last their is an Interface for every type of class or abstract implementation that should be used when adding new Mailer's or Adapter's.</p>
+
+<h2>Framework integration</h2>
+
+<p>Stampie is itself completly decoupled and does not depend on any framework.</p>
+
+<h3>Integrations</h3>
+
+<ul>
+<li>
+<a href="http://github.com/henrikbjorn/HBStampieBundle">HBStampieBundle</a> it is also <a href="http://packagist.org/packages/henrikbjorn/stampie-bundle">on packagist</a>
+</li>
+</ul><h2>Testing</h2>
+
+<p>Stampie is <a href="http://en.wikipedia.org/wiki/Continuous_integration">Continuous Integration</a> tested with <a href="http://travis-ci.org">Travis</a> and aims for a high coverage percentage.</p>
+
+<h2>Developing</h2>
+
+<p>As mentioned above if integrating new mailers or adapters please rely on the interfaces or abstract classes already in this package. Furthermore unit tests should be provided aswell.</p>
+
+<h2>Feedback</h2>
+
+<p>This is a project created to test TDD along the way and maybe have some scars from that. But you are always welcome to send feedback or Github, Twitter, Github issue or Pull Request. Same goes if something is wrong or you have ideas for a better or smarter implementation.</p>
+
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/henrikbjorn">henrikbjorn</a></p>
