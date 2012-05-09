@@ -13,7 +13,6 @@
     ],
     "autoload" : {
         "psr-0" : {
-            "Stampie\\Tests" : "tests/",
             "Stampie"        : "lib/"
         }
     },
