@@ -22,5 +22,9 @@
     "require-dev" : {
         "kriswallsmith/buzz" : "*",
         "guzzle/guzzle"      : "*"
+    },
+    "suggest" : {
+        "kriswallsmith/buzz" : "Lightweight HTTP Client",
+        "guzzle/guzzle"      : "HTTP Client and Framework for building RESTful webservice clients"
     }
 }
