@@ -20,7 +20,7 @@
     "require" : {
         "php"                : ">=5.3.8"
     },
-    "suggest" : {
+    "require-dev" : {
         "kriswallsmith/buzz" : "*",
         "guzzle/guzzle"      : "*"
     }
