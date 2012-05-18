@@ -11,6 +11,9 @@ use Stampie\Exception\HttpException;
  */
 class MailGun extends \Stampie\Mailer
 {
+    /**
+     * @return string
+     */
     public function getEndpoint()
     {
         list($domain,) = explode(':', $this->getServerToken());
@@ -18,6 +21,10 @@ class MailGun extends \Stampie\Mailer
         return 'https://api.mailgun.net/v2/' . $domain . '/messages';
     }
 
+    /**
+     * @param string $serverToken
+     * @throws InvalidArgumentException
+     */
     public function setServerToken($serverToken)
     {
         if (false === strpos($serverToken, ':')) {
@@ -27,6 +34,9 @@ class MailGun extends \Stampie\Mailer
         parent::setServerToken($serverToken);
     }
 
+    /**
+     * @return array
+     *
     public function getHeaders()
     {
         list(, $serverToken) = explode(':', $this->getServerToken());
@@ -36,6 +46,10 @@ class MailGun extends \Stampie\Mailer
         );
     }
 
+    /**
+     * @param MessageInterface $message
+     * @return string
+     */
     public function format(MessageInterface $message)
     {
         // Custom headers should be prefixed with h:X-My-Header
@@ -57,6 +71,10 @@ class MailGun extends \Stampie\Mailer
         return http_build_query(array_filter(array_merge($headers, $parameters))); 
     }
 
+    /**
+     * @param ResponseInterface $response
+     * @throws HttpException
+     */
     public function handle(ResponseInterface $response)
     {
         throw new HttpException($response->getStatusCode(), $response->getStatusText());
