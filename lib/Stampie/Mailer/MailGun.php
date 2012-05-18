@@ -36,7 +36,7 @@ class MailGun extends \Stampie\Mailer
 
     /**
      * @return array
-     *
+     */
     public function getHeaders()
     {
         list(, $serverToken) = explode(':', $this->getServerToken());
