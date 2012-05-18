@@ -1,6 +1,6 @@
 <?php
 
-if (!@include __DIR__ . '/../vendor/.composer/autoload.php') {
+if (!$loader = @include __DIR__ . '/../vendor/.composer/autoload.php') {
     echo <<<'EOT'
 You must set up the project dependencies, run the following commands:
 wget http://getcomposer.org/composer.phar
@@ -10,3 +10,5 @@ EOT;
     // Throw the correct error code, a build should fail if autoload isnt present.
     exit(1);
 }
+
+$loader->add('Stampie\Test', __DIR__ . '/../tests');

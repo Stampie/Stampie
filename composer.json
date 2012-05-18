@@ -13,15 +13,18 @@
     ],
     "autoload" : {
         "psr-0" : {
-            "Stampie\\Tests" : "tests/",
             "Stampie"        : "lib/"
         }
     },
     "require" : {
-        "php"                : ">=5.3.8"
+        "php"                : ">=5.3.3"
     },
     "require-dev" : {
         "kriswallsmith/buzz" : "*",
         "guzzle/guzzle"      : "*"
+    },
+    "suggest" : {
+        "kriswallsmith/buzz" : "Lightweight HTTP Client",
+        "guzzle/guzzle"      : "HTTP Client and Framework for building RESTful webservice clients"
     }
 }
