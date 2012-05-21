@@ -42,6 +42,10 @@ A `Message` or `MessageInterface` is a simple storage class that holds informati
 
 Last their is an Interface for every type of class or abstract implementation that should be used when adding new Mailer's or Adapter's.
 
+## Documentation
+
+There is generated API documentation for all tags and released versions. Those can be found at [henrikbjorn.github.com/Stampie/api/master](http://henrikbjorn.github.com/Stampie/api/master).
+
 ## Framework integration
 
 Stampie is itself completly decoupled and does not depend on any framework.
