@@ -47,6 +47,11 @@ Last their is an Interface for every type of class or abstract implementation th
 
 There is generated API documentation for all tags and released versions. Those can be found at [henrikbjorn.github.com/Stampie/api/master](http://henrikbjorn.github.com/Stampie/api/master).
 
+## Extensions
+
+* [StampieExtra](https://github.com/stof/StampieExtra) provides extensions
+  to Stampie using the Symfony2 EventDispatcher component.
+
 ## Framework integration
 
 Stampie is itself completly decoupled and does not depend on any framework.
