@@ -21,7 +21,7 @@ class MailChimpSts extends Mailer
      * Splits the ServerToken up and uses the last part as the <dc>. More information
      * is at http://apidocs.mailchimp.com/sts/rtfm/
      */
-    public function getEndpoint()
+    protected function getEndpoint()
     {
         return strtr('http://<dc>.sts.mailchimp.com/1.0/SendEmail.json', array(
             '<dc>' => current(array_reverse(explode('-', $this->getServerToken())))
@@ -31,7 +31,7 @@ class MailChimpSts extends Mailer
     /**
      * {@inheritdoc}
      */
-    public function format(MessageInterface $message)
+    protected function format(MessageInterface $message)
     {
         $parameters = array(
             'apikey'  => $this->getServerToken(),
@@ -52,7 +52,7 @@ class MailChimpSts extends Mailer
      *
      * "You can consider any non-200 HTTP response code an error - the returned data will contain more detailed information"
      */
-    public function handle(ResponseInterface $response)
+    protected function handle(ResponseInterface $response)
     {
         $httpException = new HttpException($response->getStatusCode(), $response->getStatusText());
         $error         = json_decode($response->getContent());

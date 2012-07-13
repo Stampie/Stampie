@@ -33,41 +33,6 @@ interface MailerInterface
     function getServerToken();
 
     /**
-     * @return string
-     */
-    function getEndpoint();
-
-    /**
-     * Return a key -> value array of headers
-     *
-     * example:
-     *     array('X-Header-Name' => 'value')
-     *
-     * @return array
-     */
-    function getHeaders();
-
-    /**
-     * Return a a string formatted for the correct Mailer endpoint.
-     * Postmark this is Json, SendGrid it is a urlencoded parameter list
-     *
-     * @param MessageInterface $message
-     *
-     * @return string
-     */
-    function format(MessageInterface $message);
-
-    /**
-     * If a Response is not successful it will be passed to this method
-     * each Mailer should then throw an HttpException with an optional
-     * ApiException to help identify the problem.
-     *
-     * @throws \Stampie\Exception\ApiException
-     * @throws \Stampie\Exception\HttpException
-     */
-    function handle(ResponseInterface $response);
-
-    /**
      * @param MessageInterface $message
      *
      * @return Boolean

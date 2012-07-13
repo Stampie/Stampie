@@ -4,6 +4,8 @@ namespace Stampie\Tests\Mailer;
 
 use Stampie\Mailer\Mandrill;
 use Stampie\Adapter\Response;
+use Stampie\Adapter\ResponseInterface;
+use Stampie\MessageInterface;
 
 class MandrillTest extends \Stampie\Tests\BaseMailerTest
 {
@@ -13,7 +15,7 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
     {
         parent::setUp();
 
-        $this->mailer = new Mandrill(
+        $this->mailer = new TestMandrill(
             $this->adapter,
             self::SERVER_TOKEN
         );
@@ -77,5 +79,28 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
             array(401, 'Unauthorized'),
             array(504, 'Gateway Timeout'),
         );
+    }
+}
+
+class TestMandrill extends Mandrill
+{
+    public function getEndpoint()
+    {
+        return parent::getEndpoint();
+    }
+
+    public function getHeaders()
+    {
+        return parent::getHeaders();
+    }
+
+    public function format(MessageInterface $message)
+    {
+        return parent::format($message);
+    }
+
+    public function handle(ResponseInterface $response)
+    {
+        parent::handle($response);
     }
 }

@@ -15,7 +15,7 @@ class PeytzMail extends \Stampie\Mailer
     /**
      * {@inheritdoc}
      */
-    public function getEndpoint()
+    protected function getEndpoint()
     {
         return strtr('https://<customer>.peytzmail.com/api/v1/trigger_mails.json', array(
             '<customer>' => current(explode(':', $this->getServerToken())),
@@ -27,7 +27,7 @@ class PeytzMail extends \Stampie\Mailer
      */
     public function setServerToken($serverToken)
     {
-        if (false == strpos($serverToken, ':')) { 
+        if (false == strpos($serverToken, ':')) {
             throw new \InvalidArgumentException('PeytzMail uses a "customer:key" based ServerToken.');
         }
 
@@ -37,7 +37,7 @@ class PeytzMail extends \Stampie\Mailer
     /**
      * {@inheritdoc}
      */
-    public function getHeaders()
+    protected function getHeaders()
     {
         list(, $serverToken) = explode(':', $this->getServerToken());
 
@@ -54,7 +54,7 @@ class PeytzMail extends \Stampie\Mailer
     public function send(MessageInterface $message)
     {
         if (false == $message instanceof TaggableInterface) {
-            throw new \InvalidArgumentException('PeytzMail can only send messages which implement "TaggableMessage".');
+            throw new \InvalidArgumentException('PeytzMail can only send messages which implement "TaggableInterface".');
         }
 
         parent::send($message);
@@ -63,7 +63,7 @@ class PeytzMail extends \Stampie\Mailer
     /**
      * {@inheritdoc}
      */
-    public function format(MessageInterface $message)
+    protected function format(MessageInterface $message)
     {
         $parameters = array(
             'email' => $message->getTo(),
@@ -84,7 +84,7 @@ class PeytzMail extends \Stampie\Mailer
     /**
      * {@inheritdoc}
      */
-    public function handle(ResponseInterface $response)
+    protected function handle(ResponseInterface $response)
     {
         throw new HttpException($response->getStatusCode(), $response->getStatusText());
     }

@@ -4,6 +4,8 @@ namespace Stampie\Tests\Mailer;
 
 use Stampie\Mailer\PeytzMail;
 use Stampie\Adapter\Response;
+use Stampie\Adapter\ResponseInterface;
+use Stampie\MessageInterface;
 
 abstract class TaggableMessage implements \Stampie\MessageInterface, \Stampie\Message\TaggableInterface
 {
@@ -17,7 +19,7 @@ class PeytzMailTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->adapter = $this->getMock('Stampie\Adapter\AdapterInterface');
-        $this->mailer = new PeytzMail($this->adapter, 'something:something');
+        $this->mailer = new TestPeytzMail($this->adapter, 'something:something');
     }
 
     public function testSendThrowsExceptionWithInvalidMessageImplementation()
@@ -82,5 +84,28 @@ class PeytzMailTest extends \PHPUnit_Framework_TestCase
         $response = new Response(401, 'Unauthorized');
 
         $this->mailer->handle($response);
+    }
+}
+
+class TestPeytzMail extends PeytzMail
+{
+    public function getEndpoint()
+    {
+        return parent::getEndpoint();
+    }
+
+    public function getHeaders()
+    {
+        return parent::getHeaders();
+    }
+
+    public function format(MessageInterface $message)
+    {
+        return parent::format($message);
+    }
+
+    public function handle(ResponseInterface $response)
+    {
+        parent::handle($response);
     }
 }

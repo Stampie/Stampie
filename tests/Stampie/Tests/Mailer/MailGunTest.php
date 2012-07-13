@@ -14,11 +14,11 @@ class MailGunTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->adapter = $this->createMockAdapter();
-        $this->mailer = new MailGun($this->adapter, self::SERVER_TOKEN);
+        $this->mailer = new TestMailGun($this->adapter, self::SERVER_TOKEN);
     }
 
     /**
-     * @expectedException InvalidArgumentException 
+     * @expectedException InvalidArgumentException
      */
     public function testServerTokenMissingDelimeter()
     {
@@ -45,5 +45,18 @@ class MailGunTest extends \PHPUnit_Framework_TestCase
     protected function createMockAdapter()
     {
         return $this->getMock('Stampie\Adapter\AdapterInterface');
+    }
+}
+
+class TestMailGun extends MailGun
+{
+    public function getEndpoint()
+    {
+        return parent::getEndpoint();
+    }
+
+    public function getHeaders()
+    {
+        return parent::getHeaders();
     }
 }

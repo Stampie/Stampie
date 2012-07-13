@@ -18,7 +18,7 @@ class SendGrid extends Mailer
     /**
      * {@inheritdoc}
      */
-    public function getEndpoint()
+    protected function getEndpoint()
     {
         return 'https://sendgrid.com/api/mail.send.json';
     }
@@ -39,7 +39,7 @@ class SendGrid extends Mailer
     /**
      * {@inheritdoc}
      */
-    public function handle(ResponseInterface $response)
+    protected function handle(ResponseInterface $response)
     {
         $httpException = new HttpException($response->getStatusCode(), $response->getStatusText());
 
@@ -55,7 +55,7 @@ class SendGrid extends Mailer
     /**
      * {@inheritdoc}
      */
-    public function format(MessageInterface $message)
+    protected function format(MessageInterface $message)
     {
         // We should split up the ServerToken on : to get username and password
         list($username, $password) = explode(':', $this->getServerToken());
