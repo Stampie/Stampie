@@ -12,7 +12,7 @@ use Stampie\Exception\HttpException;
 class MailGun extends \Stampie\Mailer
 {
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getEndpoint()
     {
@@ -22,8 +22,8 @@ class MailGun extends \Stampie\Mailer
     }
 
     /**
-     * @param string $serverToken
-     * @throws InvalidArgumentException
+     * {@inheritdoc}
+     * @throws \InvalidArgumentException
      */
     public function setServerToken($serverToken)
     {
@@ -35,7 +35,7 @@ class MailGun extends \Stampie\Mailer
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getHeaders()
     {
@@ -47,8 +47,7 @@ class MailGun extends \Stampie\Mailer
     }
 
     /**
-     * @param MessageInterface $message
-     * @return string
+     * {@inheritdoc}
      */
     public function format(MessageInterface $message)
     {
@@ -68,12 +67,11 @@ class MailGun extends \Stampie\Mailer
             'bcc'     => $message->getBcc(),
         );
 
-        return http_build_query(array_filter(array_merge($headers, $parameters))); 
+        return http_build_query(array_filter(array_merge($headers, $parameters)));
     }
 
     /**
-     * @param ResponseInterface $response
-     * @throws HttpException
+     * {@inheritdoc}
      */
     public function handle(ResponseInterface $response)
     {

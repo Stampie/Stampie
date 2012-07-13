@@ -12,11 +12,12 @@ It is very easy to use and to integrate into your application as demonstrated be
 * [SendGrid](http://sendgrid.com)
 * [MailChimp](http://mailchimp.com) Their STS Api
 * [MailGun](http://mailgun.org)
+* [Mandrill](http://mandrill.com/)
 
 ``` php
 <?php
 
-// Stampie.phar does Autoloading through its Stup.php 
+// Stampie.phar does Autoloading through its Stup.php
 require '/path/to/stampie.phar';
 
 class Message extends \Stampie\Message

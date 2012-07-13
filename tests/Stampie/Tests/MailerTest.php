@@ -4,6 +4,13 @@ namespace Stampie\Tests;
 
 class MailerTest extends \PHPUnit_Framework_TestCase
 {
+    protected $adapter;
+
+    /**
+     * @var \Stampie\MailerInterface
+     */
+    protected $mailer;
+
     public function setUp()
     {
         $this->mailer = $this->getMailerMock(array(
