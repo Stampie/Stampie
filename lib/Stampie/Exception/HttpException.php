@@ -3,17 +3,18 @@
 namespace Stampie\Exception;
 
 /**
- * Exception thrown for all HTTP Error codes where the Api's dosent them selves provide an error
- * message. 
- * 
+ * Exception thrown for all HTTP Error codes where the Api's doesn't themselves provide an error
+ * message.
+ *
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  */
 class HttpException extends \RuntimeException
 {
     /**
-     * @param integer $statusCode
+     * @param integer    $statusCode
+     * @param string     $message
      * @param \Exception $previous
-     * @param integer $code
+     * @param integer    $code
      */
     public function __construct($statusCode, $message = null, \Exception $previous = null, $code = 0)
     {

@@ -16,10 +16,10 @@ use Stampie\Exception\ApiException;
 class MailChimpSts extends Mailer
 {
     /**
+     * {@inheritdoc}
+     *
      * Splits the ServerToken up and uses the last part as the <dc>. More information
      * is at http://apidocs.mailchimp.com/sts/rtfm/
-     *
-     * @return string
      */
     public function getEndpoint()
     {
@@ -29,8 +29,7 @@ class MailChimpSts extends Mailer
     }
 
     /**
-     * @param MessageInterface $message
-     * @return string
+     * {@inheritdoc}
      */
     public function format(MessageInterface $message)
     {
@@ -49,9 +48,9 @@ class MailChimpSts extends Mailer
     }
 
     /**
-     * "You can consider any non-200 HTTP response code an error - the returned data will contain more detailed information"
+     * {@inheritdoc}
      *
-     * @param ResponseInterface $response
+     * "You can consider any non-200 HTTP response code an error - the returned data will contain more detailed information"
      */
     public function handle(ResponseInterface $response)
     {

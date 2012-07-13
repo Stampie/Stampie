@@ -16,7 +16,7 @@ use Stampie\Exception\ApiException;
 class SendGrid extends Mailer
 {
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getEndpoint()
     {
@@ -24,8 +24,8 @@ class SendGrid extends Mailer
     }
 
     /**
-     * @param string $serverToken
-     * @throws \InvalidServerToken
+     * {@inheritdoc}
+     * @throws \InvalidArgumentException
      */
     public function setServerToken($serverToken)
     {
@@ -37,7 +37,7 @@ class SendGrid extends Mailer
     }
 
     /**
-     * @param ResponseInterface
+     * {@inheritdoc}
      */
     public function handle(ResponseInterface $response)
     {
@@ -53,8 +53,7 @@ class SendGrid extends Mailer
     }
 
     /**
-     * @param MessageInterface
-     * @return string
+     * {@inheritdoc}
      */
     public function format(MessageInterface $message)
     {

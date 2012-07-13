@@ -16,7 +16,7 @@ use Stampie\Exception\ApiException;
 class Postmark extends Mailer
 {
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getEndpoint()
     {
@@ -24,8 +24,7 @@ class Postmark extends Mailer
     }
 
     /**
-     * @param ResponseInterace
-     * @throws \LogicException
+     * {@inheritdoc}
      */
     public function handle(ResponseInterface $response)
     {
@@ -41,7 +40,7 @@ class Postmark extends Mailer
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getHeaders()
     {
@@ -53,8 +52,7 @@ class Postmark extends Mailer
     }
 
     /**
-     * @param MessageInterface $message
-     * @return string
+     * {@inheritdoc}
      */
     public function format(MessageInterface $message)
     {
