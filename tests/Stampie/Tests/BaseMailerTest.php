@@ -4,11 +4,18 @@ namespace Stampie\Tests;
 
 abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
 {
+    protected $adapter;
+
+    /**
+     * @var \Stampie\MailerInterface
+     */
+    protected $mailer;
+
     public function setUp()
     {
         $this->adapter = $this->getMock('Stampie\Adapter\AdapterInterface');
     }
-    
+
     protected function getResponseMock($statusCode, array $content)
     {
         $response = $this->getMock('Stampie\Adapter\ResponseInterface');

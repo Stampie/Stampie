@@ -32,7 +32,7 @@ abstract class Mailer implements MailerInterface
     }
 
     /**
-     * @param AdapterInterface $adapter
+     * {@inheritdoc}
      */
     public function setAdapter(AdapterInterface $adapter)
     {
@@ -40,7 +40,7 @@ abstract class Mailer implements MailerInterface
     }
 
     /**
-     * @return AdapterInterface
+     * {@inheritdoc}
      */
     public function getAdapter()
     {
@@ -48,7 +48,7 @@ abstract class Mailer implements MailerInterface
     }
 
     /**
-     * @param string $serverToken
+     * {@inheritdoc}
      * @throws \InvalidArgumentException
      */
     public function setServerToken($serverToken)
@@ -61,7 +61,7 @@ abstract class Mailer implements MailerInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getServerToken()
     {
@@ -69,9 +69,7 @@ abstract class Mailer implements MailerInterface
     }
 
     /**
-     * @param MessageInterface $message
-     * @throws \LogicException
-     * @return Boolean
+     * {@inheritdoc}
      */
     public function send(MessageInterface $message)
     {
@@ -88,14 +86,9 @@ abstract class Mailer implements MailerInterface
 
         return $this->handle($response);
     }
-    
+
     /**
-     * Return an array of headers needed for this mailer. 
-     *
-     * example:
-     *     array("HeaderName" => "HeaderValue");
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getHeaders()
     {

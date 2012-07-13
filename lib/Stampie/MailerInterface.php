@@ -51,6 +51,8 @@ interface MailerInterface
      * Return a a string formatted for the correct Mailer endpoint.
      * Postmark this is Json, SendGrid it is a urlencoded parameter list
      *
+     * @param MessageInterface $message
+     *
      * @return string
      */
     function format(MessageInterface $message);
@@ -60,13 +62,14 @@ interface MailerInterface
      * each Mailer should then throw an HttpException with an optional
      * ApiException to help identify the problem.
      *
-     * @throws ApiException
-     * @throws HttpException
+     * @throws \Stampie\Exception\ApiException
+     * @throws \Stampie\Exception\HttpException
      */
     function handle(ResponseInterface $response);
 
     /**
-     * @param MailerInterface $message
+     * @param MessageInterface $message
+     *
      * @return Boolean
      */
     function send(MessageInterface $message);

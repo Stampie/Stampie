@@ -9,23 +9,28 @@ use Stampie\Exception\HttpException;
 use Stampie\Exception\ApiException;
 
 /**
- * A Mailer for MailChimp STS http://mailchimp.com/features/simple-transactional-service/
+ * Sends emails to Mandrill server
  *
- * @author Henrik Bjornskov <henrik@bjrnskov.dk>
+ * @author Christophe Coevoet <stof@notk.org>
  */
-class MailChimpSts extends Mailer
+class Mandrill extends Mailer
 {
     /**
      * {@inheritdoc}
-     *
-     * Splits the ServerToken up and uses the last part as the <dc>. More information
-     * is at http://apidocs.mailchimp.com/sts/rtfm/
      */
     public function getEndpoint()
     {
-        return strtr('http://<dc>.sts.mailchimp.com/1.0/SendEmail.json', array(
-            '<dc>' => current(array_reverse(explode('-', $this->getServerToken())))
-        ));
+        return 'https://mandrillapp.com/api/1.0/messages/send.json';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getHeaders()
+    {
+        return array(
+            'Content-Type' => 'application/json',
+        );
     }
 
     /**
@@ -33,18 +38,23 @@ class MailChimpSts extends Mailer
      */
     public function format(MessageInterface $message)
     {
+        $headers = array_filter(array_merge(
+            $message->getHeaders(),
+            array('Reply-To' => $message->getReplyTo())
+        ));
         $parameters = array(
-            'apikey'  => $this->getServerToken(),
+            'key'     => $this->getServerToken(),
             'message' => array_filter(array(
-                'html'       => $message->getHtml(),
-                'text'       => $message->getText(),
-                'subject'    => $message->getSubject(),
-                'to_email'   => $message->getTo(),
                 'from_email' => $message->getFrom(),
+                'to'         => array(array('email' => $message->getTo())),
+                'subject'    => $message->getSubject(),
+                'headers'    => $headers,
+                'text'       => $message->getText(),
+                'html'       => $message->getHtml(),
             )),
         );
 
-        return http_build_query($parameters);
+        return json_encode($parameters);
     }
 
     /**
@@ -57,6 +67,6 @@ class MailChimpSts extends Mailer
         $httpException = new HttpException($response->getStatusCode(), $response->getStatusText());
         $error         = json_decode($response->getContent());
 
-        throw new ApiException($error->message, $httpException);
+        throw new ApiException($error->message, $httpException, $error->code);
     }
 }
