@@ -14,7 +14,7 @@ class MailGun extends \Stampie\Mailer
     /**
      * {@inheritdoc}
      */
-    public function getEndpoint()
+    protected function getEndpoint()
     {
         list($domain,) = explode(':', $this->getServerToken());
 
@@ -37,7 +37,7 @@ class MailGun extends \Stampie\Mailer
     /**
      * {@inheritdoc}
      */
-    public function getHeaders()
+    protected function getHeaders()
     {
         list(, $serverToken) = explode(':', $this->getServerToken());
 
@@ -49,7 +49,7 @@ class MailGun extends \Stampie\Mailer
     /**
      * {@inheritdoc}
      */
-    public function format(MessageInterface $message)
+    protected function format(MessageInterface $message)
     {
         // Custom headers should be prefixed with h:X-My-Header
         $headers = $message->getHeaders();
@@ -73,7 +73,7 @@ class MailGun extends \Stampie\Mailer
     /**
      * {@inheritdoc}
      */
-    public function handle(ResponseInterface $response)
+    protected function handle(ResponseInterface $response)
     {
         throw new HttpException($response->getStatusCode(), $response->getStatusText());
     }

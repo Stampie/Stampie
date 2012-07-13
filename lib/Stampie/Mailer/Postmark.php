@@ -18,7 +18,7 @@ class Postmark extends Mailer
     /**
      * {@inheritdoc}
      */
-    public function getEndpoint()
+    protected function getEndpoint()
     {
         return 'http://api.postmarkapp.com/email';
     }
@@ -26,7 +26,7 @@ class Postmark extends Mailer
     /**
      * {@inheritdoc}
      */
-    public function handle(ResponseInterface $response)
+    protected function handle(ResponseInterface $response)
     {
         $httpException = new HttpException($response->getStatusCode(), $response->getStatusText());
 
@@ -42,7 +42,7 @@ class Postmark extends Mailer
     /**
      * {@inheritdoc}
      */
-    public function getHeaders()
+    protected function getHeaders()
     {
         return array(
             'Content-Type' => 'application/json',
@@ -54,7 +54,7 @@ class Postmark extends Mailer
     /**
      * {@inheritdoc}
      */
-    public function format(MessageInterface $message)
+    protected function format(MessageInterface $message)
     {
         $parameters = array_filter(array(
             'From'     => $message->getFrom(),

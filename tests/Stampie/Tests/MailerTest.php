@@ -33,11 +33,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $this->mailer->setServerToken('');
     }
 
-    public function testHeaders()
-    {
-        $this->assertEquals(array(), $this->mailer->getHeaders());
-    }
-
     public function testSendSuccessful()
     {
         $mailer = $this->mailer;

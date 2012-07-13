@@ -4,6 +4,8 @@ namespace Stampie\Tests\Mailer;
 
 use Stampie\Mailer\Postmark;
 use Stampie\Adapter\Response;
+use Stampie\Adapter\ResponseInterface;
+use Stampie\MessageInterface;
 
 class PostmarkTest extends \Stampie\Tests\BaseMailerTest
 {
@@ -13,7 +15,7 @@ class PostmarkTest extends \Stampie\Tests\BaseMailerTest
     {
         parent::setUp();
 
-        $this->mailer = new Postmark(
+        $this->mailer = new TestPostmark(
             $this->adapter,
             self::SERVER_TOKEN
         );
@@ -69,5 +71,28 @@ class PostmarkTest extends \Stampie\Tests\BaseMailerTest
             array(400, '', 'Stampie\Exception\HttpException', 'Bad Request'),
             array(422, '{ "Message" : "Bad Credentials" }', 'Stampie\Exception\ApiException', 'Bad Credentials'),
         );
+    }
+}
+
+class TestPostmark extends Postmark
+{
+    public function getEndpoint()
+    {
+        return parent::getEndpoint();
+    }
+
+    public function handle(ResponseInterface $response)
+    {
+        parent::handle($response);
+    }
+
+    public function getHeaders()
+    {
+        return parent::getHeaders();
+    }
+
+    public function format(MessageInterface $message)
+    {
+        return parent::format($message);
     }
 }
