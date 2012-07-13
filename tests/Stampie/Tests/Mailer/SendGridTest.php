@@ -4,6 +4,8 @@ namespace Stampie\Tests\Mailer;
 
 use Stampie\Mailer\SendGrid;
 use Stampie\Adapter\Response;
+use Stampie\Adapter\ResponseInterface;
+use Stampie\MessageInterface;
 
 class SendGridTest extends \Stampie\Tests\BaseMailerTest
 {
@@ -13,7 +15,7 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
     {
         parent::setUp();
 
-        $this->mailer = new SendGrid(
+        $this->mailer = new TestSendGrid(
             $this->adapter,
             self::SERVER_TOKEN
         );
@@ -83,5 +85,23 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
             array(400, '{ "errors" : ["Error In an Array"] }', 'Stampie\Exception\ApiException'),
             array(500, '', 'Stampie\Exception\HttpException')
         );
+    }
+}
+
+class TestSendGrid extends SendGrid
+{
+    public function getEndpoint()
+    {
+        return parent::getEndpoint();
+    }
+
+    public function handle(ResponseInterface $response)
+    {
+        parent::handle($response);
+    }
+
+    public function format(MessageInterface $message)
+    {
+        return parent::format($message);
     }
 }

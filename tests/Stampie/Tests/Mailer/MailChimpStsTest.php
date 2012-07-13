@@ -5,6 +5,8 @@ namespace Stampie\Tests\Mailer;
 use Stampie\Tests\BaseMailerTest;
 use Stampie\Mailer\MailChimpSts;
 use Stampie\Adapter\Response;
+use Stampie\Adapter\ResponseInterface;
+use Stampie\MessageInterface;
 
 class MailChimpStsTest extends BaseMailerTest
 {
@@ -14,7 +16,7 @@ class MailChimpStsTest extends BaseMailerTest
     {
         parent::setUp();
 
-        $this->mailer = new MailChimpSts(
+        $this->mailer = new TestMailChimpSts(
             $this->adapter,
             self::SERVER_TOKEN
         );
@@ -86,5 +88,23 @@ class MailChimpStsTest extends BaseMailerTest
             array(401, 'Unauthorized'),
             array(504, 'Gateway Timeout'),
         );
+    }
+}
+
+class TestMailChimpSts extends MailChimpSts
+{
+    public function getEndpoint()
+    {
+        return parent::getEndpoint();
+    }
+
+    public function format(MessageInterface $message)
+    {
+        return parent::format($message);
+    }
+
+    public function handle(ResponseInterface $response)
+    {
+        parent::handle($response);
     }
 }

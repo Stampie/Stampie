@@ -18,7 +18,7 @@ class Mandrill extends Mailer
     /**
      * {@inheritdoc}
      */
-    public function getEndpoint()
+    protected function getEndpoint()
     {
         return 'https://mandrillapp.com/api/1.0/messages/send.json';
     }
@@ -26,7 +26,7 @@ class Mandrill extends Mailer
     /**
      * {@inheritdoc}
      */
-    public function getHeaders()
+    protected function getHeaders()
     {
         return array(
             'Content-Type' => 'application/json',
@@ -36,7 +36,7 @@ class Mandrill extends Mailer
     /**
      * {@inheritdoc}
      */
-    public function format(MessageInterface $message)
+    protected function format(MessageInterface $message)
     {
         $headers = array_filter(array_merge(
             $message->getHeaders(),
@@ -62,7 +62,7 @@ class Mandrill extends Mailer
      *
      * "You can consider any non-200 HTTP response code an error - the returned data will contain more detailed information"
      */
-    public function handle(ResponseInterface $response)
+    protected function handle(ResponseInterface $response)
     {
         $httpException = new HttpException($response->getStatusCode(), $response->getStatusText());
         $error         = json_decode($response->getContent());
