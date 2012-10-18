@@ -1,0 +1,5 @@
+build              export-ignore
+tests              export-ignore
+sami.php           export-ignore
+build.sh           export-ignore
+phpunit.xml.dist   export-ignore
