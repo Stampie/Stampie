@@ -42,15 +42,26 @@ class Mandrill extends Mailer
             $message->getHeaders(),
             array('Reply-To' => $message->getReplyTo())
         ));
+
+        $to = array(array('email' => $message->getTo()));
+    
+        if ($message->getCc()) {
+            $cc = explode(',', $message->getCc());
+            foreach ($cc as $email) {
+                $to[] = array('email' => $email);
+            }
+        }
+
         $parameters = array(
             'key'     => $this->getServerToken(),
             'message' => array_filter(array(
-                'from_email' => $message->getFrom(),
-                'to'         => array(array('email' => $message->getTo())),
-                'subject'    => $message->getSubject(),
-                'headers'    => $headers,
-                'text'       => $message->getText(),
-                'html'       => $message->getHtml(),
+                'from_email'  => $message->getFrom(),
+                'to'          => $to,
+                'subject'     => $message->getSubject(),
+                'headers'     => $headers,
+                'bcc_address' => $message->getBcc(),
+                'text'        => $message->getText(),
+                'html'        => $message->getHtml(),
             )),
         );
 
