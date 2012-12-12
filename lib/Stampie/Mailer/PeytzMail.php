@@ -66,9 +66,9 @@ class PeytzMail extends \Stampie\Mailer
     protected function format(MessageInterface $message)
     {
         $parameters = array(
-            'email' => $message->getTo(),
+            'email' => $this->normalizeIdentity($message->getTo())->getEmail(),
             'subject' => $message->getSubject(),
-            'from_email' => $message->getFrom(),
+            'from_email' => $this->normalizeIdentity($message->getFrom())->getEmail(),
             'tag' => $message->getTag(),
             'content' => array(
                 'html' => $message->getHtml(),

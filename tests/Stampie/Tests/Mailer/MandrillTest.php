@@ -46,7 +46,7 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
             'key' => self::SERVER_TOKEN,
             'message' => array(
                 'from_email' => $from,
-                'to' => array(array('email' => $to)),
+                'to' => array(array('email' => $to, 'name' => null)),
                 'subject' => $subject,
                 'html' => $html,
             ),

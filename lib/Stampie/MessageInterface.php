@@ -11,22 +11,22 @@ namespace Stampie;
 interface MessageInterface
 {
     /**
-     * @return string
+     * @return IdentityInterface|string
      */
     function getFrom();
 
     /**
-     * @return string
+     * @return IdentityInterface|string
      */
     function getTo();
 
     /**
-     * @return string
+     * @return IdentityInterface|string
      */
     function getCc();
 
     /**
-     * @return $string
+     * @return IdentityInterface|$string
      */
     function getBcc();
 

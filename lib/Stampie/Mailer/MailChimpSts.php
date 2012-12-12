@@ -33,14 +33,19 @@ class MailChimpSts extends Mailer
      */
     protected function format(MessageInterface $message)
     {
+        $from = $this->normalizeIdentity($message->getFrom());
+        $to = $this->normalizeIdentity($message->getTo());
+
         $parameters = array(
             'apikey'  => $this->getServerToken(),
             'message' => array_filter(array(
                 'html'       => $message->getHtml(),
                 'text'       => $message->getText(),
                 'subject'    => $message->getSubject(),
-                'to_email'   => $message->getTo(),
-                'from_email' => $message->getFrom(),
+                'to_email'   => array($to->getEmail()),
+                'to_name'    => array($to->getName()),
+                'from_email' => $from->getEmail(),
+                'from_name'  => $from->getName(),
             )),
         );
 
