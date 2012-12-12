@@ -57,8 +57,8 @@ class Postmark extends Mailer
     protected function format(MessageInterface $message)
     {
         $parameters = array_filter(array(
-            'From'     => $message->getFrom(),
-            'To'       => $message->getTo(),
+            'From'     => $this->buildIdentityString($message->getFrom()),
+            'To'       => $this->buildIdentityString($message->getTo()),
             'Subject'  => $message->getSubject(),
             'Headers'  => $message->getHeaders(),
             'TextBody' => $message->getText(),
