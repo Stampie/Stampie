@@ -58,13 +58,13 @@ class MailGun extends \Stampie\Mailer
         });
 
         $parameters = array(
-            'from'    => $message->getFrom(),
-            'to'      => $message->getTo(),
+            'from'    => $this->buildIdentityString($message->getFrom()),
+            'to'      => $this->buildIdentityString($message->getTo()),
             'subject' => $message->getSubject(),
             'text'    => $message->getText(),
             'html'    => $message->getHtml(),
-            'cc'      => $message->getCc(),
-            'bcc'     => $message->getBcc(),
+            'cc'      => $this->buildIdentityString($message->getCc()),
+            'bcc'     => $this->buildIdentityString($message->getBcc()),
         );
 
         return http_build_query(array_filter(array_merge($headers, $parameters)));

@@ -60,15 +60,20 @@ class SendGrid extends Mailer
         // We should split up the ServerToken on : to get username and password
         list($username, $password) = explode(':', $this->getServerToken());
 
+        $from = $this->normalizeIdentity($message->getFrom());
+        $to = $this->normalizeIdentity($message->getTo());
+
         $parameters = array(
             'api_user' => $username,
             'api_key'  => $password,
-            'to'       => $message->getTo(),
-            'from'     => $message->getFrom(),
+            'to'       => $to->getEmail(),
+            'toname'   => $to->getName(),
+            'from'     => $from->getEmail(),
+            'fromname' => $from->getName(),
             'subject'  => $message->getSubject(),
             'text'     => $message->getText(),
             'html'     => $message->getHtml(),
-            'bcc'      => $message->getBcc(),
+            'bcc'      => $this->normalizeIdentity($message->getBcc())->getEmail(),
             'replyto'  => $message->getReplyTo(),
             'headers'  => json_encode($message->getHeaders()),
         );

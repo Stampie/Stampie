@@ -125,4 +125,36 @@ abstract class Mailer implements MailerInterface
      * @throws \Stampie\Exception\HttpException
      */
     abstract protected function handle(ResponseInterface $response);
+
+    /**
+     * @param IdentityInterface|string $identity
+     *
+     * @return IdentityInterface
+     */
+    protected function normalizeIdentity($identity)
+    {
+        if (!$identity instanceof IdentityInterface) {
+            $identity = new Identity($identity);
+        }
+
+        return $identity;
+    }
+
+    /**
+     * @param IdentityInterface|string $identity
+     *
+     * @return string
+     */
+    protected function buildIdentityString($identity)
+    {
+        if ($identity instanceof IdentityInterface) {
+            if (null === $identity->getName()) {
+                return $identity->getEmail();
+            }
+
+            return sprintf('%s <%s>', $identity->getName(), $identity->getEmail());
+        }
+
+        return $identity;
+    }
 }

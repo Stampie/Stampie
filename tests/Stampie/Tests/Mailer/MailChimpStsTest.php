@@ -47,7 +47,8 @@ class MailChimpStsTest extends BaseMailerTest
             'message' => array(
                 'html' => $html,
                 'subject' => $subject,
-                'to_email' => $to,
+                'to_email' => array($to),
+                'to_name' => array(null),
                 'from_email' => $from,
             ),
         )), $this->mailer->format($message));
