@@ -71,7 +71,7 @@ class PeytzMail extends \Stampie\Mailer
         }
 
         $parameters = array(
-            'email' => $this->normalizeIdentity($message->getTo())->getEmail(),
+            'email' => reset($this->normalizeIdentities($message->getTo()))->getEmail(),
             'subject' => $message->getSubject(),
             'from_email' => $this->normalizeIdentity($message->getFrom())->getEmail(),
             'tag' => $tag,

@@ -60,6 +60,7 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
         );
 
         $headers = json_encode($headers);
+        $to = array($to);
 
         $query = compact(
             'api_user', 'api_key', 'to', 'from', 'subject', 'html', 'headers'
@@ -89,6 +90,7 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
         );
 
         $headers = json_encode($headers);
+        $to = array($to);
 
         $query = compact(
             'api_user', 'api_key', 'to', 'from', 'subject', 'html', 'headers'
