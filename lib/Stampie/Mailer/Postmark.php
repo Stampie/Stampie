@@ -3,6 +3,7 @@
 namespace Stampie\Mailer;
 
 use Stampie\Mailer;
+use Stampie\Message\TaggableInterface;
 use Stampie\MessageInterface;
 use Stampie\Adapter\ResponseInterface;
 use Stampie\Exception\HttpException;
@@ -56,15 +57,25 @@ class Postmark extends Mailer
      */
     protected function format(MessageInterface $message)
     {
-        $parameters = array_filter(array(
+        $parameters = array(
             'From'     => $this->buildIdentityString($message->getFrom()),
             'To'       => $this->buildIdentityString($message->getTo()),
             'Subject'  => $message->getSubject(),
             'Headers'  => $message->getHeaders(),
             'TextBody' => $message->getText(),
             'HtmlBody' => $message->getHtml(),
-        ));
+        );
 
-        return json_encode($parameters);
+        if ($message instanceof TaggableInterface) {
+            $tag = $message->getTag();
+
+            if (is_array($tag)) {
+                $tag = reset($tag);
+            }
+
+            $parameters['Tag'] = $tag ;
+        }
+
+        return json_encode(array_filter($parameters));
     }
 }
