@@ -64,12 +64,17 @@ class PeytzMail extends \Stampie\Mailer
      * {@inheritdoc}
      */
     protected function format(MessageInterface $message)
-    {
+{
+        $tag = $message->getTag();
+        if (is_array($tag)) {
+            $tag = reset($tag);
+        }
+
         $parameters = array(
             'email' => $this->normalizeIdentity($message->getTo())->getEmail(),
             'subject' => $message->getSubject(),
             'from_email' => $this->normalizeIdentity($message->getFrom())->getEmail(),
-            'tag' => $message->getTag(),
+            'tag' => $tag,
             'content' => array(
                 'html' => $message->getHtml(),
                 'text' => $message->getText(),

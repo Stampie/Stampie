@@ -4,6 +4,7 @@ namespace Stampie\Mailer;
 
 use Stampie\Mailer;
 use Stampie\MessageInterface;
+use Stampie\Message\TaggableInterface;
 use Stampie\Adapter\ResponseInterface;
 use Stampie\Exception\HttpException;
 use Stampie\Exception\ApiException;
@@ -46,6 +47,11 @@ class Mandrill extends Mailer
         $from = $this->normalizeIdentity($message->getFrom());
         $to = $this->normalizeIdentity($message->getTo());
 
+        $tags = array();
+        if ($message instanceof TaggableInterface) {
+            $tags = (array) $message->getTag();
+        }
+
         $parameters = array(
             'key'     => $this->getServerToken(),
             'message' => array_filter(array(
@@ -56,6 +62,7 @@ class Mandrill extends Mailer
                 'headers'    => $headers,
                 'text'       => $message->getText(),
                 'html'       => $message->getHtml(),
+                'tags'       => $tags,
             )),
         );
 

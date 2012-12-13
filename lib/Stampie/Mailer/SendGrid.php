@@ -4,6 +4,7 @@ namespace Stampie\Mailer;
 
 use Stampie\Mailer;
 use Stampie\MessageInterface;
+use Stampie\Message\TaggableInterface;
 use Stampie\Adapter\ResponseInterface;
 use Stampie\Exception\HttpException;
 use Stampie\Exception\ApiException;
@@ -77,6 +78,10 @@ class SendGrid extends Mailer
             'replyto'  => $message->getReplyTo(),
             'headers'  => json_encode($message->getHeaders()),
         );
+
+        if ($message instanceof TaggableInterface) {
+            $parameters['x-smtpapi']['category'] = (array) $message->getTag();
+        }
 
         return http_build_query(array_filter($parameters));
     }
