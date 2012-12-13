@@ -62,19 +62,32 @@ class SendGrid extends Mailer
         list($username, $password) = explode(':', $this->getServerToken());
 
         $from = $this->normalizeIdentity($message->getFrom());
-        $to = $this->normalizeIdentity($message->getTo());
+
+        $toEmails = array();
+        $toNames = array();
+
+        foreach ($this->normalizeIdentities($message->getTo()) as $recipient) {
+            $toEmails[] = $recipient->getEmail();
+            $toNames[] = $recipient->getName();
+        }
+
+        $bccEmails = array();
+
+        foreach ($this->normalizeIdentities($message->getBcc()) as $recipient) {
+            $bccEmails[] = $recipient->getEmail();
+        }
 
         $parameters = array(
             'api_user' => $username,
             'api_key'  => $password,
-            'to'       => $to->getEmail(),
-            'toname'   => $to->getName(),
+            'to'       => $toEmails,
+            'toname'   => $toNames,
             'from'     => $from->getEmail(),
             'fromname' => $from->getName(),
             'subject'  => $message->getSubject(),
             'text'     => $message->getText(),
             'html'     => $message->getHtml(),
-            'bcc'      => $this->normalizeIdentity($message->getBcc())->getEmail(),
+            'bcc'      => $bccEmails,
             'replyto'  => $message->getReplyTo(),
             'headers'  => json_encode($message->getHeaders()),
         );

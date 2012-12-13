@@ -3,6 +3,7 @@
 namespace Stampie\Tests\Mailer;
 
 use Stampie\Mailer\PeytzMail;
+use Stampie\Tests\BaseMailerTest;
 use Stampie\Adapter\Response;
 use Stampie\Adapter\ResponseInterface;
 use Stampie\MessageInterface;
@@ -10,7 +11,7 @@ use Stampie\MessageInterface;
 /**
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  */
-class PeytzMailTest extends \PHPUnit_Framework_TestCase
+class PeytzMailTest extends BaseMailerTest
 {
     protected $adapter;
 
@@ -21,7 +22,8 @@ class PeytzMailTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->adapter = $this->getMock('Stampie\Adapter\AdapterInterface');
+        parent::setUp();
+
         $this->mailer = new TestPeytzMail($this->adapter, 'something:something');
     }
 
@@ -34,7 +36,7 @@ class PeytzMailTest extends \PHPUnit_Framework_TestCase
 
     public function testSend()
     {
-        $message = $this->getMockForAbstractClass('Stampie\Tests\Mailer\TaggableMessage');
+        $message = $this->getTaggableMessageMock('henrik@bjrnskov.dk', 'henrik+to@bjrnskov.dk', 'Stampie is awesome', 'html', 'text', array(), 'tag');
 
         $this->adapter
             ->expects($this->once())
@@ -48,13 +50,7 @@ class PeytzMailTest extends \PHPUnit_Framework_TestCase
 
     public function testFormat()
     {
-        $message = $this->getMockForAbstractClass('Stampie\Tests\Mailer\TaggableMessage');
-
-        $message->expects($this->once())->method('getHtml')->will($this->returnValue('html'));
-        $message->expects($this->once())->method('getText')->will($this->returnValue('text'));
-        $message->expects($this->once())->method('getTag')->will($this->returnValue('tag'));
-        $message->expects($this->once())->method('getFrom')->will($this->returnValue('henrik@bjrnskov.dk'));
-        $message->expects($this->once())->method('getTo')->will($this->returnValue('henrik+to@bjrnskov.dk'));
+        $message = $this->getTaggableMessageMock('henrik@bjrnskov.dk', 'henrik+to@bjrnskov.dk', 'Stampie is awesome', 'html', 'text', array(), 'tag');
 
         $this->mailer->format($message);
     }

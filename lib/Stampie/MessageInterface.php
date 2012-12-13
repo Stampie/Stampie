@@ -16,17 +16,17 @@ interface MessageInterface
     function getFrom();
 
     /**
-     * @return IdentityInterface|string
+     * @return IdentityInterface[]|string
      */
     function getTo();
 
     /**
-     * @return IdentityInterface|string
+     * @return IdentityInterface[]|string
      */
     function getCc();
 
     /**
-     * @return IdentityInterface|$string
+     * @return IdentityInterface[]|$string
      */
     function getBcc();
 

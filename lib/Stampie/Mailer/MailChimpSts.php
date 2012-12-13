@@ -35,7 +35,14 @@ class MailChimpSts extends Mailer
     protected function format(MessageInterface $message)
     {
         $from = $this->normalizeIdentity($message->getFrom());
-        $to = $this->normalizeIdentity($message->getTo());
+
+        $toEmails = array();
+        $toNames = array();
+
+        foreach ($this->normalizeIdentities($message->getTo()) as $recipient) {
+            $toEmails[] = $recipient->getEmail();
+            $toNames[] = $recipient->getName();
+        }
 
         $tags = array();
         if ($message instanceof TaggableInterface) {
@@ -48,8 +55,8 @@ class MailChimpSts extends Mailer
                 'html'       => $message->getHtml(),
                 'text'       => $message->getText(),
                 'subject'    => $message->getSubject(),
-                'to_email'   => array($to->getEmail()),
-                'to_name'    => array($to->getName()),
+                'to_email'   => $toEmails,
+                'to_name'    => $toNames,
                 'from_email' => $from->getEmail(),
                 'from_name'  => $from->getName(),
             )),
