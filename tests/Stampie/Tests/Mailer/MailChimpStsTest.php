@@ -54,6 +54,32 @@ class MailChimpStsTest extends BaseMailerTest
         )), $this->mailer->format($message));
     }
 
+    public function testFormatTaggable()
+    {
+        $message = $this->getTaggableMessageMock(
+            $from = 'hb@peytz.dk',
+            $to = 'henrik@bjrnskov.dk',
+            $subject = 'Stampie is awesome',
+            $html = 'So what do you thing',
+            $text = 'text',
+            $headers = array('X-Stampie-To' => 'henrik+to@bjrnskov.dk'),
+            $tag = 'tag'
+        );
+
+        $this->assertEquals(http_build_query(array(
+            'apikey' => self::SERVER_TOKEN,
+            'message' => array(
+                'html' => $html,
+                'text' => $text,
+                'subject' => $subject,
+                'to_email' => array($to),
+                'to_name' => array(null),
+                'from_email' => $from,
+            ),
+            'tags' => array($tag)
+        )), $this->mailer->format($message));
+    }
+
     /**
      * @dataProvider handleDataProvider
      */
