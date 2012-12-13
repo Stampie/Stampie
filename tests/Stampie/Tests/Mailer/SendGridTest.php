@@ -93,7 +93,7 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
         $query = compact(
             'api_user', 'api_key', 'to', 'from', 'subject', 'html', 'headers'
         );
-        $query['x-smtpapi']['category'] = array($tag);
+        $query['x-smtpapi'] = json_encode(array('category' => array($tag)));
 
 
         $this->assertEquals(http_build_query(

@@ -80,7 +80,7 @@ class SendGrid extends Mailer
         );
 
         if ($message instanceof TaggableInterface) {
-            $parameters['x-smtpapi']['category'] = (array) $message->getTag();
+            $parameters['x-smtpapi'] = json_encode(array('category' => (array) $message->getTag()));
         }
 
         return http_build_query(array_filter($parameters));
