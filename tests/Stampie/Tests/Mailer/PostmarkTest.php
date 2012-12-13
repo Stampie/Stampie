@@ -52,6 +52,29 @@ class PostmarkTest extends \Stampie\Tests\BaseMailerTest
         )), $this->mailer->format($message));
     }
 
+    public function testFormatTaggable()
+    {
+        $message = $this->getTaggableMessageMock(
+            $from = 'hb@peytz.dk',
+            $to = 'henrik@bjrnskov.dk',
+            $subject = 'Stampie is awesome',
+            $html = 'So what do you thing',
+            $text = 'text',
+            $headers = array('X-Stampie-To' => 'henrik+to@bjrnskov.dk'),
+            $tag = 'tag'
+        );
+
+        $this->assertEquals(json_encode(array(
+            'From' => $from,
+            'To' => $to,
+            'Subject' => $subject,
+            'Headers' => $headers,
+            'HtmlBody' => $html,
+            'TextBody' => $text,
+            'Tag' => $tag,
+        )), $this->mailer->format($message));
+    }
+
     /**
      * @dataProvider handleDataProvider
      */

@@ -2,14 +2,16 @@
 
 namespace Stampie\Mailer;
 
+use Stampie\Mailer;
 use Stampie\MessageInterface;
+use Stampie\Message\TaggableInterface;
 use Stampie\Adapter\ResponseInterface;
 use Stampie\Exception\HttpException;
 
 /**
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  */
-class MailGun extends \Stampie\Mailer
+class MailGun extends Mailer
 {
     /**
      * {@inheritdoc}
@@ -66,6 +68,10 @@ class MailGun extends \Stampie\Mailer
             'cc'      => $this->buildIdentityString($message->getCc()),
             'bcc'     => $this->buildIdentityString($message->getBcc()),
         );
+
+        if ($message instanceof TaggableInterface) {
+            $parameters['o:tag'] = (array) $message->getTag();
+        }
 
         return http_build_query(array_filter(array_merge($headers, $parameters)));
     }

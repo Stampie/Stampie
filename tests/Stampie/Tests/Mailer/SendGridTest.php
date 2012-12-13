@@ -59,19 +59,41 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
             )
         );
 
-        $message
-            ->expects($this->any())
-            ->method('getHeaders')
-            ->will($this->returnValue(array(
+        $headers = json_encode($headers);
+
+        $query = compact(
+            'api_user', 'api_key', 'to', 'from', 'subject', 'html', 'headers'
+        );
+
+
+        $this->assertEquals(http_build_query(
+            $query
+        ), $this->mailer->format($message));
+    }
+
+    public function testFormatTaggable()
+    {
+        $api_user = 'rudolph';
+        $api_key = 'rednose';
+
+        $message =  $this->getTaggableMessageMock(
+            $from = 'henrik@bjrnskov.dk',
+            $to = 'hb@peytz.dk',
+            $subject = 'Trying out Stampie',
+            $html = 'Stampie is Awesome',
+            $text = '',
+            $headers = array(
                 'X-Custom-Header' => 'My Custom Header Value',
-            )))
-        ;
+            ),
+            $tag = 'tag'
+        );
 
         $headers = json_encode($headers);
 
         $query = compact(
             'api_user', 'api_key', 'to', 'from', 'subject', 'html', 'headers'
         );
+        $query['x-smtpapi']['category'] = array($tag);
 
 
         $this->assertEquals(http_build_query(

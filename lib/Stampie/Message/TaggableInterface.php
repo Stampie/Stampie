@@ -8,7 +8,7 @@ namespace Stampie\Message;
 interface TaggableInterface
 {
     /**
-     * @return string
+     * @return string|array
      */
     public function getTag();
 }

@@ -7,15 +7,18 @@ use Stampie\Adapter\Response;
 use Stampie\Adapter\ResponseInterface;
 use Stampie\MessageInterface;
 
-abstract class TaggableMessage implements \Stampie\MessageInterface, \Stampie\Message\TaggableInterface
-{
-}
-
 /**
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  */
 class PeytzMailTest extends \PHPUnit_Framework_TestCase
 {
+    protected $adapter;
+
+    /**
+     * @var TestPeytzMail
+     */
+    protected $mailer;
+
     public function setUp()
     {
         $this->adapter = $this->getMock('Stampie\Adapter\AdapterInterface');
