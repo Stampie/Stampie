@@ -55,15 +55,15 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
 
     public function testFormatTaggable()
     {
-        $message = $this->getMockForAbstractClass('Stampie\Tests\Mailer\TaggableMessage');
-
-        $message->expects($this->any())->method('getHtml')->will($this->returnValue($html = 'So what do you thing'));
-        $message->expects($this->any())->method('getText')->will($this->returnValue('text'));
-        $message->expects($this->any())->method('getTag')->will($this->returnValue('tag'));
-        $message->expects($this->any())->method('getFrom')->will($this->returnValue($from = 'hb@peytz.dk'));
-        $message->expects($this->any())->method('getTo')->will($this->returnValue($to = 'henrik@bjrnskov.dk'));
-        $message->expects($this->any())->method('getSubject')->will($this->returnValue($subject = 'Stampie is awesome'));
-        $message->expects($this->any())->method('getHeaders')->will($this->returnValue($headers = array('X-Stampie-To' => 'henrik+to@bjrnskov.dk')));
+        $message = $this->getTaggableMessageMock(
+            $from = 'hb@peytz.dk',
+            $to = 'henrik@bjrnskov.dk',
+            $subject = 'Stampie is awesome',
+            $html = 'So what do you thing',
+            $text = 'text',
+            $headers = array('X-Stampie-To' => 'henrik+to@bjrnskov.dk'),
+            $tag = 'tag'
+        );
 
         $this->assertEquals(json_encode(array(
             'key' => self::SERVER_TOKEN,
@@ -72,9 +72,9 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
                 'to' => array(array('email' => $to, 'name' => null)),
                 'subject' => $subject,
                 'headers' => $headers,
-                'text' => 'text',
+                'text' => $text,
                 'html' => $html,
-                'tags' => array('tag')
+                'tags' => array($tag)
             ),
         )), $this->mailer->format($message));
     }

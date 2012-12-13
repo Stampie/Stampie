@@ -37,6 +37,29 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
     protected function getMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = array())
     {
         $message = $this->getMock('Stampie\MessageInterface');
+
+        $this->configureMessageMock($message, $from, $to, $subject, $html, $text, $headers);
+
+        return $message;
+    }
+
+    protected function getTaggableMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = array(), $tags = array())
+    {
+        $message = $this->getMock('Stampie\Tests\Mailer\TaggableMessage');
+
+        $this->configureMessageMock($message, $from, $to, $subject, $html, $text, $headers);
+
+        $message
+            ->expects($this->any())
+            ->method('getTag')
+            ->will($this->returnValue($tags))
+        ;
+
+        return $message;
+    }
+
+    private function configureMessageMock(\PHPUnit_Framework_MockObject_MockObject $message, $from, $to, $subject, $html = null, $text = null, array $headers = array())
+    {
         $message
             ->expects($this->any())
             ->method('getFrom')
@@ -72,7 +95,5 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
             ->method('getHeaders')
             ->will($this->returnValue($headers))
         ;
-
-        return $message;
     }
 }

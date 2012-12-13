@@ -49,7 +49,7 @@ class Mandrill extends Mailer
 
         $tags = array();
         if ($message instanceof TaggableInterface) {
-            $tags = array($message->getTag());
+            $tags = (array) $message->getTag();
         }
 
         $parameters = array(
