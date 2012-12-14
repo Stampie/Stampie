@@ -141,20 +141,53 @@ abstract class Mailer implements MailerInterface
     }
 
     /**
-     * @param IdentityInterface|string $identity
+     * @param IdentityInterface[]|string $identities
+     *
+     * @return IdentityInterface[]
+     */
+    protected function normalizeIdentities($identities)
+    {
+        if (null === $identities) {
+            return array();
+        }
+
+        if (is_string($identities)) {
+            $identities = array($this->normalizeIdentity($identities));
+        }
+
+        return $identities;
+    }
+
+    /**
+     * @param IdentityInterface[]|IdentityInterface|string $identities
      *
      * @return string
      */
-    protected function buildIdentityString($identity)
+    protected function buildIdentityString($identities)
     {
-        if ($identity instanceof IdentityInterface) {
-            if (null === $identity->getName()) {
-                return $identity->getEmail();
-            }
-
-            return sprintf('%s <%s>', $identity->getName(), $identity->getEmail());
+        if (null === $identities) {
+            return '';
         }
 
-        return $identity;
+        if (is_string($identities)) {
+            return $identities;
+        }
+
+        if ($identities instanceof IdentityInterface) {
+            $identities = array($identities);
+        }
+
+        $stringIdentities = array();
+
+        foreach ($identities as $identity) {
+            if (null === $identity->getName()) {
+                $stringIdentities[] = $identity->getEmail();
+                continue;
+            }
+
+            $stringIdentities[] = sprintf('%s <%s>', $identity->getName(), $identity->getEmail());
+        }
+
+        return implode(',', $stringIdentities);
     }
 }

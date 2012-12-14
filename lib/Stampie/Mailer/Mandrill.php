@@ -45,7 +45,11 @@ class Mandrill extends Mailer
         ));
 
         $from = $this->normalizeIdentity($message->getFrom());
-        $to = $this->normalizeIdentity($message->getTo());
+
+        $to = array();
+        foreach ($this->normalizeIdentities($message->getTo()) as $recipient) {
+            $to[] = array('email' => $recipient->getEmail(), 'name' => $recipient->getName());
+        }
 
         $tags = array();
         if ($message instanceof TaggableInterface) {
@@ -57,7 +61,7 @@ class Mandrill extends Mailer
             'message' => array_filter(array(
                 'from_email' => $from->getEmail(),
                 'from_name'  => $from->getName(),
-                'to'         => array(array('email' => $to->getEmail(), 'name' => $to->getName())),
+                'to'         => $to,
                 'subject'    => $message->getSubject(),
                 'headers'    => $headers,
                 'text'       => $message->getText(),
