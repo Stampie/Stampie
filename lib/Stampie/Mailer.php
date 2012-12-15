@@ -4,6 +4,7 @@ namespace Stampie;
 
 use Stampie\Adapter\AdapterInterface;
 use Stampie\Adapter\ResponseInterface;
+use Stampie\Util\IdentityUtils;
 
 /**
  * Minimal implementation of a MailerInterface
@@ -121,6 +122,8 @@ abstract class Mailer implements MailerInterface
      * each Mailer should then throw an HttpException with an optional
      * ApiException to help identify the problem.
      *
+     * @param ResponseInterface $response
+     *
      * @throws \Stampie\Exception\ApiException
      * @throws \Stampie\Exception\HttpException
      */
@@ -133,11 +136,7 @@ abstract class Mailer implements MailerInterface
      */
     protected function normalizeIdentity($identity)
     {
-        if (!$identity instanceof IdentityInterface) {
-            $identity = new Identity($identity);
-        }
-
-        return $identity;
+        return IdentityUtils::normalizeIdentity($identity);
     }
 
     /**
@@ -147,15 +146,7 @@ abstract class Mailer implements MailerInterface
      */
     protected function normalizeIdentities($identities)
     {
-        if (null === $identities) {
-            return array();
-        }
-
-        if (is_string($identities)) {
-            $identities = array($this->normalizeIdentity($identities));
-        }
-
-        return $identities;
+        return IdentityUtils::normalizeIdentities($identities);
     }
 
     /**
@@ -165,29 +156,6 @@ abstract class Mailer implements MailerInterface
      */
     protected function buildIdentityString($identities)
     {
-        if (null === $identities) {
-            return '';
-        }
-
-        if (is_string($identities)) {
-            return $identities;
-        }
-
-        if ($identities instanceof IdentityInterface) {
-            $identities = array($identities);
-        }
-
-        $stringIdentities = array();
-
-        foreach ($identities as $identity) {
-            if (null === $identity->getName()) {
-                $stringIdentities[] = $identity->getEmail();
-                continue;
-            }
-
-            $stringIdentities[] = sprintf('%s <%s>', $identity->getName(), $identity->getEmail());
-        }
-
-        return implode(',', $stringIdentities);
+        return IdentityUtils::buildIdentityString($identities);
     }
 }
