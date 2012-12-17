@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="robots" content="index, follow, all" />
-        <title>Stampie\MailerInterface | Stampie API</title>
+        <title>Stampie\Identity | Stampie API</title>
                     <link rel="stylesheet" type="text/css" href="../stylesheet.css">
                             </head>
         <body id="class">
@@ -18,16 +18,13 @@
 
         <div id="title">Stampie API</div>
 
-            <div class="type">Interface</div>
-    <h1><a href="../Stampie.html">Stampie</a>\MailerInterface</h1>
+            <div class="type">Class</div>
+    <h1><a href="../Stampie.html">Stampie</a>\Identity</h1>
     </div>
         <div class="content">
-                <p>interface    <strong>MailerInterface</strong></p>
+                <p>class    <strong>Identity</strong>        implements
+        <a href="../Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a></p>
 
-            <div class="description">
-            <p>Takes a MailerInterface and sends to to Postmark throgh Buzz</p>
-            <p></p>
-        </div>
     
     
     
@@ -39,17 +36,7 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method_setAdapter">setAdapter</a>(<a href="../Stampie/Adapter/AdapterInterface.html"><abbr title="Stampie\Adapter\AdapterInterface">AdapterInterface</abbr></a> $adapter)
-                    <p></p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
-                    <a href="../Stampie/Adapter/AdapterInterface.html"><abbr title="Stampie\Adapter\AdapterInterface">AdapterInterface</abbr></a>
-                </td>
-                <td class="last">
-                    <a href="#method_getAdapter">getAdapter</a>()
+                    <a href="#method___construct">__construct</a>($email = null)
                     <p></p>
                 </td>
                 <td></td>
@@ -59,7 +46,7 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method_setServerToken">setServerToken</a>(string $token)
+                    <a href="#method_setEmail">setEmail</a>($email)
                     <p></p>
                 </td>
                 <td></td>
@@ -69,17 +56,27 @@
                     string
                 </td>
                 <td class="last">
-                    <a href="#method_getServerToken">getServerToken</a>()
+                    <a href="#method_getEmail">getEmail</a>()
                     <p></p>
                 </td>
                 <td></td>
             </tr>
                     <tr>
                 <td class="type">
-                    Boolean
+                    
                 </td>
                 <td class="last">
-                    <a href="#method_send">send</a>(<a href="../Stampie/MessageInterface.html"><abbr title="Stampie\MessageInterface">MessageInterface</abbr></a> $message)
+                    <a href="#method_setName">setName</a>($name)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    string|null
+                </td>
+                <td class="last">
+                    <a href="#method_getName">getName</a>()
                     <p></p>
                 </td>
                 <td></td>
@@ -89,10 +86,10 @@
 
         <h2>Details</h2>
 
-                        <h3 id="method_setAdapter">
-        <div class="location">at line 17</div>
+                        <h3 id="method___construct">
+        <div class="location">at line 13</div>
         <code>            public            
-    <strong>setAdapter</strong>(<a href="../Stampie/Adapter/AdapterInterface.html"><abbr title="Stampie\Adapter\AdapterInterface">AdapterInterface</abbr></a> $adapter)</code>
+    <strong>__construct</strong>($email = null)</code>
     </h3>
     <div class="details">
         <p></p>
@@ -102,8 +99,8 @@
 
                     <table>
                     <tr>
-                <td><a href="../Stampie/Adapter/AdapterInterface.html"><abbr title="Stampie\Adapter\AdapterInterface">AdapterInterface</abbr></a></td>
-                <td>$adapter</td>
+                <td></td>
+                <td>$email</td>
                 <td></td>
             </tr>
             </table>
@@ -114,34 +111,10 @@
                     </div>
     </div>
 
-                <h3 id="method_getAdapter">
-        <div class="location">at line 22</div>
-        <code>            public            <a href="../Stampie/Adapter/AdapterInterface.html"><abbr title="Stampie\Adapter\AdapterInterface">AdapterInterface</abbr></a>
-    <strong>getAdapter</strong>()</code>
-    </h3>
-    <div class="details">
-        <p></p>
-        <p></p>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table>
-        <tr>
-            <td><a href="../Stampie/Adapter/AdapterInterface.html"><abbr title="Stampie\Adapter\AdapterInterface">AdapterInterface</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-                    </div>
-    </div>
-
-                <h3 id="method_setServerToken">
-        <div class="location">at line 27</div>
+                <h3 id="method_setEmail">
+        <div class="location">at line 18</div>
         <code>            public            
-    <strong>setServerToken</strong>(string $token)</code>
+    <strong>setEmail</strong>($email)</code>
     </h3>
     <div class="details">
         <p></p>
@@ -151,8 +124,8 @@
 
                     <table>
                     <tr>
-                <td>string</td>
-                <td>$token</td>
+                <td></td>
+                <td>$email</td>
                 <td></td>
             </tr>
             </table>
@@ -163,10 +136,10 @@
                     </div>
     </div>
 
-                <h3 id="method_getServerToken">
-        <div class="location">at line 32</div>
+                <h3 id="method_getEmail">
+        <div class="location">at line 25</div>
         <code>            public            string
-    <strong>getServerToken</strong>()</code>
+    <strong>getEmail</strong>()</code>
     </h3>
     <div class="details">
         <p></p>
@@ -187,10 +160,10 @@
                     </div>
     </div>
 
-                <h3 id="method_send">
-        <div class="location">at line 39</div>
-        <code>            public            Boolean
-    <strong>send</strong>(<a href="../Stampie/MessageInterface.html"><abbr title="Stampie\MessageInterface">MessageInterface</abbr></a> $message)</code>
+                <h3 id="method_setName">
+        <div class="location">at line 30</div>
+        <code>            public            
+    <strong>setName</strong>($name)</code>
     </h3>
     <div class="details">
         <p></p>
@@ -200,18 +173,33 @@
 
                     <table>
                     <tr>
-                <td><a href="../Stampie/MessageInterface.html"><abbr title="Stampie\MessageInterface">MessageInterface</abbr></a></td>
-                <td>$message</td>
+                <td></td>
+                <td>$name</td>
                 <td></td>
             </tr>
             </table>
 
             
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getName">
+        <div class="location">at line 37</div>
+        <code>            public            string|null
+    <strong>getName</strong>()</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+            
                             <h4>Return Value</h4>
 
                     <table>
         <tr>
-            <td>Boolean</td>
+            <td>string|null</td>
             <td></td>
         </tr>
     </table>
