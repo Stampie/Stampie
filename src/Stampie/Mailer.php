@@ -4,6 +4,7 @@ namespace Stampie;
 
 use Stampie\Handler\HandlerInterface;
 use Stampie\Message\MessageInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -26,10 +27,10 @@ final class Mailer
      * @param HandlerInterface $handler
      * @param EventDispatcherInterface $dispatcher
      */
-    public function __construct(HandlerInterface $handler, EventDispatcherInterface $dispatcher)
+    public function __construct(HandlerInterface $handler, EventDispatcherInterface $dispatcher = null)
     {
         $this->handler = $handler;
-        $this->dispatcher = $dispatcher;
+        $this->dispatcher = $dispatcher ?: new EventDispatcher();
     }
 
     /**
