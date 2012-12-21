@@ -40,6 +40,6 @@ final class Mailer
     {
         $event = $this->dispatcher->dispatch(Events::PRE_SEND, new MessageEvent($message));
 
-        $this->handler->send($event->getMessage());
+        $this->handler->send($this->adapter, $event->getMessage());
     }
 }
