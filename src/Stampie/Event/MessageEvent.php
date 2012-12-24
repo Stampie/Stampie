@@ -9,7 +9,7 @@
 
 namespace Stampie\Event;
 
-use Stampie\Identity;
+use Stampie\Message\Identity;
 use Stampie\Message\MessageInterface;
 
 /**

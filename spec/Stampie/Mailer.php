@@ -12,7 +12,7 @@ namespace spec\Stampie;
 use Mockery;
 use PHPSpec2\ObjectBehavior;
 use Stampie\Events;
-use Stampie\Identity;
+use Stampie\Message\Identity;
 
 class Mailer extends ObjectBehavior
 {

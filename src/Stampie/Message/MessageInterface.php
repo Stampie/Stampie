@@ -9,8 +9,6 @@
 
 namespace Stampie\Message;
 
-use Stampie\Identity;
-
 /**
  * @package Stampie
  */

@@ -9,30 +9,59 @@
 
 namespace Stampie\Message;
 
-use Stampie\Identity;
-
 /**
  * @package Stampie
  */
 class Message implements MessageInterface
 {
-    public function getHtml()
+    protected $html;
+    protected $text;
+    protected $from;
+    protected $subject;
+
+    /**
+     * @param string   $subject
+     * @param string   $html
+     * @param string   $text
+     * @param Identity $from
+     */
+    public function __construct($subject = null, $html = null, $text = null, Identity $from = null)
     {
-        return '<p>html</p>';
+        $this->subject = $subject;
+        $this->html = $html;
+        $this->text = $text;
+        $this->from = $from;
     }
 
-    public function getText()
-    {
-        return 'text';
-    }
-
-    public function getFrom()
-    {
-        return new Identity('henrik@bjrnskov.dk', 'Henrik Bjørnskov');
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     public function getSubject()
     {
-        return 'Stampie2';
+        return $this->subject;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHtml()
+    {
+        return $this->html;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFrom()
+    {
+        return $this->from;
     }
 }

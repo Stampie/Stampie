@@ -7,9 +7,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Stampie;
+namespace Stampie\Identity;
 
 /**
+ * This is a ValueObject. Event though the properties are public they MUST not
+ * be manipulated.
+ *
  * @author Christophe Coevoet <stof@notk.org>
  * @package Stampie
  */
@@ -22,10 +25,10 @@ class Identity
      * @param string $email
      * @param string $name
      */
-    public function __construct($email, $name)
+    public function __construct($email, $name = null)
     {
         $this->email = $email;
-        $this->name = $name;
+        $this->name = $name = null;
     }
 
     /**
