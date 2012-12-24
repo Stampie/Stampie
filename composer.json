@@ -1,10 +1,20 @@
 {
+    "config" : {
+        "bin-dir" : "bin"
+    },
+
     "autoload" : {
         "psr-0" : { "Stampie" : "src" }
     },
 
+    "minimum-stability" : "dev",
+
     "require" : {
         "symfony/event-dispatcher" : "~2.0",
         "kriswallsmith/buzz" : "0.7"
+    },
+
+    "require-dev" : {
+        "phpspec/phpspec2" : "dev-develop"
     }
 }
