@@ -13,5 +13,5 @@ interface AdapterInterface
      * @param array $headers
      * @return string
      */
-    public function send($endpoint, $content, array $headers = array());
+    public function request($endpoint, $content, array $headers = array());
 }

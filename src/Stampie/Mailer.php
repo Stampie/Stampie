@@ -35,12 +35,13 @@ final class Mailer
     }
 
     /**
+     * @param Indentity $to
      * @param MessageInterface $message
      */
-    public function send(MessageInterface $message)
+    public function send(Identity $to, MessageInterface $message)
     {
-        $event = $this->dispatcher->dispatch(Events::PRE_SEND, new MessageEvent($message));
+        $event = $this->dispatcher->dispatch(Events::PRE_SEND, new MessageEvent($to, $message));
 
-        $this->handler->send($this->adapter, $event->getMessage());
+        $this->handler->send($event->getTo(), $event->getMessage());
     }
 }

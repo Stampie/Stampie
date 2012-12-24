@@ -1,6 +1,52 @@
 {
-    "hash": "c9b04d85e1aee93fe0523531556e6c6d",
+    "hash": "1cdeb78501080ae3a84704760f5b5966",
     "packages": [
+        {
+            "name": "kriswallsmith/buzz",
+            "version": "v0.7",
+            "source": {
+                "type": "git",
+                "url": "http://github.com/kriswallsmith/Buzz.git",
+                "reference": "v0.7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/kriswallsmith/Buzz/zipball/v0.7",
+                "reference": "v0.7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "suggest": {
+                "ext-curl": "*"
+            },
+            "time": "2012-06-25 12:01:38",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-0": {
+                    "Buzz": "lib/"
+                }
+            },
+            "notification-url": "http://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kris Wallsmith",
+                    "email": "kris.wallsmith@gmail.com",
+                    "homepage": "http://kriswallsmith.net/"
+                }
+            ],
+            "description": "Lightweight HTTP client",
+            "homepage": "https://github.com/kriswallsmith/Buzz",
+            "keywords": [
+                "curl",
+                "http client"
+            ]
+        },
         {
             "name": "symfony/event-dispatcher",
             "version": "v2.1.6",
