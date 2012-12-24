@@ -7,7 +7,7 @@ Installation
 Stampie can easily be installed with Composer.
 
 ```
-composer require stampie/stampie
+composer require stampie/stampie [kriswallsmith/buzz]
 ```
 
 A phar file is also provided. The phar file contains a autoloading stub which
@@ -20,6 +20,16 @@ require 'stampie.phar';
 
 // Normal usage of Stampie
 ```
+
+Requirements
+------------
+
+Stampie is dependent on a HTTP library such as Buzz. It is easy to integrate with
+a custom HTTP library if needed.
+
+Adapters:
+
+* Buzz
 
 Documentation
 -------------
