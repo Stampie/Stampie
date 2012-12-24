@@ -8,7 +8,7 @@ use Stampie\Message\MessageInterface;
 /**
  * @author Christophe Coevoet <stof@notk.org>
  */
-class MessageEvent extends \Symfony\Component\EventDispatcher\Event
+class MessageEvent extends Event
 {
     protected $message;
     protected $to;

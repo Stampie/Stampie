@@ -9,12 +9,12 @@ namespace Stampie;
 final class Events
 {
     /**
-     * The PRE_SEND event occurs before sending a message
+     * The SEND event occurs right before sending a message
      *
-     * The event listener method receives a Stampie\Extra\Event\MessageEvent
+     * The event listener method receives a Stampie\Event\MessageEvent
      * instance.
      *
      * @var string
      */
-    const PRE_SEND = 'stampie.pre_send';
+    const SEND = 'stampie.send';
 }

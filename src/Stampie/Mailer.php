@@ -40,8 +40,12 @@ final class Mailer
      */
     public function send(Identity $to, MessageInterface $message)
     {
-        $event = $this->dispatcher->dispatch(Events::PRE_SEND, new MessageEvent($to, $message));
+        $event = $this->dispatcher->dispatch(Events::SEND, new MessageEvent($to, $message));
 
-        $this->handler->send($event->getTo(), $event->getMessage());
+        if (false == $event->isDefaultPrevented()) {
+            $this->handler->send($event->getTo(), $event->getMessage());
+        }
+
+        // $event = $this->dispatcher->dispatch(Events::SEND_FAILED', new MessageEvent($to, $message));
     }
 }
