@@ -12,6 +12,7 @@ namespace Stampie;
 use Stampie\Event\MessageEvent;
 use Stampie\Handler\HandlerInterface;
 use Stampie\Message\MessageInterface;
+use Stampie\Message\Identity;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

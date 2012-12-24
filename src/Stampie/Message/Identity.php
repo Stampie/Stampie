@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Stampie\Identity;
+namespace Stampie\Message;
 
 /**
  * This is a ValueObject. Event though the properties are public they MUST not
