@@ -22,7 +22,7 @@ class MessageEvent extends Event
 
     /**
      * @param Identity $to
-     * @param Message $message
+     * @param Message  $message
      */
     public function __construct(Identity $to, MessageInterface $message)
     {

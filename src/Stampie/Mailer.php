@@ -33,7 +33,7 @@ final class Mailer
     protected $dispatcher;
 
     /**
-     * @param HandlerInterface $handler
+     * @param HandlerInterface         $handler
      * @param EventDispatcherInterface $dispatcher
      */
     public function __construct(HandlerInterface $handler, EventDispatcherInterface $dispatcher = null)
@@ -43,7 +43,7 @@ final class Mailer
     }
 
     /**
-     * @param Indentity $to
+     * @param Indentity        $to
      * @param MessageInterface $message
      */
     public function send(Identity $to, MessageInterface $message)

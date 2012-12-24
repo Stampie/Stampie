@@ -18,7 +18,7 @@ use Stampie\Message\MessageInterface;
 interface HandlerInterface
 {
     /**
-     * @param Identity $to
+     * @param Identity         $to
      * @param MessageInterface $message
      */
     public function send(Identity $to, MessageInterface $message);
