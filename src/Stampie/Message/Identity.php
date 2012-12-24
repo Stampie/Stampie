@@ -10,16 +10,17 @@
 namespace Stampie\Message;
 
 /**
- * This is a ValueObject. Event though the properties are public they MUST not
- * be manipulated.
+ * This is a ValueObject. __get makes it possible to use this kind a like
+ * a ruby object with attr_reader.
  *
  * @author Christophe Coevoet <stof@notk.org>
+ * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  * @package Stampie
  */
 class Identity
 {
-    public $name;
-    public $email;
+    protected $name;
+    protected $email;
 
     /**
      * @param string $email
@@ -37,5 +38,14 @@ class Identity
     public function __toString()
     {
         return sprintf('%s <%s>', $this->name, $this->email);
+    }
+
+    /**
+     * @param string $property
+     * @return mixed
+     */
+    public function __get($property)
+    {
+        return $this->$property;
     }
 }
