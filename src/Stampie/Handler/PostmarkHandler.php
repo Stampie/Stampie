@@ -24,7 +24,7 @@ class PostmarkHandler extends Handler
             'To'       => $to->email,
             'Subject'  => $message->getSubject(),
             'HtmlBody' => $message->getHtml(),
-            'TextBody' => $message()->getText(),
+            'TextBody' => $message->getText(),
         );
 
         $response = $this->adapter->request($this->endpoint, json_encode($parameters), array(
