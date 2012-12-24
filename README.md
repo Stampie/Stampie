@@ -5,14 +5,19 @@ Pure Stampie:
 
 ``` php
 <?php
+use Buzz\Browser;
+use Buzz\Client\Curl;
+use Stampie\Adapter\BuzzAdapter;
+use Stampie\Handler\PostmarkHandler;
+use Stampie\Identity;
+use Stampie\Mailer;
+use Stampie\Message\Message;
 
-$adapter = new Stampie\Adapter\BuzzAdapter($buzz);
-$handler = new Stampie\Handler\MandrilHandler(API_KEY);
-$mailer  = new Stampie\Mailer($handler, $adapter);
+$adapter = new BuzzAdapter(new Browser(new Curl));
+$handler = new PostmarkHandler($adapter, 'my-api-key-here');
 
-$message = new Stampie\Message\Message();
-
-$mailer->send('hb@peytz.dk', $message);
+$mailer = new Mailer($handler);
+$mailer->send(new Identity('henrik@bjrnskov.dk', 'Henrik Bjornskov'), new Message());
 ```
 
 Silex:
