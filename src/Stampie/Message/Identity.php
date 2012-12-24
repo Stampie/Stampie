@@ -48,4 +48,13 @@ class Identity
     {
         return $this->$property;
     }
+
+    /**
+     * @param string $property
+     * @return boolean
+     */
+    public function __isset($property)
+    {
+        return isset($this->$property);
+    }
 }
