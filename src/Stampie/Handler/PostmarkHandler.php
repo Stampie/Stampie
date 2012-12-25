@@ -27,8 +27,8 @@ class PostmarkHandler extends Handler
         $from = $message->getFrom();
 
         $parameters = array(
-            'From'     => $from->email,
-            'To'       => $to->email,
+            'From'     => (string) $from,
+            'To'       => (string) $to,
             'Subject'  => $message->getSubject(),
             'HtmlBody' => $message->getHtml(),
             'TextBody' => $message->getText(),
