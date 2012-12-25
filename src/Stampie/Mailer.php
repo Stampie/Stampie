@@ -13,7 +13,6 @@ use Stampie\Event\MessageEvent;
 use Stampie\Handler\HandlerInterface;
 use Stampie\Message\MessageInterface;
 use Stampie\Message\Identity;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -39,7 +38,7 @@ final class Mailer implements MailerInterface
     public function __construct(HandlerInterface $handler, EventDispatcherInterface $dispatcher = null)
     {
         $this->handler = $handler;
-        $this->dispatcher = $dispatcher ?: new EventDispatcher();
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -47,9 +46,13 @@ final class Mailer implements MailerInterface
      */
     public function send(Identity $to, MessageInterface $message)
     {
-        $event = $this->dispatcher->dispatch(Events::SEND, new MessageEvent($to, $message));
+        $event = new MessageEvent($to, $message);
 
-        if (false == $event->isDefaultPrevented()) {
+        if ($this->dispatcher) {
+            $event = $this->dispatcher->dispatch(Events::SEND, new MessageEvent($to, $message));
+        }
+
+        if (!$event->isDefaultPrevented()) {
             $this->handler->send($event->getTo(), $event->getMessage());
         }
 
