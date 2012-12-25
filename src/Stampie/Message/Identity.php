@@ -45,7 +45,7 @@ class Identity
     }
 
     /**
-     * @param string $property
+     * @param  string $property
      * @return mixed
      */
     public function __get($property)
@@ -54,7 +54,7 @@ class Identity
     }
 
     /**
-     * @param string $property
+     * @param  string  $property
      * @return boolean
      */
     public function __isset($property)
