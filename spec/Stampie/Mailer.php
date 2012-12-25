@@ -26,6 +26,11 @@ class Mailer extends ObjectBehavior
         $this->beConstructedWith($adapter, $dispatcher);
     }
 
+    function it_implementes_mailer_interface()
+    {
+        $this->shouldBeAnInstanceOf('Stampie\MailerInterface');
+    }
+
     /**
      * @param Stampie\Event\MessageEvent $event
      */

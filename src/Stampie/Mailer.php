@@ -27,7 +27,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @author Christophe Coevoet <stof@notk.org>
  * @package Stampie
  */
-final class Mailer
+final class Mailer implements MailerInterface
 {
     protected $handler;
     protected $dispatcher;
@@ -43,8 +43,7 @@ final class Mailer
     }
 
     /**
-     * @param Indentity        $to
-     * @param MessageInterface $message
+     * {@inheritDoc}
      */
     public function send(Identity $to, MessageInterface $message)
     {
