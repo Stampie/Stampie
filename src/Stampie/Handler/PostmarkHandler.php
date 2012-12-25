@@ -32,6 +32,7 @@ class PostmarkHandler extends Handler
             'Subject'  => $message->getSubject(),
             'HtmlBody' => $message->getHtml(),
             'TextBody' => $message->getText(),
+            'Headers'  => $message->getHeaders(),
         );
 
         $response = $this->adapter->request($this->endpoint, json_encode($parameters), array(
