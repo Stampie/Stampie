@@ -24,11 +24,9 @@ class PostmarkHandler extends Handler
      */
     public function send(Identity $to, MessageInterface $message)
     {
-        $from = $message->getFrom();
-
         $parameters = array(
-            'From'     => (string) $from,
             'To'       => (string) $to,
+            'From'     => (string) $message->getFrom(),
             'Subject'  => $message->getSubject(),
             'HtmlBody' => $message->getHtml(),
             'TextBody' => $message->getText(),
@@ -36,8 +34,8 @@ class PostmarkHandler extends Handler
         );
 
         $response = $this->adapter->request($this->endpoint, json_encode($parameters), array(
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
+            'Accept'                  => 'application/json',
+            'Content-Type'            => 'application/json',
             'X-Postmark-Server-Token' => $this->key,
         ));
     }

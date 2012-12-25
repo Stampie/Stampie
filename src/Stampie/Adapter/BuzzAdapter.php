@@ -35,7 +35,7 @@ class BuzzAdapter implements AdapterInterface
             $value = sprintf('%s: %s', $key, $value);
         });
 
-        $request = $this->browser->post($endpoint, array_values($headers), $content);
+        $response = $this->browser->post($endpoint, array_values($headers), $content);
 
         var_dump((string) $request);
     }
