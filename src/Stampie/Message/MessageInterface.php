@@ -33,4 +33,9 @@ interface MessageInterface
      * @return string
      */
     public function getText();
+
+    /**
+     * @return array
+     */
+    public function getHeaders();
 }

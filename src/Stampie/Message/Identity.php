@@ -29,7 +29,7 @@ class Identity
     public function __construct($email, $name = null)
     {
         $this->email = $email;
-        $this->name = $name = null;
+        $this->name = $name;
     }
 
     /**
@@ -37,7 +37,11 @@ class Identity
      */
     public function __toString()
     {
-        return sprintf('%s <%s>', $this->name, $this->email);
+        if ($this->name) {
+            return sprintf('%s <%s>', $this->name, $this->email);
+        }
+
+        return $this->email;
     }
 
     /**

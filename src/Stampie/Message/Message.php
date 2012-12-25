@@ -14,23 +14,25 @@ namespace Stampie\Message;
  */
 class Message implements MessageInterface
 {
+    protected $from;
     protected $html;
     protected $text;
-    protected $from;
     protected $subject;
+    protected $headers;
 
     /**
+     * @param Identity $from
      * @param string   $subject
      * @param string   $html
      * @param string   $text
-     * @param Identity $from
      */
-    public function __construct($subject = null, $html = null, $text = null, Identity $from = null)
+    public function __construct(Identity $from, $subject = null, $html = null, $text = null, array $headers = array())
     {
+        $this->from = $from;
         $this->subject = $subject;
         $this->html = $html;
         $this->text = $text;
-        $this->from = $from;
+        $this->headers = $headers;
     }
 
     /**
@@ -63,5 +65,13 @@ class Message implements MessageInterface
     public function getFrom()
     {
         return $this->from;
+    }
+
+    /**
+     * {@inhertiDoc}
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
     }
 }
