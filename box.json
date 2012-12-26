@@ -1,0 +1,8 @@
+{
+    "alias" : "stampie.phar",
+    "output" : "build/stampie.phar",
+    "stub" : "build/stub.php",
+    "directories" : [
+        "src/"
+    ]
+}
