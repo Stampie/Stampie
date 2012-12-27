@@ -31,7 +31,7 @@ require 'stampie.phar';
 Requirements
 ------------
 
-* [EventDispatcher](http://symfony.com/http://symfony.com/doc/current/components/event_dispatcher/)
+* [EventDispatcher](http://symfony.com/doc/current/components/event_dispatcher/)
 
 Stampie is dependent on a HTTP library such as Buzz. It is easy to integrate with
 a custom HTTP library if needed.
