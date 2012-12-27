@@ -1,6 +1,13 @@
 Stampie
 =======
 
+Stampie is a Mailer library that makes it easy to use cloud providers such as:
+
+* Mandrill
+* Postmark
+* MailGun
+* SendGrid
+
 Installation
 ------------
 
