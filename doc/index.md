@@ -24,8 +24,6 @@ is enabled when requiring the phar file.
 <?php
 
 require 'stampie.phar';
-
-// Normal usage of Stampie
 ```
 
 Requirements
@@ -43,7 +41,18 @@ Adapters:
 Documentation
 -------------
 
-Not written yet.
+* Usage
+    * Sending a message
+        * Postmark
+        * Mandrill
+        * MailGun
+        * SendGrid
+    * Spool messages
+    * Enable logging
+    * Hijack emails for development
+* Extending
+    * Add a Handler
+    * Add a Adapter
 
 License
 -------
