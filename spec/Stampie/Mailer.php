@@ -18,7 +18,7 @@ class Mailer extends ObjectBehavior
 {
     /**
      * @param Stampie\Handler\HandlerInterface $adapter
-     * @param Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     * @param Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
      * @param Stampie\Message\MessageInterface $message
      */
     function let($adapter, $dispatcher)

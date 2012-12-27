@@ -35,7 +35,7 @@ final class Mailer implements MailerInterface
      * @param HandlerInterface         $handler
      * @param EventDispatcherInterface $dispatcher
      */
-    public function __construct(HandlerInterface $handler, EventDispatcherInterface $dispatcher = null)
+    public function __construct(HandlerInterface $handler, EventDispatcherInterface $dispatcher)
     {
         $this->handler = $handler;
         $this->dispatcher = $dispatcher;
@@ -46,11 +46,7 @@ final class Mailer implements MailerInterface
      */
     public function send(Identity $to, MessageInterface $message)
     {
-        $event = new MessageEvent($to, $message);
-
-        if ($this->dispatcher) {
-            $event = $this->dispatcher->dispatch(Events::SEND, new MessageEvent($to, $message));
-        }
+        $event = $this->dispatcher->dispatch(Events::SEND, new MessageEvent($to, $message));
 
         if (!$event->isDefaultPrevented()) {
             $this->handler->send($event->getTo(), $event->getMessage());

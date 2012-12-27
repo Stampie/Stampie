@@ -10,11 +10,11 @@
     "minimum-stability" : "dev",
 
     "require" : {
-        "kriswallsmith/buzz" : "0.7"
+        "kriswallsmith/buzz" : "0.7",
+        "symfony/event-dispatcher" : "~2.0"
     },
 
     "require-dev" : {
         "phpspec/phpspec2" : "dev-develop",
-        "symfony/event-dispatcher" : "~2.0"
     }
 }
