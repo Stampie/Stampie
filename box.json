@@ -2,6 +2,9 @@
     "alias" : "stampie.phar",
     "output" : "build/stampie.phar",
     "stub" : "build/stub.php",
+    "files-bin" : [
+        "LICENSE"
+    ],
     "directories" : [
         "src/"
     ]
