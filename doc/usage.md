@@ -58,7 +58,7 @@ use Stampie\Handler\PostmarkHandler;
 // .. create a Buzz Browser and a EventDispatcher instance.
 
 $adapter = new BuzzAdapter($buzz);
-$handler = new PostmarkHandler($adapter);
+$handler = new PostmarkHandler($adapter, 'api-key');
 $mailer = new Mailer($handler, $dispatcher);
 
 // create the Message as described earlier.
@@ -66,6 +66,8 @@ $mailer = new Mailer($handler, $dispatcher);
 $to = new Identity('henrik@bjrnskov.dk');
 $mailer->send($to, $message);
 ```
+
+The different handlers are described later in the documentation.
 
 ### When it goes wrong
 
