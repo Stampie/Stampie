@@ -41,12 +41,12 @@ Adapters:
 Documentation
 -------------
 
-* [Usage](stampie2/blob/master/doc/usage.md)
-    * Sending a message
-        * Postmark
-        * Mandrill
-        * MailGun
-        * SendGrid
+* [Usage](usage.md)
+    * [Sending a message](usage.md#sending-a-message)
+        * [The actual sending](usage.md#the-actual-sending)
+        * [When it goes wrong](usage.md#when-it-goes-wrong)
+    * [Providers](usage.md#providers)
+        * [Postmark](usage.md#postmark)
     * Spool messages
     * Enable logging
     * Hijack emails for development

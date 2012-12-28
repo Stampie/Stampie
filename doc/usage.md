@@ -72,3 +72,10 @@ The different handlers are described later in the documentation.
 ### When it goes wrong
 
 Something about the exceptions that is thrown after the sending of the message.
+
+Providers
+---------
+
+### Postmark
+
+
