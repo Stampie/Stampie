@@ -10,6 +10,7 @@
 namespace Stampie\Handler;
 
 use Stampie\Adapter\Request;
+use Stampie\Exception\UnauthorizedException;
 use Stampie\Message\Identity;
 use Stampie\Message\MessageInterface;
 
@@ -41,6 +42,10 @@ class PostmarkHandler extends Handler
         $this->prepare($request);
 
         $response = $this->adapter->call($request);
+
+        if ($response->isUnauthorized()) {
+            throw new UnauthorizedException();
+        }
     }
 
     /**
