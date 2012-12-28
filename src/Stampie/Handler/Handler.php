@@ -10,6 +10,7 @@
 namespace Stampie\Handler;
 
 use Stampie\Adapter\AdapterInterface;
+use Stampie\Adapter\Request;
 
 /**
  * @package Stampie

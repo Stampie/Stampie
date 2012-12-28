@@ -15,10 +15,8 @@ namespace Stampie\Adapter;
 interface AdapterInterface
 {
     /**
-     * @param  string $endpoint
-     * @param  string $content
-     * @param  array  $headers
+     * @param  Request $request
      * @return string
      */
-    public function request($endpoint, $content, array $headers = array());
+    public function call(Request $request);
 }

@@ -26,7 +26,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @author Christophe Coevoet <stof@notk.org>
  * @package Stampie
  */
-final class Mailer implements MailerInterface
+class Mailer implements MailerInterface
 {
     protected $handler;
     protected $dispatcher;

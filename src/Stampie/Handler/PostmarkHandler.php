@@ -9,6 +9,7 @@
 
 namespace Stampie\Handler;
 
+use Stampie\Adapter\Request;
 use Stampie\Message\Identity;
 use Stampie\Message\MessageInterface;
 
@@ -33,7 +34,17 @@ class PostmarkHandler extends Handler
             'Headers'  => $message->getHeaders(),
         );
 
-        $response = $this->adapter->request($this->endpoint, json_encode($parameters), array(
+        $request = new Request($this->endpoint, 'POST');
+        $request->setBody(json_encode($parameters));
+
+        $this->prepare($request);
+
+        $response = $this->adapter->call($request);
+    }
+
+    public function prepare(Request $request)
+    {
+        $request->setHeaders(array(
             'Accept'                  => 'application/json',
             'Content-Type'            => 'application/json',
             'X-Postmark-Server-Token' => $this->key,
