@@ -79,10 +79,23 @@ class Request
     }
 
     /**
+     * Returns the raw http request that was send.
+     *
      * @return string
      */
     public function __toString()
     {
+        $parts = parse_url($this->url);
 
+        $lines  = array(
+            strtoupper($this->method) . ' ' . $parts['path'] . ' HTTP/1.0',
+            'Host: ' . $parts['host'],
+        );
+
+        foreach ($this->headers as $key => $value) {
+            $lines[] = sprintf('%s: %s', $key, $value);
+        }
+
+        return implode("\n", $lines) . "\n\n" . $this->body;
     }
 }
