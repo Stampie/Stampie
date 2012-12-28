@@ -9,7 +9,7 @@ class Request
 {
     protected $url;
     protected $method;
-    protected $body;
+    protected $content;
     protected $headers = array();
 
     /**
@@ -23,19 +23,19 @@ class Request
     }
 
     /**
-     * @param string $body
+     * @param string $content
      */
-    public function setBody($body)
+    public function setContent($content)
     {
-        $this->body = $body;
+        $this->content = $content;
     }
 
     /**
      * @return string
      */
-    public function getBody()
+    public function getContent()
     {
-        return $this->body;
+        return $this->content;
     }
 
     /**
@@ -96,6 +96,6 @@ class Request
             $lines[] = sprintf('%s: %s', $key, $value);
         }
 
-        return implode("\n", $lines) . "\n\n" . $this->body;
+        return implode("\n", $lines) . "\n\n" . $this->content;
     }
 }

@@ -36,7 +36,7 @@ class PostmarkHandler extends Handler
         );
 
         $request = new Request($this->endpoint, 'POST');
-        $request->setBody(json_encode($parameters));
+        $request->setContent(json_encode($parameters));
 
         $this->prepare($request);
 
