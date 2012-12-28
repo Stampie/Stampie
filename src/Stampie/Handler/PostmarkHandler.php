@@ -41,8 +41,6 @@ class PostmarkHandler extends Handler
         $this->prepare($request);
 
         $response = $this->adapter->call($request);
-
-        // What are we going to do here.
     }
 
     /**
