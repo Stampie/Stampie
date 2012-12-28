@@ -29,4 +29,11 @@ abstract class Handler implements HandlerInterface
         $this->adapter = $adapter;
         $this->key = $key;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function prepare(Request $request)
+    {
+    }
 }
