@@ -41,7 +41,7 @@ Adapters:
 Documentation
 -------------
 
-* Usage
+* [Usage](stampie2/blob/master/doc/usage.md)
     * Sending a message
         * Postmark
         * Mandrill
