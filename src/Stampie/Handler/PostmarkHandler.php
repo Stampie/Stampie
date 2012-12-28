@@ -48,7 +48,7 @@ class PostmarkHandler extends Handler
     /**
      * {@inheritDoc}
      */
-    public function prepare(Request $request)
+    protected function prepare(Request $request)
     {
         $request->setHeaders(array(
             'Accept'                  => 'application/json',

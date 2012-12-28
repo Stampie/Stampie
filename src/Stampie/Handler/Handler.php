@@ -10,7 +10,6 @@
 namespace Stampie\Handler;
 
 use Stampie\Adapter\AdapterInterface;
-use Stampie\Adapter\Request;
 
 /**
  * @package Stampie
@@ -28,12 +27,5 @@ abstract class Handler implements HandlerInterface
     {
         $this->adapter = $adapter;
         $this->key = $key;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function prepare(Request $request)
-    {
     }
 }

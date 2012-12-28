@@ -9,7 +9,6 @@
 
 namespace Stampie\Handler;
 
-use Stampie\Adapter\Request;
 use Stampie\Message\Identity;
 use Stampie\Message\MessageInterface;
 
@@ -23,9 +22,4 @@ interface HandlerInterface
      * @param MessageInterface $message
      */
     public function send(Identity $to, MessageInterface $message);
-
-    /**
-     * @param Request $request
-     */
-    public function prepare(Request $request);
 }
