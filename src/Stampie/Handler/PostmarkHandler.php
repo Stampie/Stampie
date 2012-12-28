@@ -25,6 +25,7 @@ class PostmarkHandler extends Handler
      */
     public function send(Identity $to, MessageInterface $message)
     {
+        // Should this be moved into a format message?
         $parameters = array(
             'To'       => (string) $to,
             'From'     => (string) $message->getFrom(),
@@ -40,8 +41,13 @@ class PostmarkHandler extends Handler
         $this->prepare($request);
 
         $response = $this->adapter->call($request);
+
+        // What are we going to do here.
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function prepare(Request $request)
     {
         $request->setHeaders(array(
