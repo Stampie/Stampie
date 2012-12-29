@@ -1,4 +1,8 @@
 {
+    "name" : "stampie/stampie",
+    "description" : "Mailer library that makes it easy to use cloud providers",
+    "license" : "MIT",
+
     "config" : {
         "bin-dir" : "bin"
     },
@@ -15,6 +19,6 @@
     },
 
     "require-dev" : {
-        "phpspec/phpspec2" : "dev-develop",
+        "phpspec/phpspec2" : "dev-develop"
     }
 }
