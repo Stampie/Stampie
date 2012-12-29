@@ -1,3 +1,4 @@
-build    export-ignore
-spec     export-ignore
-box.json export-ignore
+build       export-ignore
+spec        export-ignore
+box.json    export-ignore
+.travis.yml export-ignore
