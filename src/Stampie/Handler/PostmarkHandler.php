@@ -41,7 +41,7 @@ class PostmarkHandler extends Handler
 
         $this->prepare($request);
 
-        $response = $this->adapter->call($request);
+        $response = $this->adapter->request($request);
 
         if ($response->isUnauthorized()) {
             throw new UnauthorizedException();

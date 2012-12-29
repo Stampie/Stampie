@@ -18,5 +18,5 @@ interface AdapterInterface
      * @param  Request $request
      * @return string
      */
-    public function call(Request $request);
+    public function request(Request $request);
 }

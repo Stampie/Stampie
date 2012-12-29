@@ -19,9 +19,14 @@ class PostmarkHandler extends ObjectBehavior
         $this->beConstructedWith($adapter, 'my-personal-key');
     }
 
-    function it_calls_the_adapter_with_a_request($adapter, $message)
+    /**
+     * @param Stampie\Adapter\Response $response
+     */
+    function it_calls_the_adapter_with_a_request($response, $adapter, $message)
     {
-        $adapter->call(\Mockery::type('Stampie\Adapter\Request'))->shouldBeCalled();
+        $response->isUnauthorized()->willReturn(false);
+
+        $adapter->request(\Mockery::type('Stampie\Adapter\Request'))->shouldBeCalled()->willReturn($response);
 
         $this->send(new Identity('henrik@bjrnskov.dk'), $message);
     }
