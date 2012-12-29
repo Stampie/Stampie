@@ -30,4 +30,16 @@ class PostmarkHandler extends ObjectBehavior
 
         $this->send(new Identity('henrik@bjrnskov.dk'), $message);
     }
+
+    /**
+     * @param Stampie\Adapter\Response $response
+     */
+    function it_throws_an_exception_when_response_is_unauthorized($response, $adapter, $message)
+    {
+        $adapter->request(ANY_ARGUMENTS)->willReturn($response);
+
+        $response->isUnauthorized()->willReturn(true);
+
+        $this->shouldThrow('Stampie\Exception\UnauthorizedException')->duringSend(new Identity('henrik@bjrnskov.dk'), $message);
+    }
 }
