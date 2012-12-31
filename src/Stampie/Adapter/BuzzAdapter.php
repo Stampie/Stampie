@@ -31,7 +31,13 @@ class BuzzAdapter implements AdapterInterface
      */
     public function request(Request $request)
     {
-        $response = $this->browser->post($request->getUrl(), $request->getHeaders(), $request->getContent());
+        $headers = $request->getHeaders();
+
+        array_walk($headers, function (&$value, $key) {
+            $value = sprintf('%s: %s', $key, $value);
+        });
+
+        $response = $this->browser->post($request->getUrl(), array_values($headers), $request->getContent());
 
         return new Response($response->getStatusCode(), $response->getContent(), $response->getHeaders());
     }
