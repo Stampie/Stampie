@@ -43,6 +43,23 @@ class MessageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(null, $message->getBcc());
     }
 
+    public function testSerialization()
+    {
+        $message = $this->getMessageMock(array('email@example.org'));
+        $message->setHtml('<html></html>');
+        $message->setText('text');
+
+        $serializedMessage = serialize($message);
+
+        $this->assertInternalType('string', $serializedMessage);
+
+        $unserializedMessage = unserialize($serializedMessage);
+
+        $this->assertEquals($message->getTo(), $unserializedMessage->getTo());
+        $this->assertEquals($message->getHtml(), $unserializedMessage->getHtml());
+        $this->assertEquals($message->getText(), $unserializedMessage->getText());
+    }
+
     protected function getMessageMock(array $arguments = array())
     {
         return $this->getMockForAbstractClass('Stampie\Message', $arguments);

@@ -8,7 +8,7 @@ namespace Stampie;
  *
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  */
-abstract class Message implements MessageInterface
+abstract class Message implements MessageInterface, \Serializable
 {
     /**
      * @var string
@@ -113,5 +113,23 @@ abstract class Message implements MessageInterface
     public function getBcc()
     {
         return null;
+    }
+
+    public function serialize()
+    {
+        return serialize(array(
+            $this->to,
+            $this->html,
+            $this->text,
+        ));
+    }
+
+    public function unserialize($serialized)
+    {
+        list(
+            $this->to,
+            $this->html,
+            $this->text
+        ) = unserialize($serialized);
     }
 }
