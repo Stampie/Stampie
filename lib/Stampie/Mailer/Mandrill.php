@@ -3,6 +3,7 @@
 namespace Stampie\Mailer;
 
 use Stampie\Mailer;
+use Stampie\Message\MetadataAwareInterface;
 use Stampie\MessageInterface;
 use Stampie\Message\TaggableInterface;
 use Stampie\Adapter\ResponseInterface;
@@ -56,6 +57,11 @@ class Mandrill extends Mailer
             $tags = (array) $message->getTag();
         }
 
+        $metadata = array();
+        if ($message instanceof MetadataAwareInterface) {
+            $metadata = array_filter($message->getMetadata());
+        }
+
         $parameters = array(
             'key'     => $this->getServerToken(),
             'message' => array_filter(array(
@@ -67,6 +73,7 @@ class Mandrill extends Mailer
                 'text'       => $message->getText(),
                 'html'       => $message->getHtml(),
                 'tags'       => $tags,
+                'metadata'   => $metadata,
             )),
         );
 

@@ -103,6 +103,37 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
         ), $this->mailer->format($message));
     }
 
+    public function testFormatMetadataAware()
+    {
+        $api_user = 'rudolph';
+        $api_key = 'rednose';
+
+        $message =  $this->getMetadataAwareMessageMock(
+            $from = 'henrik@bjrnskov.dk',
+            $to = 'hb@peytz.dk',
+            $subject = 'Trying out Stampie',
+            $html = 'Stampie is Awesome',
+            $text = '',
+            $headers = array(
+                'X-Custom-Header' => 'My Custom Header Value',
+            ),
+            $metadata = array('client_name' => 'Stampie')
+        );
+
+        $headers = json_encode($headers);
+        $to = array($to);
+
+        $query = compact(
+            'api_user', 'api_key', 'to', 'from', 'subject', 'html', 'headers'
+        );
+        $query['x-smtpapi'] = json_encode(array('unique_args' => $metadata));
+
+
+        $this->assertEquals(http_build_query(
+            $query
+        ), $this->mailer->format($message));
+    }
+
     public function handleDataProvider()
     {
         return array(

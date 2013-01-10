@@ -3,6 +3,7 @@
 namespace Stampie\Mailer;
 
 use Stampie\Mailer;
+use Stampie\Message\MetadataAwareInterface;
 use Stampie\MessageInterface;
 use Stampie\Message\TaggableInterface;
 use Stampie\Adapter\ResponseInterface;
@@ -77,6 +78,16 @@ class SendGrid extends Mailer
             $bccEmails[] = $recipient->getEmail();
         }
 
+        $smtpApi = array();
+
+        if ($message instanceof TaggableInterface) {
+            $smtpApi['category'] = (array) $message->getTag();
+        }
+
+        if ($message instanceof MetadataAwareInterface) {
+            $smtpApi['unique_args'] = array_filter($message->getMetadata());
+        }
+
         $parameters = array(
             'api_user' => $username,
             'api_key'  => $password,
@@ -92,8 +103,8 @@ class SendGrid extends Mailer
             'headers'  => json_encode($message->getHeaders()),
         );
 
-        if ($message instanceof TaggableInterface) {
-            $parameters['x-smtpapi'] = json_encode(array('category' => (array) $message->getTag()));
+        if ($smtpApi) {
+            $parameters['x-smtpapi'] = json_encode(array_filter($smtpApi));
         }
 
         return http_build_query(array_filter($parameters));

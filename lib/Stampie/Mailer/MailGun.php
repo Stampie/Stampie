@@ -3,6 +3,7 @@
 namespace Stampie\Mailer;
 
 use Stampie\Mailer;
+use Stampie\Message\MetadataAwareInterface;
 use Stampie\MessageInterface;
 use Stampie\Message\TaggableInterface;
 use Stampie\Adapter\ResponseInterface;
@@ -73,7 +74,16 @@ class MailGun extends Mailer
             $parameters['o:tag'] = (array) $message->getTag();
         }
 
-        return http_build_query(array_filter(array_merge($headers, $parameters)));
+        $metadata = array();
+        if ($message instanceof MetadataAwareInterface) {
+            $metadata = array_filter($message->getMetadata());
+            // Custom variables should be prefixed with v:my_var
+            array_walk($metadata, function (&$value, &$key) {
+                $key = 'v:' . $key;
+            });
+        }
+
+        return http_build_query(array_filter(array_merge($headers, $parameters, $metadata)));
     }
 
     /**
