@@ -55,7 +55,10 @@ class MailGun extends Mailer
     protected function format(MessageInterface $message)
     {
         // Custom headers should be prefixed with h:X-My-Header
-        $headers = $message->getHeaders();
+        $headers = array_merge(
+            $message->getHeaders(),
+            array('Reply-To' => $message->getReplyTo())
+        );
         array_walk($headers, function (&$value, &$key) {
             $key = 'h:' . $key;
         });
