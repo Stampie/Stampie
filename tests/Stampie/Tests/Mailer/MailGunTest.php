@@ -11,6 +11,13 @@ class MailGunTest extends \PHPUnit_Framework_TestCase
 {
     const SERVER_TOKEN = 'henrik.bjrnskov.dk:myCustomKey';
 
+    private $adapter;
+
+    /**
+     * @var TestMailGun
+     */
+    private $mailer;
+
     public function setUp()
     {
         $this->adapter = $this->createMockAdapter();
@@ -18,7 +25,7 @@ class MailGunTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testServerTokenMissingDelimeter()
     {

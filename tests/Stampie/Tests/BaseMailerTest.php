@@ -58,6 +58,21 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
         return $message;
     }
 
+    protected function getMetadataAwareMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = array(), array $metadata = array())
+    {
+        $message = $this->getMock('Stampie\Tests\Mailer\MetadataAwareMessage');
+
+        $this->configureMessageMock($message, $from, $to, $subject, $html, $text, $headers);
+
+        $message
+            ->expects($this->any())
+            ->method('getMetadata')
+            ->will($this->returnValue($metadata))
+        ;
+
+        return $message;
+    }
+
     private function configureMessageMock(\PHPUnit_Framework_MockObject_MockObject $message, $from, $to, $subject, $html = null, $text = null, array $headers = array())
     {
         $message
