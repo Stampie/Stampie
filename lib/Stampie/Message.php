@@ -96,7 +96,13 @@ abstract class Message implements MessageInterface
      */
     public function getReplyTo()
     {
-        return $this->getFrom();
+        $from = $this->getFrom();
+
+        if ($from instanceof IdentityInterface) {
+            $from = $from->getEmail();
+        }
+
+        return $from;
     }
 
     /**
