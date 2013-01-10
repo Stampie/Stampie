@@ -59,6 +59,7 @@ class MailChimpSts extends Mailer
                 'to_name'    => $toNames,
                 'from_email' => $from->getEmail(),
                 'from_name'  => $from->getName(),
+                'reply_to'   => $message->getReplyTo(),
             )),
             'tags' => $tags,
         );
