@@ -10,8 +10,7 @@ It is very easy to use and to integrate into your application as demonstrated be
 
 * [Postmark](http://postmarkapp.com)
 * [SendGrid](http://sendgrid.com)
-* [MailChimp](http://mailchimp.com) Their STS Api
-* [MailGun](http://mailgun.org)
+* [MailGun](http://www.mailgun.com)
 * [Mandrill](http://mandrill.com/)
 
 ``` php

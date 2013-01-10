@@ -27,5 +27,10 @@
         "stof/stampie-extra" : "Extensions for Stampie",
         "kriswallsmith/buzz" : "Lightweight HTTP Client",
         "guzzle/guzzle"      : "HTTP Client and Framework for building RESTful webservice clients"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.7.x-dev"
+        }
     }
 }
