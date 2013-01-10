@@ -57,13 +57,19 @@ class Postmark extends Mailer
      */
     protected function format(MessageInterface $message)
     {
+        $headers = array();
+        foreach ($message->getHeaders() as $name => $value) {
+            $headers[] = array('Name' => $name, 'Value' => $value);
+        }
+
         $parameters = array(
             'From'     => $this->buildIdentityString($message->getFrom()),
             'To'       => $this->buildIdentityString($message->getTo()),
             'Subject'  => $message->getSubject(),
-            'Headers'  => $message->getHeaders(),
+            'Headers'  => $headers,
             'TextBody' => $message->getText(),
             'HtmlBody' => $message->getHtml(),
+            'ReplyTo'  => $message->getReplyTo(),
         );
 
         if ($message instanceof TaggableInterface) {
