@@ -4,10 +4,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Stampie by henrikbjorn</title>
-    
+
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -18,16 +17,18 @@
       <header>
         <h1>Stampie</h1>
         <p>Library for using online Email providers</p>
+
         <p class="view"><a href="https://github.com/henrikbjorn/Stampie">View the Project on GitHub <small>henrikbjorn/Stampie</small></a></p>
+
+
         <ul>
           <li><a href="https://github.com/henrikbjorn/Stampie/zipball/master">Download <strong>ZIP File</strong></a></li>
           <li><a href="https://github.com/henrikbjorn/Stampie/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/henrikbjorn/Stampie">Fork On <strong>GitHub</strong></a></li>
+          <li><a href="https://github.com/henrikbjorn/Stampie">View On <strong>GitHub</strong></a></li>
         </ul>
       </header>
       <section>
-
-    <h1>Stampie</h1>
+        <h1>Stampie</h1>
 
 <p><a href="http://travis-ci.org/henrikbjorn/Stampie"><img src="https://secure.travis-ci.org/henrikbjorn/Stampie.png" alt="Build Status"></a></p>
 
@@ -40,12 +41,11 @@
 <ul>
 <li><a href="http://postmarkapp.com">Postmark</a></li>
 <li><a href="http://sendgrid.com">SendGrid</a></li>
-<li>
-<a href="http://mailchimp.com">MailChimp</a> Their STS Api</li>
-</ul><div class="highlight">
-<pre><span class="cp">&lt;?php</span>
+<li><a href="http://www.mailgun.com">MailGun</a></li>
+<li><a href="http://mandrill.com/">Mandrill</a></li>
+</ul><div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 
-<span class="c1">// Stampie.phar does Autoloading through its Stup.php </span>
+<span class="c1">// Stampie.phar does Autoloading through its Stup.php</span>
 <span class="k">require</span> <span class="s1">'/path/to/stampie.phar'</span><span class="p">;</span>
 
 <span class="k">class</span> <span class="nc">Message</span> <span class="k">extends</span> <span class="nx">\Stampie\Message</span>
@@ -61,11 +61,9 @@
 <span class="c1">// Returns Boolean true on success or throws an HttpException for error</span>
 <span class="c1">// messages not recognized by SendGrid api or ApiException for known errors.</span>
 <span class="nv">$mailer</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">(</span><span class="k">new</span> <span class="nx">Message</span><span class="p">(</span><span class="s1">'reciever@domain.tld'</span><span class="p">));</span>
-</pre>
-</div>
+</pre></div>
 
-
-<p>This simple example shows a few different things about how Stampis works under the hood and is developed. Because others are <strong>so much</strong> better than us to do Http communication Stampie uses a <a href="http://en.wikipedia.org/wiki/Adapter_pattern">Adapter Pattern</a> to integrate with known libraries such as <a href="http://github.com/kriswallsmith/Buzz">Buzz</a> and <a href="http://guzzlephp.org">Guzzle</a>.</p>
+<p>This simple example shows a few different things about how Stampie works under the hood and is developed. Because others are <strong>so much</strong> better than us to do Http communication Stampie uses a <a href="http://en.wikipedia.org/wiki/Adapter_pattern">Adapter Pattern</a> to integrate with known libraries such as <a href="http://github.com/kriswallsmith/Buzz">Buzz</a> and <a href="http://guzzlephp.org">Guzzle</a>.</p>
 
 <p>Every mailer takes a <code>$serverToken</code> as the second argument in their constructor. This is what is used for authentication. In the Postmark mailer this is a hash but in SendGrid it is a <code>username:password</code> pattern that is split into two pieces and send as arguments. A Mailer is responsible for formatting the request needed for a given API.</p>
 
@@ -73,10 +71,17 @@
 
 <p>Last their is an Interface for every type of class or abstract implementation that should be used when adding new Mailer's or Adapter's.</p>
 
-<h2>API Documentation</h2>
-<p>The API documentation for all versions can be found at <a href="http://henrikbjorn.github.com/Stampie/api/master">henrikbjorn.github.com/Stampie/api/master</a>.</p>
+<h2>Documentation</h2>
 
-<h2>Framework integration</h2>
+<p>There is generated API documentation for all tags and released versions. Those can be found at <a href="http://henrikbjorn.github.com/Stampie/api/master">henrikbjorn.github.com/Stampie/api/master</a>.</p>
+
+<h2>Extensions</h2>
+
+<ul>
+<li>
+<a href="https://github.com/stof/StampieExtra">StampieExtra</a> provides extensions
+to Stampie using the Symfony2 EventDispatcher component.</li>
+</ul><h2>Framework integration</h2>
 
 <p>Stampie is itself completly decoupled and does not depend on any framework.</p>
 
@@ -97,13 +102,13 @@
 <h2>Feedback</h2>
 
 <p>This is a project created to test TDD along the way and maybe have some scars from that. But you are always welcome to send feedback or Github, Twitter, Github issue or Pull Request. Same goes if something is wrong or you have ideas for a better or smarter implementation.</p>
-
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/henrikbjorn">henrikbjorn</a></p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    <script src="javascripts/scale.fix.js"></script>
+    
   </body>
 </html>
