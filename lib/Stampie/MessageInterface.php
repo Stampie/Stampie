@@ -3,7 +3,7 @@
 namespace Stampie;
 
 /**
- * Represents a simple Message. A Message is a storage og a message that
+ * Represents a simple Message. A Message is a storage of a message that
  * will be converted into an API call
  *
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
