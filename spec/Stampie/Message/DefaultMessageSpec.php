@@ -2,9 +2,7 @@
 
 namespace spec\Stampie\Message;
 
-use PHPSpec2\ObjectBehavior;
-
-class DefaultMessage extends ObjectBehavior
+class DefaultMessageSpec extends \PhpSpec\ObjectBehavior
 {
     /**
      * @param Stampie\Message\Identity $identity

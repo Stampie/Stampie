@@ -11,14 +11,12 @@
         "psr-0" : { "Stampie" : "src" }
     },
 
-    "minimum-stability" : "dev",
-
     "require" : {
         "kriswallsmith/buzz" : "0.7",
         "symfony/event-dispatcher" : "~2.0"
     },
 
     "require-dev" : {
-        "phpspec/phpspec2" : "dev-develop"
+        "phpspec/phpspec" : "2.0.0-BETA4"
     }
 }
