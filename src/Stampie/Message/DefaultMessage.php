@@ -12,7 +12,7 @@ namespace Stampie\Message;
 /**
  * @package Stampie
  */
-class Message implements MessageInterface
+class DefaultMessage implements \Stampie\Message
 {
     protected $from;
     protected $html;

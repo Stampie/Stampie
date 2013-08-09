@@ -14,7 +14,7 @@ use Buzz\Browser;
 /**
  * @package Stampie
  */
-class BuzzAdapter implements AdapterInterface
+class BuzzAdapter implements \Stampie\Adapter
 {
     protected $browser;
 

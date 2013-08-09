@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Stampie\Message;
+namespace Stampie;
 
 /**
  * @package Stampie
  */
-interface MessageInterface
+interface Message
 {
     /**
      * @return Identity

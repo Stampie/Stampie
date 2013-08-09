@@ -8,8 +8,8 @@ use Stampie\Message\Identity;
 class PostmarkHandler extends ObjectBehavior
 {
     /**
-     * @param Stampie\Adapter\AdapterInterface $adapter
-     * @param Stampie\Message\Message $message
+     * @param Stampie\Adapter $adapter
+     * @param Stampie\Message $message
      */
     function let($adapter, $message)
     {

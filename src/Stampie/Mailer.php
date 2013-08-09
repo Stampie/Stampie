@@ -26,16 +26,16 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @author Christophe Coevoet <stof@notk.org>
  * @package Stampie
  */
-class Mailer implements MailerInterface
+class Mailer
 {
     protected $handler;
     protected $dispatcher;
 
     /**
-     * @param HandlerInterface         $handler
+     * @param Handler $handler
      * @param EventDispatcherInterface $dispatcher
      */
-    public function __construct(HandlerInterface $handler, EventDispatcherInterface $dispatcher)
+    public function __construct(Handler $handler, EventDispatcherInterface $dispatcher)
     {
         $this->handler = $handler;
         $this->dispatcher = $dispatcher;
@@ -44,7 +44,7 @@ class Mailer implements MailerInterface
     /**
      * {@inheritDoc}
      */
-    public function send(Identity $to, MessageInterface $message)
+    public function send(Identity $to, Message $message)
     {
         $event = $this->dispatcher->dispatch(Events::SEND, new MessageEvent($to, $message));
 

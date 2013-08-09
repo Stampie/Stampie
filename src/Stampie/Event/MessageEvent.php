@@ -10,7 +10,7 @@
 namespace Stampie\Event;
 
 use Stampie\Message\Identity;
-use Stampie\Message\MessageInterface;
+use Stampie\Message;
 
 /**
  * @author Christophe Coevoet <stof@notk.org>
@@ -24,22 +24,22 @@ class MessageEvent extends Event
      * @param Identity $to
      * @param Message  $message
      */
-    public function __construct(Identity $to, MessageInterface $message)
+    public function __construct(Identity $to, Message $message)
     {
         $this->message = $message;
         $this->to = $to;
     }
 
     /**
-     * @param MessageInterface $message
+     * @param Message $message
      */
-    public function setMessage(MessageInterface $message)
+    public function setMessage(Message $message)
     {
         $this->message = $message;
     }
 
     /**
-     * @return MessageInterface
+     * @return Message
      */
     public function getMessage()
     {

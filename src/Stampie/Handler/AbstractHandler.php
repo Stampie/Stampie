@@ -9,12 +9,12 @@
 
 namespace Stampie\Handler;
 
-use Stampie\Adapter\AdapterInterface;
+use Stampie\Adapter;
 
 /**
  * @package Stampie
  */
-abstract class Handler implements HandlerInterface
+abstract class AbstractHandler implements \Stampie\Handler
 {
     protected $key;
     protected $adapter;
@@ -23,7 +23,7 @@ abstract class Handler implements HandlerInterface
      * @param AdapterInterface $adapter
      * @param string           $key
      */
-    public function __construct(AdapterInterface $adapter, $key)
+    public function __construct(Adapter $adapter, $key)
     {
         $this->adapter = $adapter;
         $this->key = $key;

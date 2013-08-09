@@ -7,12 +7,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Stampie\Adapter;
+namespace Stampie;
+
+use Stampie\Adapter\Request;
 
 /**
  * @package Stampie
  */
-interface AdapterInterface
+interface Adapter
 {
     /**
      * @param  Request $request

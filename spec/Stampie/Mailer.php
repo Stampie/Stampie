@@ -17,18 +17,13 @@ use Stampie\Message\Identity;
 class Mailer extends ObjectBehavior
 {
     /**
-     * @param Stampie\Handler\HandlerInterface $adapter
+     * @param Stampie\Handler $handler
      * @param Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
-     * @param Stampie\Message\MessageInterface $message
+     * @param Stampie\Message $message
      */
-    function let($adapter, $dispatcher)
+    function let($handler, $dispatcher)
     {
-        $this->beConstructedWith($adapter, $dispatcher);
-    }
-
-    function it_implementes_mailer_interface()
-    {
-        $this->shouldBeAnInstanceOf('Stampie\MailerInterface');
+        $this->beConstructedWith($handler, $dispatcher);
     }
 
     /**

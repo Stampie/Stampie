@@ -7,19 +7,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Stampie\Handler;
+namespace Stampie;
 
 use Stampie\Message\Identity;
-use Stampie\Message\MessageInterface;
 
 /**
  * @package Stampie
  */
-interface HandlerInterface
+interface Handler
 {
     /**
      * @param Identity         $to
      * @param MessageInterface $message
      */
-    public function send(Identity $to, MessageInterface $message);
+    public function send(Identity $to, Message $message);
 }

@@ -12,19 +12,19 @@ namespace Stampie\Handler;
 use Stampie\Adapter\Request;
 use Stampie\Exception\UnauthorizedException;
 use Stampie\Message\Identity;
-use Stampie\Message\MessageInterface;
+use Stampie\Message;
 
 /**
  * @package Stampie
  */
-class PostmarkHandler extends Handler
+class PostmarkHandler extends AbstractHandler
 {
     protected $endpoint = 'http://api.postmarkapp.com/email';
 
     /**
      * {@inheritDoc}
      */
-    public function send(Identity $to, MessageInterface $message)
+    public function send(Identity $to, Message $message)
     {
         // Should this be moved into a format message?
         $parameters = array(
