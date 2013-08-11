@@ -26,26 +26,30 @@ class PostmarkHandler extends AbstractHandler
      */
     public function send(Identity $to, Message $message)
     {
-        // Should this be moved into a format message?
-        $parameters = array(
+        $request = new Request($this->endpoint, 'POST');
+        $request->setContent($this->format($to, $message));
+
+        $this->prepare($request);
+
+        $response = $this->adapter->request($request);
+
+        if ($response->isSuccessful()) {
+            return json_decode($response->getContent())->MessageID;
+        }
+
+        throw Utils::convertStatusCodeToException($response->getStatusCode());
+    }
+
+    protected function format(Identity $to, Message $message)
+    {
+        return json_encode(array(
             'To'       => (string) $to,
             'From'     => (string) $message->getFrom(),
             'Subject'  => $message->getSubject(),
             'HtmlBody' => $message->getHtml(),
             'TextBody' => $message->getText(),
             'Headers'  => $message->getHeaders(),
-        );
-
-        $request = new Request($this->endpoint, 'POST');
-        $request->setContent(json_encode($parameters));
-
-        $this->prepare($request);
-
-        $response = $this->adapter->request($request);
-
-        if ($response->isUnauthorized()) {
-            throw new UnauthorizedException();
-        }
+        ));
     }
 
     /**
@@ -58,5 +62,7 @@ class PostmarkHandler extends AbstractHandler
             'Content-Type'            => 'application/json',
             'X-Postmark-Server-Token' => $this->key,
         ));
+
+        return $request;
     }
 }

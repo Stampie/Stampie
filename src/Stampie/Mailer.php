@@ -9,10 +9,10 @@
 
 namespace Stampie;
 
+use Stampie\Event\FailedMessageEvent;
 use Stampie\Event\MessageEvent;
-use Stampie\Handler\HandlerInterface;
-use Stampie\Message\MessageInterface;
 use Stampie\Message\Identity;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -35,23 +35,37 @@ class Mailer
      * @param Handler $handler
      * @param EventDispatcherInterface $dispatcher
      */
-    public function __construct(Handler $handler, EventDispatcherInterface $dispatcher)
+    public function __construct(Handler $handler, EventDispatcherInterface $dispatcher = null)
     {
         $this->handler = $handler;
-        $this->dispatcher = $dispatcher;
+        $this->dispatcher = $dispatcher ?: new EventDispatcher;
     }
 
     /**
-     * {@inheritDoc}
+     * Sends the message to the handler and emits some events. When an even prevents default
+     * a DefferedResult will be returned otherwise a the Result object from the handler is
+     * returned. If sending fails a failed event will be emitted and the exception rethrown.
+     *
+     * @param Identity $to
+     * @param Message $message
+     * @return boolean
      */
     public function send(Identity $to, Message $message)
     {
         $event = $this->dispatcher->dispatch(Events::SEND, new MessageEvent($to, $message));
 
-        if (!$event->isDefaultPrevented()) {
-            $this->handler->send($event->getTo(), $event->getMessage());
+        if ($event->isDefaultPrevented()) {
+            return 'default-prevented'; // a value object should be returned
         }
 
-        // $event = $this->dispatcher->dispatch(Events::SEND_FAILED', new MessageEvent($to, $message));
+        try {
+            $messageId = $this->handler->send($event->getTo(), $event->getMessage());
+
+            return $messageId;
+        } catch (\Exception $e) {
+            $this->dispatcher->dispatch(Events::FAILED, new FailedMessageEvent($to, $message, $e));
+
+            throw $e;
+        }
     }
 }

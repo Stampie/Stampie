@@ -20,8 +20,15 @@ final class Events
      *
      * The event listener method receives a Stampie\Event\MessageEvent
      * instance.
-     *
-     * @var string
      */
     const SEND = 'stampie.send';
+
+    /**
+     * The FAILED event occurs if a handler throws an exception while sending
+     * the messadge.
+     *
+     * The event listener method receives a Stampie\Event\MessageExceptionEvent
+     * instance.
+     */
+    const FAILED = 'stampie.failed';
 }
