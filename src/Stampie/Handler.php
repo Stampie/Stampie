@@ -9,7 +9,7 @@
 
 namespace Stampie;
 
-use Stampie\Message\Identity;
+use Stampie\Identity;
 
 /**
  * @package Stampie

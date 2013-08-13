@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Stampie\Message;
+namespace Stampie;
 
 /**
  * This is a ValueObject. __get makes it possible to use this kind a like

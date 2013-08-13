@@ -25,10 +25,10 @@ class MailerSpec extends \PhpSpec\ObjectBehavior
 
     /**
      * @param Stampie\Event\MessageEvent $event
-     * @param Stampie\Message\Identity $identity
+     * @param Stampie\Identity $identity
      * @param Stampie\Message $message
      */
-    function it_dispatches_event_when_sending($event, $identity, $message, $dispatcher)
+    function it_dispatches_event_and_calls_handler($event, $identity, $message, $dispatcher, $handler)
     {
         $dispatcher->dispatch(Events::SEND, Argument::type('Stampie\Event\MessageEvent'))->shouldBeCalled()->willReturn($event);
 
@@ -36,22 +36,45 @@ class MailerSpec extends \PhpSpec\ObjectBehavior
         $event->isDefaultPrevented()->willReturn(false);
         $event->getMessage()->willReturn($message);
 
-        $this->send($identity, $message);
+        $handler->send($identity, $message)->shouldBeCalled()->willReturn('message-id');
+
+        $header = $this->send($identity, $message);
+        $header->getMessageId()->shouldReturn('message-id');
     }
 
     /**
      * @param Stampie\Event\MessageEvent $event
-     * @param Stampie\Message\Identity $identity
+     * @param Stampie\Identity $identity
      * @param Stampie\Message $message
      */
-    function it_disables_sending_when_default_is_prevented($event, $identity, $message, $dispatcher, $handler)
+    function it_skips_calling_handler_when_defaut_prevented($event, $identity, $message, $dispatcher, $handler)
     {
         $dispatcher->dispatch(Argument::any(), Argument::any())->willReturn($event);
 
         $event->isDefaultPrevented()->shouldBeCalled()->willReturn(true);
         $event->getTo()->willReturn($identity);
 
-        $handler->send(Argument::any())->shouldNotBeCalled();
+        $handler->send()->shouldNotBeCalled();
+
+        $header = $this->send($identity, $message);
+        $header->getMessageId()->shouldReturn(null);
+    }
+
+    /**
+     * @param Stampie\Event\MessageEvent $event
+     * @param Stampie\Identity $identity
+     * @param Stampie\Message $message
+     */
+    function it_dispatches_failed_event_when_handler_raises_exception($event, $identity, $message, $dispatcher, $handler)
+    {
+        $handler->send($identity, $message)->willThrow('RuntimeException');
+
+        $event->getTo()->willReturn($identity);
+        $event->getMessage()->willReturn($message);
+        $event->isDefaultPrevented()->willReturn(false);
+
+        $dispatcher->dispatch(Events::SEND, Argument::any())->willReturn($event);
+        $dispatcher->dispatch(Events::FAILED, Argument::type('Stampie\Event\FailedMessageEvent'))->shouldBeCalled();
 
         $this->send($identity, $message);
     }

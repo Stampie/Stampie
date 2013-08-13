@@ -11,7 +11,7 @@ namespace Stampie\Handler;
 
 use Stampie\Adapter\Request;
 use Stampie\Exception\UnauthorizedException;
-use Stampie\Message\Identity;
+use Stampie\Identity;
 use Stampie\Message;
 
 /**

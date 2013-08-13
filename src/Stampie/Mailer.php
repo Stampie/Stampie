@@ -11,7 +11,7 @@ namespace Stampie;
 
 use Stampie\Event\FailedMessageEvent;
 use Stampie\Event\MessageEvent;
-use Stampie\Message\Identity;
+use Stampie\Message\MessageHeader;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -55,17 +55,17 @@ class Mailer
         $event = $this->dispatcher->dispatch(Events::SEND, new MessageEvent($to, $message));
 
         if ($event->isDefaultPrevented()) {
-            return 'default-prevented'; // a value object should be returned
+            return new MessageHeader(null);
         }
 
         try {
             $messageId = $this->handler->send($event->getTo(), $event->getMessage());
 
-            return $messageId;
+            return new MessageHeader($messageId);
         } catch (\Exception $e) {
+            // When a message fails should be just ignore the exception and handle it with
+            // an event an return nothing?
             $this->dispatcher->dispatch(Events::FAILED, new FailedMessageEvent($to, $message, $e));
-
-            throw $e;
         }
     }
 }

@@ -9,7 +9,7 @@ class PostmarkHandler extends \PhpSpec\ObjectBehavior
     /**
      * @param Stampie\Adapter $adapter
      * @param Stampie\Message $message
-     * @param Stampie\Message\Identity $identity
+     * @param Stampie\Identity $identity
      */
     function let($adapter, $message, $identity)
     {

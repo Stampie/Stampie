@@ -5,7 +5,7 @@ namespace spec\Stampie\Message;
 class DefaultMessageSpec extends \PhpSpec\ObjectBehavior
 {
     /**
-     * @param Stampie\Message\Identity $identity
+     * @param Stampie\Identity $identity
      */
     function let($identity)
     {
