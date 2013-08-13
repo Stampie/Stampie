@@ -1,3 +1,4 @@
 spec        export-ignore
 doc         export-ignore
 .travis.yml export-ignore
+example     export-ignore

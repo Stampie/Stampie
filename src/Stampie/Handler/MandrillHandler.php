@@ -1,0 +1,88 @@
+<?php
+
+namespace Stampie\Handler;
+
+use Stampie\Adapter\Request;
+use Stampie\Message;
+use Stampie\Identity;
+
+/**
+ * Sends emails to Mandrill server
+ *
+ * @author Christophe Coevoet <stof@notk.org>
+ * @author Henrik Bjornskov <henrik@bjrnskov.dk>
+ */
+class MandrillHandler extends AbstractHandler
+{
+    protected $endpoint = 'https://mandrillapp.com/api/1.0/messages/send.json';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function send(Identity $to, Message $message)
+    {
+        $request = new Request($this->endpoint, 'POST');
+        $request->setContent($this->format($to, $message));
+
+        $this->prepare($request);
+
+        $response = $this->adapter->request($request);
+
+        if ($response->isSuccessful()) {
+            $content = json_decode($response->getContent());
+
+            // Mandril returns an array for each recipient
+            return array_map(array($this, 'pluckMessageId'), $content);
+        }
+
+        throw new \RuntimeException($response->getContent());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function prepare(Request $request)
+    {
+        $request->setHeaders(array(
+            'Content-Type' => 'application/json',
+        ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function format(Identity $to, Message $message)
+    {
+        $from = $message->getFrom();
+
+        $parameters = array(
+            'key'     => $this->key,
+            'message' => array_filter(array(
+                'to' => array(array(
+                    'email' => $to->email,
+                    'name' => $to->name,
+                )),
+                'from_email' => $from->email,
+                'from_name'  => $from->name,
+                'subject'    => $message->getSubject(),
+                'headers'    => $message->getHeaders(),
+                'text'       => $message->getText(),
+                'html'       => $message->getHtml(),
+                'async'      => true,
+            )),
+        );
+
+        return json_encode($parameters);
+    }
+
+    /**
+     * Used to pluck the _id parameter from a successful response
+     *
+     * @param object $result
+     * @return string
+     */
+    protected function pluckMessageId($result)
+    {
+        return $result->_id;
+    }
+}

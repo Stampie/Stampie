@@ -13,6 +13,7 @@ use Stampie\Adapter\Request;
 use Stampie\Exception\UnauthorizedException;
 use Stampie\Identity;
 use Stampie\Message;
+use Stampie\Utils;
 
 /**
  * @package Stampie
@@ -37,9 +38,12 @@ class PostmarkHandler extends AbstractHandler
             return json_decode($response->getContent())->MessageID;
         }
 
-        throw Utils::convertStatusCodeToException($response->getStatusCode());
+        throw Utils::convertResponseToException($response);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function format(Identity $to, Message $message)
     {
         return json_encode(array(
@@ -62,7 +66,5 @@ class PostmarkHandler extends AbstractHandler
             'Content-Type'            => 'application/json',
             'X-Postmark-Server-Token' => $this->key,
         ));
-
-        return $request;
     }
 }

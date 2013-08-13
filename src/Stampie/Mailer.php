@@ -66,6 +66,8 @@ class Mailer
             // When a message fails should be just ignore the exception and handle it with
             // an event an return nothing?
             $this->dispatcher->dispatch(Events::FAILED, new FailedMessageEvent($to, $message, $e));
+
+            throw $e;
         }
     }
 }
