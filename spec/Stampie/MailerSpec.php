@@ -67,7 +67,6 @@ class MailerSpec extends \PhpSpec\ObjectBehavior
      */
     function it_dispatches_failed_event_when_handler_raises_exception($event, $identity, $message, $dispatcher, $handler)
     {
-        $handler->send($identity, $message)->willThrow('RuntimeException');
 
         $event->getTo()->willReturn($identity);
         $event->getMessage()->willReturn($message);
@@ -76,6 +75,8 @@ class MailerSpec extends \PhpSpec\ObjectBehavior
         $dispatcher->dispatch(Events::SEND, Argument::any())->willReturn($event);
         $dispatcher->dispatch(Events::FAILED, Argument::type('Stampie\Event\FailedMessageEvent'))->shouldBeCalled();
 
-        $this->send($identity, $message);
+        $handler->send($identity, $message)->willThrow('RuntimeException');
+
+        $this->shouldThrow('RuntimeException')->duringSend($identity, $message);
     }
 }
