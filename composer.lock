@@ -3,53 +3,8 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "8d969e0c7b845a62e4bbd500ecf6605a",
+    "hash": "13c4b03ee3150e1a21c3d4dfe9d28de3",
     "packages": [
-        {
-            "name": "kriswallsmith/buzz",
-            "version": "v0.7",
-            "source": {
-                "type": "git",
-                "url": "http://github.com/kriswallsmith/Buzz.git",
-                "reference": "v0.7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/kriswallsmith/Buzz/zipball/v0.7",
-                "reference": "v0.7",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "suggest": {
-                "ext-curl": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Buzz": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Kris Wallsmith",
-                    "email": "kris.wallsmith@gmail.com",
-                    "homepage": "http://kriswallsmith.net/"
-                }
-            ],
-            "description": "Lightweight HTTP client",
-            "homepage": "https://github.com/kriswallsmith/Buzz",
-            "keywords": [
-                "curl",
-                "http client"
-            ],
-            "time": "2012-06-25 12:01:38"
-        },
         {
             "name": "symfony/event-dispatcher",
             "version": "v2.3.3",
@@ -106,6 +61,51 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "kriswallsmith/buzz",
+            "version": "v0.7",
+            "source": {
+                "type": "git",
+                "url": "http://github.com/kriswallsmith/Buzz.git",
+                "reference": "v0.7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/kriswallsmith/Buzz/zipball/v0.7",
+                "reference": "v0.7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "suggest": {
+                "ext-curl": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Buzz": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kris Wallsmith",
+                    "email": "kris.wallsmith@gmail.com",
+                    "homepage": "http://kriswallsmith.net/"
+                }
+            ],
+            "description": "Lightweight HTTP client",
+            "homepage": "https://github.com/kriswallsmith/Buzz",
+            "keywords": [
+                "curl",
+                "http client"
+            ],
+            "time": "2012-06-25 12:01:38"
+        },
         {
             "name": "phpspec/php-diff",
             "version": "v1.0.1",
@@ -206,16 +206,16 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "v1.0.3",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "v1.0.3"
+                "reference": "v1.0.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/v1.0.3",
-                "reference": "v1.0.3",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/v1.0.4",
+                "reference": "v1.0.4",
                 "shasum": ""
             },
             "require-dev": {
@@ -257,7 +257,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2013-07-04 20:06:04"
+            "time": "2013-08-10 11:11:45"
         },
         {
             "name": "symfony/console",

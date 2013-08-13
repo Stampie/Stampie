@@ -3,20 +3,16 @@
     "description" : "Mailer library that makes it easy to use cloud providers",
     "license" : "MIT",
 
-    "config" : {
-        "bin-dir" : "bin"
-    },
-
     "autoload" : {
         "psr-0" : { "Stampie" : "src" }
     },
 
     "require" : {
-        "kriswallsmith/buzz" : "0.7",
         "symfony/event-dispatcher" : "~2.0"
     },
 
     "require-dev" : {
+        "kriswallsmith/buzz" : "0.7",
         "phpspec/phpspec" : "2.0.0-BETA4"
     }
 }
