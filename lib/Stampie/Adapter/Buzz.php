@@ -36,14 +36,17 @@ class Buzz implements AdapterInterface
      * @param string $endpoint
      * @param string $content
      * @param array $headers
+     * @param array $files
      * @return Response
      */
-    public function send($endpoint, $content, array $headers = array())
+    public function send($endpoint, $content, array $headers = array(), array $files = array())
     {
         // Make headers buzz friendly
         array_walk($headers, function(&$value, $key) {
             $value = sprintf('%s: %s', $key, $value);
         });
+
+        // $files not uploaded
 
         $response = $this->browser->post($endpoint, array_values($headers), $content);
 

@@ -10,7 +10,7 @@ class NoopAdapter implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function send($endpoint, $content, array $headers = array())
+    public function send($endpoint, $content, array $headers = array(), array $files = array())
     {
         return new Response(200, 'Message was sent [NoopAdapter]');
     }

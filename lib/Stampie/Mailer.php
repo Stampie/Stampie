@@ -78,7 +78,8 @@ abstract class Mailer implements MailerInterface
         $response = $this->getAdapter()->send(
             $this->getEndpoint(),
             $this->format($message),
-            $this->getHeaders()
+            $this->getHeaders(),
+            $this->getFiles($message)
         );
 
         // We are all clear if status is HTTP 2xx OK
@@ -98,6 +99,20 @@ abstract class Mailer implements MailerInterface
      * @return array
      */
     protected function getHeaders()
+    {
+        return array();
+    }
+
+    /**
+     * Return an key -> value array of files
+     *
+     * example:
+     *     array('attachmentname.jpg' => '/path/to/file.jpg')
+     *
+     * @param MessageInterface $message
+     * @return string[]
+     */
+    protected function getFiles(MessageInterface $message)
     {
         return array();
     }
