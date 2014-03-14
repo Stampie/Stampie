@@ -5,8 +5,6 @@ namespace Stampie\Tests\GitHub;
 use Stampie\Adapter\Response;
 use Stampie\Tests\Mailer\TestPostmark;
 
-require_once __DIR__.'/../Mailer/PostmarkTest.php';
-
 /**
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  */
