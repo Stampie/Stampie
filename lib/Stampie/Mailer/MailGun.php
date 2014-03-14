@@ -6,7 +6,9 @@ use Stampie\Mailer;
 use Stampie\Message\MetadataAwareInterface;
 use Stampie\MessageInterface;
 use Stampie\Message\TaggableInterface;
+use Stampie\Message\AttachmentsInterface;
 use Stampie\Adapter\ResponseInterface;
+use Stampie\AttachmentInterface;
 use Stampie\Exception\HttpException;
 
 /**
@@ -47,6 +49,41 @@ class MailGun extends Mailer
         return array(
             'Authorization' => 'Basic ' . base64_encode('api:' . $serverToken),
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getFiles(MessageInterface $message)
+    {
+        if (!($message instanceof AttachmentsInterface)) {
+            return array();
+        }
+
+        // Process files
+        $inline      = array();
+        $attachments = $this->processAttachments($message->getAttachments(), function ($name, AttachmentInterface $attachment) use (&$inline) {
+            $path = $attachment->getPath();
+            $id   = $attachment->getID();
+            if (isset($id)) {
+                // Inline
+                $inline[] = $path;
+                return null; // Do not add to attachments
+            }
+
+            // Attached
+            return $path;
+        });
+
+        // Format params
+        $files = array();
+        if ($attachments) {
+            $files['attachment'] = $attachments;
+        }
+        if ($inline) {
+            $files['inline'] = $inline;
+        }
+        return $files;
     }
 
     /**
@@ -95,5 +132,12 @@ class MailGun extends Mailer
     protected function handle(ResponseInterface $response)
     {
         throw new HttpException($response->getStatusCode(), $response->getStatusText());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function processAttachments(array $attachments, callable $callback){
+        return array_values(parent::processAttachments($attachments, $callback));
     }
 }

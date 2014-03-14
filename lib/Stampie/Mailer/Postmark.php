@@ -4,8 +4,10 @@ namespace Stampie\Mailer;
 
 use Stampie\Mailer;
 use Stampie\Message\TaggableInterface;
+use Stampie\Message\AttachmentsInterface;
 use Stampie\MessageInterface;
 use Stampie\Adapter\ResponseInterface;
+use Stampie\AttachmentInterface;
 use Stampie\Exception\HttpException;
 use Stampie\Exception\ApiException;
 
@@ -82,6 +84,44 @@ class Postmark extends Mailer
             $parameters['Tag'] = $tag ;
         }
 
+        if ($message instanceof AttachmentsInterface) {
+            $self = $this; // PHP5.3 compatibility
+            $attachments = $this->processAttachments($message->getAttachments(), function ($name, AttachmentInterface $attachment) use ($self) {
+                $item = array(
+                    'Name'        => $name,
+                    'Content'     => base64_encode($self->getAttachmentContent($attachment)),
+                    'ContentType' => $attachment->getType(),
+                );
+
+                $id = $attachment->getID();
+                if (isset($id)) {
+                    $item['ContentID']    = $id;
+                }
+
+                return $item;
+            });
+
+            if ($attachments) {
+                $parameters['Attachments']    = $attachments;
+            }
+        }
+
         return json_encode(array_filter($parameters));
+    }
+
+    /**
+     * @param AttachmentInterface $attachment
+     * @return string
+     */
+    protected function getAttachmentContent(AttachmentInterface $attachment){
+        return file_get_contents($attachment->getPath());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function processAttachments(array $attachments, callable $callback){
+        // Strip keys
+        return array_values(parent::processAttachments($attachments, $callback));
     }
 }
