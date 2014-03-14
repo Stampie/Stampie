@@ -5,8 +5,7 @@ namespace Stampie\Message;
 use Stampie\AttachmentInterface;
 
 /**
- * Represents an Attachment. An Attachment is a container for a file
- * that will be included with a Message.
+ * Represents a Message that contains Attachments
  *
  * @author Adam Averay <adam@averay.com>
  */
