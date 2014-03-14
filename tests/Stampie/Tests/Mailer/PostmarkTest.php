@@ -64,11 +64,16 @@ class PostmarkTest extends \Stampie\Tests\BaseMailerTest
             $tag = 'tag'
         );
 
+        $formattedHeaders = array();
+        foreach ($headers as $headerName => $headerValue) {
+            $formattedHeaders[] = array( 'Name' => $headerName, 'Value' => $headerValue );
+        }
+
         $this->assertEquals(json_encode(array(
             'From' => $from,
             'To' => $to,
             'Subject' => $subject,
-            'Headers' => $headers,
+            'Headers' => $formattedHeaders,
             'HtmlBody' => $html,
             'TextBody' => $text,
             'Tag' => $tag,
