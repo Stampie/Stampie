@@ -137,7 +137,7 @@ class MailGun extends Mailer
     /**
      * {@inheritdoc}
      */
-    protected function processAttachments(array $attachments, callable $callback){
+    protected function processAttachments(array $attachments, $callback){
         return array_values(parent::processAttachments($attachments, $callback));
     }
 }
