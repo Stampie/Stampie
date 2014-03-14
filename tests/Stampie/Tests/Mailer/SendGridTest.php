@@ -180,9 +180,10 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
 
     public function testGetFiles(){
         $self  = $this; // PHP5.3 compatibility
-        $token = self::SERVER_TOKEN;
-        $buildMocks = function($attachments, &$invoke) use($self, $token){
-            $mailer = $self->getMock('\\Stampie\\Mailer\\SendGrid', null, array($self->adapter, $token));
+        $adapter = $this->adapter;
+        $token   = self::SERVER_TOKEN;
+        $buildMocks = function($attachments, &$invoke) use($self, $adapter, $token){
+            $mailer = $self->getMock('\\Stampie\\Mailer\\SendGrid', null, array($adapter, $token));
 
             // Wrap protected method with accessor
             $mirror = new \ReflectionClass($mailer);

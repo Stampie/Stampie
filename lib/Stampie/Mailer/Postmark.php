@@ -120,7 +120,7 @@ class Postmark extends Mailer
     /**
      * {@inheritdoc}
      */
-    protected function processAttachments(array $attachments, callable $callback){
+    protected function processAttachments(array $attachments, $callback){
         // Strip keys
         return array_values(parent::processAttachments($attachments, $callback));
     }

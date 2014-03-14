@@ -20,8 +20,12 @@ abstract class AttachmentUtils
      *
      * @throws \InvalidArgumentException
      */
-    public static function processAttachments(array $attachments, callable $callback)
+    public static function processAttachments(array $attachments, $callback)
     {
+        if (!is_callable($callback)) {
+            throw new \InvalidArgumentException('Callback must be callable');
+        }
+
         $processed    = array();
 
         foreach ($attachments as $attachment) {

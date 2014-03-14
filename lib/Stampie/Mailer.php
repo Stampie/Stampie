@@ -182,7 +182,7 @@ abstract class Mailer implements MailerInterface
 *@return array
      * @see \Stampie\Utils\AttachmentUtils::processAttachments
      */
-    protected function processAttachments(array $attachments, callable $callback)
+    protected function processAttachments(array $attachments, $callback)
     {
         return AttachmentUtils::processAttachments($attachments, $callback);
     }
