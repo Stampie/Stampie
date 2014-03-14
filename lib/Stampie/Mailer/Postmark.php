@@ -67,8 +67,8 @@ class Postmark extends Mailer
             'To'       => $this->buildIdentityString($message->getTo()),
             'Subject'  => $message->getSubject(),
             'Headers'  => $headers,
-            'TextBody' => $message->getText(),
             'HtmlBody' => $message->getHtml(),
+            'TextBody' => $message->getText(),
             'ReplyTo'  => $message->getReplyTo(),
         );
 
