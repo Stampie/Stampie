@@ -126,7 +126,8 @@ class Mandrill extends Mailer
      * @param AttachmentInterface $attachment
      * @return string
      */
-    protected function getAttachmentContent(AttachmentInterface $attachment){
+    protected function getAttachmentContent(AttachmentInterface $attachment)
+    {
         return file_get_contents($attachment->getPath());
     }
 

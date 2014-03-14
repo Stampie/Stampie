@@ -174,7 +174,8 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
         )), $this->mailer->format($message));
     }
 
-    public function testGetFiles(){
+    public function testGetFiles()
+    {
         $self  = $this; // PHP5.3 compatibility
         $adapter = $this->adapter;
         $token   = self::SERVER_TOKEN;

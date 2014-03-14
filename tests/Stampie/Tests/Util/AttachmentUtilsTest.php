@@ -138,7 +138,8 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
     /**
      * @return callable
      */
-    protected function buildIllegalCallback(){
+    protected function buildIllegalCallback()
+    {
         $self = $this; // PHP5.3 compatibility
 
         return function() use($self){

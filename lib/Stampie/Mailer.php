@@ -179,7 +179,7 @@ abstract class Mailer implements MailerInterface
      * @param AttachmentInterface[] $attachments
      * @param callable $callback    function (string $name, AttachmentInterface $attachment) { ... }
      *
-*@return array
+     * @return array
      * @see \Stampie\Utils\AttachmentUtils::processAttachments
      */
     protected function processAttachments(array $attachments, $callback)
