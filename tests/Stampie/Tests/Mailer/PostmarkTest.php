@@ -80,6 +80,108 @@ class PostmarkTest extends \Stampie\Tests\BaseMailerTest
         )), $this->mailer->format($message));
     }
 
+    public function testFormatAttachments()
+    {
+        $this->mailer = $this
+                            ->getMockBuilder(__NAMESPACE__.'\\TestPostmark')
+                            ->setConstructorArgs(array($this->adapter, self::SERVER_TOKEN))
+                            ->setMethods(array('getAttachmentContent'))
+                            ->getMock();
+
+        $contentCallback = function($attachment){
+            return 'content:'.$attachment->getPath();
+        };
+
+        $this->mailer
+            ->expects($this->atLeastOnce())
+            ->method('getAttachmentContent')
+            ->will($this->returnCallback($contentCallback))
+        ;
+
+        $message = $this->getAttachmentsMessageMock(
+            $from    = 'hb@peytz.dk',
+            $to      = 'henrik@bjrnskov.dk',
+            $subject = 'Stampie is awesome',
+            $html    = 'So what do you thing',
+            $text    = 'text',
+            $headers = array('X-Stampie-To' => 'henrik+to@bjrnskov.dk'),
+            array_merge(
+                $attachments = array(
+                    $this->getAttachmentMock('files/image-1.jpg', 'file1.jpg', 'image/jpeg', null),
+                    $this->getAttachmentMock('files/image-2.jpg', 'file2.jpg', 'image/jpeg', null),
+                ),
+                $inline = array(
+                    $this->getAttachmentMock('files/image-3.jpg', 'file3.jpg', 'image/jpeg', 'contentid1'),
+                )
+            )
+        );
+
+        $formattedAttachments = array();
+        foreach ($attachments as $attachment) {
+            $formattedAttachments[] = array(
+                'Name'        => $attachment->getName(),
+                'Content'     => base64_encode($contentCallback($attachment)),
+                'ContentType' => $attachment->getType(),
+            );
+        }
+        foreach ($inline as $attachment) {
+            $formattedAttachments[] = array(
+                'Name'        => $attachment->getName(),
+                'Content'     => base64_encode($contentCallback($attachment)),
+                'ContentType' => $attachment->getType(),
+                'ContentID'   => $attachment->getID(),
+            );
+        }
+
+        $formattedHeaders = array();
+        foreach ($headers as $headerName => $headerValue) {
+            $formattedHeaders[] = array( 'Name' => $headerName, 'Value' => $headerValue );
+        }
+
+        $this->assertEquals(json_encode(array(
+            'From'        => $from,
+            'To'          => $to,
+            'Subject'     => $subject,
+            'Headers'     => $formattedHeaders,
+            'HtmlBody'    => $html,
+            'TextBody'    => $text,
+            'Attachments' => $formattedAttachments,
+        )), $this->mailer->format($message));
+    }
+
+    public function testGetFiles(){
+        $self  = $this; // PHP5.3 compatibility
+        $token = self::SERVER_TOKEN;
+        $buildMocks = function($attachments, &$invoke) use($self, $token){
+            $mailer = $self->getMock('\\Stampie\\Mailer\\Postmark', null, array($self->adapter, $token));
+
+            // Wrap protected method with accessor
+            $mirror = new \ReflectionClass($mailer);
+            $method = $mirror->getMethod('getFiles');
+            $method->setAccessible(true);
+
+            $invoke = function() use($mailer, $method){
+                $args = func_get_args();
+                array_unshift($args, $mailer);
+                return call_user_func_array(array($method, 'invoke'), $args);
+            };
+
+            $message = $self->getAttachmentsMessageMock('test@example.com', 'other@example.com', 'Subject', null, null, array(), $attachments);
+
+            return array($mailer, $message);
+        };
+
+        // Actual tests
+
+        $attachments = array(
+            $this->getAttachmentMock('path-1.txt', 'path1.txt', 'text/plain', null),
+        );
+
+        list($mailer, $message) = $buildMocks($attachments, $invoke);
+
+        $this->assertEquals(array(), $invoke($message), 'Attachments should never be returned separately from body');
+    }
+
     /**
      * @dataProvider handleDataProvider
      */
