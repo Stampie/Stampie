@@ -47,7 +47,7 @@ class Attachment implements AttachmentInterface
         $this->name = (isset($name) ? $name : basename($path));
         $this->id   = $id;
 
-        if (!isset($type)) {
+        if ($type === null) {
             $type = $this->determineFileType($path);
             if (!isset($type)) {
                 throw new \RuntimeException('Cannot determine file type');
