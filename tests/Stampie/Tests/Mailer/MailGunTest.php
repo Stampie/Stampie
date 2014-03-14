@@ -7,16 +7,9 @@ use Stampie\Mailer\MailGun;
 /**
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  */
-class MailGunTest extends \PHPUnit_Framework_TestCase
+class MailGunTest extends \Stampie\Tests\BaseMailerTest
 {
     const SERVER_TOKEN = 'henrik.bjrnskov.dk:myCustomKey';
-
-    private $adapter;
-
-    /**
-     * @var TestMailGun
-     */
-    private $mailer;
 
     public function setUp()
     {
