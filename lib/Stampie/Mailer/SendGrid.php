@@ -6,7 +6,9 @@ use Stampie\Mailer;
 use Stampie\Message\MetadataAwareInterface;
 use Stampie\MessageInterface;
 use Stampie\Message\TaggableInterface;
+use Stampie\Message\AttachmentsInterface;
 use Stampie\Adapter\ResponseInterface;
+use Stampie\AttachmentInterface;
 use Stampie\Exception\HttpException;
 use Stampie\Exception\ApiException;
 
@@ -36,6 +38,28 @@ class SendGrid extends Mailer
         }
 
         parent::setServerToken($serverToken);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getFiles(MessageInterface $message)
+    {
+        if (!($message instanceof AttachmentsInterface)) {
+            return array();
+        }
+
+        // Process files
+        $attachments = $this->processAttachments($message->getAttachments(), function ($name, AttachmentInterface $attachment) {
+            return $attachment->getPath();
+        });
+
+        // Format params
+        $files = array();
+        if ($attachments) {
+            $files['files'] = $attachments;
+        }
+        return $files;
     }
 
     /**
@@ -88,6 +112,20 @@ class SendGrid extends Mailer
             $smtpApi['unique_args'] = array_filter($message->getMetadata());
         }
 
+        $inline = array();
+        if ($message instanceof AttachmentsInterface) {
+            // Store inline attachment references
+            $this->processAttachments($message->getAttachments(), function ($name, AttachmentInterface $attachment) use (&$inline) {
+                $id = $attachment->getID();
+                if (isset($id)) {
+                    // Reference inline
+                    $inline[$id] = $name;
+                }
+
+                return $attachment->getPath();
+            });
+        }
+
         $parameters = array(
             'api_user' => $username,
             'api_key'  => $password,
@@ -101,6 +139,7 @@ class SendGrid extends Mailer
             'bcc'      => $bccEmails,
             'replyto'  => $message->getReplyTo(),
             'headers'  => json_encode($message->getHeaders()),
+            'content'  => $inline,
         );
 
         if ($smtpApi) {

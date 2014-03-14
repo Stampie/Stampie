@@ -6,7 +6,9 @@ use Stampie\Mailer;
 use Stampie\Message\MetadataAwareInterface;
 use Stampie\MessageInterface;
 use Stampie\Message\TaggableInterface;
+use Stampie\Message\AttachmentsInterface;
 use Stampie\Adapter\ResponseInterface;
+use Stampie\AttachmentInterface;
 use Stampie\Exception\HttpException;
 use Stampie\Exception\ApiException;
 
@@ -62,18 +64,45 @@ class Mandrill extends Mailer
             $metadata = array_filter($message->getMetadata());
         }
 
+        $self = $this; // PHP5.3 compatibility
+        $images      = array();
+        $attachments = array();
+        if ($message instanceof AttachmentsInterface) {
+            $attachments = $this->processAttachments($message->getAttachments(), function ($name, AttachmentInterface $attachment) use (&$images, $self) {
+                $type = $attachment->getType();
+                $item = array(
+                    'type'    => $type,
+                    'name'    => $name,
+                    'content' => base64_encode($self->getAttachmentContent($attachment)),
+                );
+
+                $id = $attachment->getID();
+                if (strpos($type, 'image/') === 0 && isset($id)) {
+                    // Inline image
+                    $item['name'] = $id;
+                    $images[] = $item;
+
+                    return null; // Do not add to attachments
+                }
+
+                return $item;
+            });
+        }
+
         $parameters = array(
             'key'     => $this->getServerToken(),
             'message' => array_filter(array(
-                'from_email' => $from->getEmail(),
-                'from_name'  => $from->getName(),
-                'to'         => $to,
-                'subject'    => $message->getSubject(),
-                'headers'    => $headers,
-                'text'       => $message->getText(),
-                'html'       => $message->getHtml(),
-                'tags'       => $tags,
-                'metadata'   => $metadata,
+                'from_email'  => $from->getEmail(),
+                'from_name'   => $from->getName(),
+                'to'          => $to,
+                'subject'     => $message->getSubject(),
+                'headers'     => $headers,
+                'text'        => $message->getText(),
+                'html'        => $message->getHtml(),
+                'tags'        => $tags,
+                'metadata'    => $metadata,
+                'attachments' => $attachments,
+                'images'      => $images,
             )),
         );
 
@@ -91,5 +120,22 @@ class Mandrill extends Mailer
         $error         = json_decode($response->getContent());
 
         throw new ApiException($error->message, $httpException, $error->code);
+    }
+
+    /**
+     * @param AttachmentInterface $attachment
+     * @return string
+     */
+    protected function getAttachmentContent(AttachmentInterface $attachment){
+        return file_get_contents($attachment->getPath());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function processAttachments(array $attachments, callable $callback)
+    {
+        // Strip keys
+        return array_values(parent::processAttachments($attachments, $callback));
     }
 }
