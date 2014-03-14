@@ -113,14 +113,16 @@ class Postmark extends Mailer
      * @param AttachmentInterface $attachment
      * @return string
      */
-    protected function getAttachmentContent(AttachmentInterface $attachment){
+    protected function getAttachmentContent(AttachmentInterface $attachment)
+    {
         return file_get_contents($attachment->getPath());
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function processAttachments(array $attachments, $callback){
+    protected function processAttachments(array $attachments, $callback)
+    {
         // Strip keys
         return array_values(parent::processAttachments($attachments, $callback));
     }
