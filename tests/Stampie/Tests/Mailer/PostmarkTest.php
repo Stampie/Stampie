@@ -96,26 +96,3 @@ class PostmarkTest extends \Stampie\Tests\BaseMailerTest
         );
     }
 }
-
-class TestPostmark extends Postmark
-{
-    public function getEndpoint()
-    {
-        return parent::getEndpoint();
-    }
-
-    public function handle(ResponseInterface $response)
-    {
-        parent::handle($response);
-    }
-
-    public function getHeaders()
-    {
-        return parent::getHeaders();
-    }
-
-    public function format(MessageInterface $message)
-    {
-        return parent::format($message);
-    }
-}
