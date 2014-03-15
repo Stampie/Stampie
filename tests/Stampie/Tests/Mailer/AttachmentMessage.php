@@ -3,8 +3,8 @@
 namespace Stampie\Tests\Mailer;
 
 use Stampie\MessageInterface;
-use Stampie\Message\AttachmentsInterface;
+use Stampie\Message\AttachmentsContainerInterface;
 
-abstract class AttachmentMessage implements MessageInterface, AttachmentsInterface
+abstract class AttachmentMessage implements MessageInterface, AttachmentsContainerInterface
 {
 }
