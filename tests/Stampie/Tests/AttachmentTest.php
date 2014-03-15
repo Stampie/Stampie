@@ -11,7 +11,7 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException \InvalidArgumentException
-     * @covers ::__constructor
+     * @covers ::__construct
      */
     public function testMissingFileFails()
     {
@@ -30,7 +30,7 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \RuntimeException
-     * @covers ::__constructor
+     * @covers ::__construct
      */
     public function testUnknownFileTypeFails()
     {
@@ -55,7 +55,7 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::__constructor
+     * @covers ::__construct
      * @covers ::getFile
      * @covers ::getName
      * @covers ::getType
