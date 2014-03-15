@@ -6,7 +6,7 @@ use Stampie\Mailer;
 use Stampie\Message\MetadataAwareInterface;
 use Stampie\MessageInterface;
 use Stampie\Message\TaggableInterface;
-use Stampie\Message\AttachmentsInterface;
+use Stampie\Message\AttachmentsContainerInterface;
 use Stampie\Adapter\ResponseInterface;
 use Stampie\AttachmentInterface;
 use Stampie\Exception\HttpException;
@@ -56,7 +56,7 @@ class MailGun extends Mailer
      */
     protected function getFiles(MessageInterface $message)
     {
-        if (!($message instanceof AttachmentsInterface)) {
+        if (!($message instanceof AttachmentsContainerInterface)) {
             return array();
         }
 

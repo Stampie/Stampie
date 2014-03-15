@@ -4,7 +4,7 @@ namespace Stampie\Mailer;
 
 use Stampie\Mailer;
 use Stampie\Message\TaggableInterface;
-use Stampie\Message\AttachmentsInterface;
+use Stampie\Message\AttachmentsContainerInterface;
 use Stampie\MessageInterface;
 use Stampie\Adapter\ResponseInterface;
 use Stampie\AttachmentInterface;
@@ -85,7 +85,7 @@ class Postmark extends Mailer
             $parameters['Tag'] = $tag ;
         }
 
-        if ($message instanceof AttachmentsInterface) {
+        if ($message instanceof AttachmentsContainerInterface) {
             $attachments = $this->processAttachments($message->getAttachments());
 
             if ($attachments) {
