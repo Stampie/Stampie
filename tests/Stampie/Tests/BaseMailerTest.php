@@ -73,7 +73,7 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
         return $message;
     }
 
-    protected function getAttachmentsMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = array(), array $attachments = array())
+    public function getAttachmentsMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = array(), array $attachments = array())
     {
         $message = $this->getMock('Stampie\\Tests\\Mailer\\AttachmentMessage');
 
