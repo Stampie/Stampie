@@ -3,6 +3,8 @@
 namespace Stampie\Adapter;
 
 use Buzz\Browser;
+use Buzz\Message\Form\FormUpload;
+use Buzz\Message\RequestInterface;
 
 /**
  * Adapter for Kriss Wallsmith's Buzz library
@@ -46,9 +48,29 @@ class Buzz implements AdapterInterface
             $value = sprintf('%s: %s', $key, $value);
         });
 
-        // $files not uploaded
+        if ($files) {
+            // HTTP query content
+            parse_str($content, $fields);
 
-        $response = $this->browser->post($endpoint, array_values($headers), $content);
+            // Add files to request
+            foreach ($files as $key => $items) {
+                $fields[$key] = array();
+
+                foreach ($items as $name => $item) {
+                    $item = new FormUpload($item);
+                    if(!is_numeric($name)){
+                        $item->setName($name);
+                    }
+
+                    $fields[$key] = $item;
+                }
+            }
+
+            $response = $this->browser->submit($endpoint, $fields, RequestInterface::METHOD_POST, array_values($headers));
+        } else {
+            // JSON content
+            $response = $this->browser->post($endpoint, array_values($headers), $content);
+        }
 
         return new Response($response->getStatusCode(), $response->getContent());
     }
