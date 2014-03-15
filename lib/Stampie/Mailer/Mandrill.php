@@ -11,6 +11,7 @@ use Stampie\Adapter\ResponseInterface;
 use Stampie\AttachmentInterface;
 use Stampie\Exception\HttpException;
 use Stampie\Exception\ApiException;
+use Stampie\Util\AttachmentUtils;
 
 /**
  * Sends emails to Mandrill server
@@ -64,29 +65,10 @@ class Mandrill extends Mailer
             $metadata = array_filter($message->getMetadata());
         }
 
-        $self = $this; // PHP5.3 compatibility
         $images      = array();
         $attachments = array();
         if ($message instanceof AttachmentsInterface) {
-            $attachments = $this->processAttachments($message->getAttachments(), function ($name, AttachmentInterface $attachment) use (&$images, $self) {
-                $type = $attachment->getType();
-                $item = array(
-                    'type'    => $type,
-                    'name'    => $name,
-                    'content' => base64_encode($self->getAttachmentContent($attachment)),
-                );
-
-                $id = $attachment->getID();
-                if (strpos($type, 'image/') === 0 && isset($id)) {
-                    // Inline image
-                    $item['name'] = $id;
-                    $images[] = $item;
-
-                    return null; // Do not add to attachments
-                }
-
-                return $item;
-            });
+            list($attachments, $images) = $this->processAttachments($message->getAttachments());
         }
 
         $parameters = array(
@@ -123,20 +105,56 @@ class Mandrill extends Mailer
     }
 
     /**
+     * @param AttachmentInterface[] $attachments
+     * @return array
+     *     First element: Attachments – an array containing arrays of the following format
+     *         array(
+     *             'type'    => type,
+     *             'name'    => name,
+     *             'content' => base64-encoded content,
+     *         )
+     *
+     *     Second element: Inline images – an array containing arrays of the following format
+     *         array(
+     *             'type'    => type,
+     *             'name'    => id,
+     *             'content' => base64-encoded content,
+     *         )
+     */
+    protected function processAttachments(array $attachments)
+    {
+        $attachments = AttachmentUtils::processAttachments($attachments);
+
+        $processedAttachments = array();
+        $images = array();
+        foreach ($attachments as $name => $attachment) {
+            $type = $attachment->getType();
+            $item = array(
+                'type'    => $type,
+                'name'    => $name,
+                'content' => base64_encode($this->getAttachmentContent($attachment)),
+            );
+
+            $id = $attachment->getID();
+            if (strpos($type, 'image/') === 0 && isset($id)) {
+                // Inline image
+                $item['name'] = $id;
+                $images[] = $item;
+            } else {
+                // Attached
+                $processedAttachments[] = $item;
+            }
+        }
+
+        return array($processedAttachments, $images);
+    }
+
+    /**
      * @param AttachmentInterface $attachment
      * @return string
      */
     protected function getAttachmentContent(AttachmentInterface $attachment)
     {
         return file_get_contents($attachment->getPath());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function processAttachments(array $attachments, $callback)
-    {
-        // Strip keys
-        return array_values(parent::processAttachments($attachments, $callback));
     }
 }

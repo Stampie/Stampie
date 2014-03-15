@@ -5,7 +5,6 @@ namespace Stampie;
 use Stampie\Adapter\AdapterInterface;
 use Stampie\Adapter\ResponseInterface;
 use Stampie\Util\IdentityUtils;
-use Stampie\Util\AttachmentUtils;
 
 /**
  * Minimal implementation of a MailerInterface
@@ -173,17 +172,5 @@ abstract class Mailer implements MailerInterface
     protected function buildIdentityString($identities)
     {
         return IdentityUtils::buildIdentityString($identities);
-    }
-
-    /**
-     * @param AttachmentInterface[] $attachments
-     * @param callable $callback    function (string $name, AttachmentInterface $attachment) { ... }
-     *
-     * @return array
-     * @see \Stampie\Utils\AttachmentUtils::processAttachments
-     */
-    protected function processAttachments(array $attachments, $callback)
-    {
-        return AttachmentUtils::processAttachments($attachments, $callback);
     }
 }
