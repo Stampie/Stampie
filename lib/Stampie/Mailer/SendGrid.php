@@ -11,6 +11,7 @@ use Stampie\Adapter\ResponseInterface;
 use Stampie\AttachmentInterface;
 use Stampie\Exception\HttpException;
 use Stampie\Exception\ApiException;
+use Stampie\Util\AttachmentUtils;
 
 /**
  * Mailer to be used with SendGrid Web API
@@ -50,9 +51,7 @@ class SendGrid extends Mailer
         }
 
         // Process files
-        $attachments = $this->processAttachments($message->getAttachments(), function ($name, AttachmentInterface $attachment) {
-            return $attachment->getPath();
-        });
+        list($attachments,) = $this->processAttachments($message->getAttachments());
 
         // Format params
         $files = array();
@@ -115,15 +114,7 @@ class SendGrid extends Mailer
         $inline = array();
         if ($message instanceof AttachmentsInterface) {
             // Store inline attachment references
-            $this->processAttachments($message->getAttachments(), function ($name, AttachmentInterface $attachment) use (&$inline) {
-                $id = $attachment->getID();
-                if (isset($id)) {
-                    // Reference inline
-                    $inline[$id] = $name;
-                }
-
-                return $attachment->getPath();
-            });
+            list(,$inline) = $this->processAttachments($message->getAttachments());
         }
 
         $parameters = array(
@@ -147,5 +138,28 @@ class SendGrid extends Mailer
         }
 
         return http_build_query(array_filter($parameters));
+    }
+
+    /**
+     * @param AttachmentInterface[] $attachments
+     * @return array First element: All attachments – array(name => path). Second element: Inline attachments – array(id => name)
+     */
+    protected function processAttachments(array $attachments)
+    {
+        $attachments = AttachmentUtils::processAttachments($attachments);
+
+        $processedAttachments = array();
+        $inline = array();
+        foreach ($attachments as $name => $attachment) {
+            $id = $attachment->getID();
+            if (isset($id)) {
+                // Reference inline
+                $inline[$id] = $name;
+            }
+
+            $processedAttachments[$name] = $attachment->getPath();
+        }
+
+        return array($processedAttachments, $inline);
     }
 }

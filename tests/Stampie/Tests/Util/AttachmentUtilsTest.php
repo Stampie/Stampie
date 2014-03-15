@@ -20,7 +20,7 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
             'not an attachment object',
         );
 
-        AttachmentUtils::processAttachments($attachments, $this->buildIllegalCallback());
+        AttachmentUtils::processAttachments($attachments);
     }
 
     /**
@@ -33,68 +33,43 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
             $this->buildAttachment(null, 'attachment-2.txt'),
         );
 
-        $calledAttachments = array();
-        $callback = function($name, $attachment) use(&$calledAttachments){
-            $calledAttachments[] = $attachment->getName();
-
-            return $name;
-        };
-
-        $result = AttachmentUtils::processAttachments($attachments, $callback);
-
-        // Ensure called for every attachment
-        $this->assertEquals(count($attachments), count($calledAttachments), 'Callback should be called for every attachment');
-        foreach ($attachments as $attachment) {
-            $this->assertTrue(in_array($attachment->getName(), $calledAttachments), 'Callback should be called for every attachment');
-        }
+        $processedAttachments = AttachmentUtils::processAttachments($attachments);
 
         // Ensure result contains attachments
-        $this->assertEquals(count($attachments), count($result), 'All processed attachments should be returned');
+        $this->assertEquals(count($attachments), count($processedAttachments), 'All attachments should be returned');
         foreach ($attachments as $attachment) {
-            $this->assertTrue(in_array($attachment->getName(), $calledAttachments), 'All processed attachments should be returned');
+            $this->assertTrue(in_array($attachment, $processedAttachments, true), 'All attachments should be returned');
+            $this->assertEquals($attachment, $processedAttachments[$attachment->getName()], 'Each attachment\'s key should be its name');
         }
     }
 
     /**
      * @covers ::processAttachments
      */
-    public function testProcessAttachmentsSkipping()
+    public function testProcessAttachmentsRenaming()
     {
-        $skipped = 1;
-
         $attachments = array(
-            $this->buildAttachment(null, 'attachment-1.txt'),
-            $this->buildAttachment(null, 'attachment-2.txt'),
-            $this->buildAttachment(null, 'attachment-3.txt'),
+            $this->buildAttachment(null, 'attachment.txt'),
+            $this->buildAttachment(null, 'attachment.txt'),
+            $this->buildAttachment(null, 'other.txt'),
+        );
+        $names = array(
+            'attachment.txt',
+            'attachment-1.txt',
+            'other.txt',
         );
 
-        $count = 0;
-        $calledAttachments = array();
-        $callback = function($name, $attachment) use(&$calledAttachments, &$count, $skipped){
-            $calledAttachments[] = $attachment->getName();
+        $processedAttachments = AttachmentUtils::processAttachments($attachments);
 
-            if ($count === $skipped) {
-                $count++;
-                return null; // Should not be included
-            }
-
-            $count++;
-            return $name;
-        };
-
-        $result = AttachmentUtils::processAttachments($attachments, $callback);
-
-        $skipped = $attachments[$skipped];
-
-        // Ensure called for every attachment
-        $this->assertEquals(count($attachments), count($calledAttachments), 'Callback should be called for every attachment');
+        // Ensure result contains attachments
+        $this->assertEquals(count($attachments), count($processedAttachments), 'All attachments should be returned');
         foreach ($attachments as $attachment) {
-            $this->assertTrue(in_array($attachment->getName(), $calledAttachments), 'Callback should be called for every attachment');
+            $this->assertTrue(in_array($attachment, $processedAttachments, true), 'All attachments should be returned');
         }
-
-        // Ensure skipped attachment not returned
-        $this->assertEquals(count($attachments)-1, count($result), 'Only attachments returning a callback value should be returned');
-        $this->assertFalse(in_array($skipped->getName(), $result), 'Skipped attachments should not be returned');
+        // Ensure conflicts renamed correctly
+        foreach ($names as $name) {
+            $this->assertTrue(isset($processedAttachments[$name]), 'Attachment keys should be set correctly');
+        }
     }
 
 
@@ -132,19 +107,6 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
             'name-3.txt',
         ));
         $this->assertEquals('name-4.txt', $result, 'Conflicting names should be modified');
-    }
-
-
-    /**
-     * @return callable
-     */
-    protected function buildIllegalCallback()
-    {
-        $self = $this; // PHP5.3 compatibility
-
-        return function() use($self){
-            $self->fail('Callback should not be called');
-        };
     }
 
     /**

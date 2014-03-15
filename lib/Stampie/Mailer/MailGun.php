@@ -61,19 +61,7 @@ class MailGun extends Mailer
         }
 
         // Process files
-        $inline      = array();
-        $attachments = $this->processAttachments($message->getAttachments(), function ($name, AttachmentInterface $attachment) use (&$inline) {
-            $path = $attachment->getPath();
-            $id   = $attachment->getID();
-            if (isset($id)) {
-                // Inline
-                $inline[] = $path;
-                return null; // Do not add to attachments
-            }
-
-            // Attached
-            return $path;
-        });
+        list($attachments, $inline) = $this->processAttachments($message->getAttachments());
 
         // Format params
         $files = array();
@@ -135,10 +123,25 @@ class MailGun extends Mailer
     }
 
     /**
-     * {@inheritdoc}
+     * @param AttachmentInterface[] $attachments
+     * @return array    First element: An array of attachment paths. Second element: An array of inline paths
      */
-    protected function processAttachments(array $attachments, $callback)
+    protected function processAttachments(array $attachments)
     {
-        return array_values(parent::processAttachments($attachments, $callback));
+        $processedAttachments = array();
+        $inline = array();
+        foreach ($attachments as $attachment) {
+            $path = $attachment->getPath();
+            $id   = $attachment->getID();
+            if (isset($id)) {
+                // Inline
+                $inline[] = $path;
+            } else {
+                // Attached
+                $processedAttachments[] = $path;
+            }
+        }
+
+        return array($processedAttachments, $inline);
     }
 }

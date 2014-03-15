@@ -15,17 +15,12 @@ abstract class AttachmentUtils
      * Applies a function to each attachment, and finds a unique name for any conflicting names
      *
      * @param AttachmentInterface[] $attachments
-     * @param callable $callback    function (string $name, AttachmentInterface $attachment) { ... }
      * @return array
      *
      * @throws \InvalidArgumentException
      */
-    public static function processAttachments(array $attachments, $callback)
+    public static function processAttachments(array $attachments)
     {
-        if (!is_callable($callback)) {
-            throw new \InvalidArgumentException('Callback must be callable');
-        }
-
         $processed    = array();
 
         foreach ($attachments as $attachment) {
@@ -40,12 +35,7 @@ abstract class AttachmentUtils
                 $name = static::findUniqueName($name, array_keys($processed));
             }
 
-            $result = $callback($name, $attachment);
-            if (!isset($result)) {
-                continue;
-            }
-
-            $processed[$name]    = $result;
+            $processed[$name]    = $attachment;
         }
 
         return $processed;
@@ -56,7 +46,7 @@ abstract class AttachmentUtils
      * @param array $claimed  Names already in use to avoid
      * @return string         A unique name
      */
-    protected static function findUniqueName($name, array $claimed)
+    public static function findUniqueName($name, array $claimed)
     {
         $ext      = pathinfo($name, \PATHINFO_EXTENSION);
         $basename = substr($name, 0, -strlen('.'.$ext));

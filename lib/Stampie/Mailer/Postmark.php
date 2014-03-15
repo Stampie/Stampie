@@ -10,6 +10,7 @@ use Stampie\Adapter\ResponseInterface;
 use Stampie\AttachmentInterface;
 use Stampie\Exception\HttpException;
 use Stampie\Exception\ApiException;
+use Stampie\Util\AttachmentUtils;
 
 /**
  * Sends emails to Postmark server
@@ -85,24 +86,10 @@ class Postmark extends Mailer
         }
 
         if ($message instanceof AttachmentsInterface) {
-            $self = $this; // PHP5.3 compatibility
-            $attachments = $this->processAttachments($message->getAttachments(), function ($name, AttachmentInterface $attachment) use ($self) {
-                $item = array(
-                    'Name'        => $name,
-                    'Content'     => base64_encode($self->getAttachmentContent($attachment)),
-                    'ContentType' => $attachment->getType(),
-                );
-
-                $id = $attachment->getID();
-                if (isset($id)) {
-                    $item['ContentID']    = $id;
-                }
-
-                return $item;
-            });
+            $attachments = $this->processAttachments($message->getAttachments());
 
             if ($attachments) {
-                $parameters['Attachments']    = $attachments;
+                $parameters['Attachments'] = $attachments;
             }
         }
 
@@ -119,11 +106,35 @@ class Postmark extends Mailer
     }
 
     /**
-     * {@inheritdoc}
+     * @param AttachmentInterface[] $attachments
+     * @return array An array containing arrays of the following format:
+     *     array(
+     *         'Name'                 => name,
+     *         'Content'              => base64-encoded content,
+     *         'ContentType'          => type,
+     *         (optional) 'ContentID' => id,
+     *     )
      */
-    protected function processAttachments(array $attachments, $callback)
+    protected function processAttachments(array $attachments)
     {
-        // Strip keys
-        return array_values(parent::processAttachments($attachments, $callback));
+        $attachments = AttachmentUtils::processAttachments($attachments);
+
+        $processedAttachments = array();
+        foreach ($attachments as $name => $attachment) {
+            $item = array(
+                'Name'        => $name,
+                'Content'     => base64_encode($this->getAttachmentContent($attachment)),
+                'ContentType' => $attachment->getType(),
+            );
+
+            $id = $attachment->getID();
+            if (isset($id)) {
+                $item['ContentID'] = $id;
+            }
+
+            $processedAttachments[] = $item;
+        }
+
+        return $processedAttachments;
     }
 }
