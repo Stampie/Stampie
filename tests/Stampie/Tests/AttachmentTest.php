@@ -56,7 +56,35 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::__construct
-     * @covers ::getFile
+     */
+    public function testUnknownFileTypeSucceeds()
+    {
+        $file = 'unknownfiletype.txt';
+        $type = 'text/plain';
+
+        $attachment = $this->getAttachmentMock(array('isValidFile', 'determineFileType'));
+        $attachment
+            ->expects($this->once())
+            ->method('isValidFile')
+            ->with($file)
+            ->will($this->returnValue(true))
+        ;
+
+        $attachment
+            ->expects($this->once())
+            ->method('determineFileType')
+            ->with($file)
+            ->will($this->returnValue($type))
+        ;
+
+        $attachment->__construct($file);
+
+        $this->assertEquals($type, $attachment->getType(), 'The type should be determined');
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::getPath
      * @covers ::getName
      * @covers ::getType
      * @covers ::getID
