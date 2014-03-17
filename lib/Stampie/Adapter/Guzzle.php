@@ -43,7 +43,6 @@ class Guzzle implements AdapterInterface
      */
     public function send($endpoint, $content, array $headers = array(), array $files = array())
     {
-        /** @var EntityEnclosingRequestInterface $request */
         $request = $this->client->createRequest(RequestInterface::POST, $endpoint, $headers, $content, array('exceptions' => false));
         if ($files && $request instanceof EntityEnclosingRequestInterface) {
             $request->addPostFiles($files);
