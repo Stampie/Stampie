@@ -28,5 +28,5 @@ interface AttachmentInterface
     /**
      * @return string|null    The content ID for the file if available
      */
-    function getID();
+    function getId();
 }

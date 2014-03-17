@@ -154,7 +154,7 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
         foreach ($images as $attachment) {
             $processedImages[] = array(
                 'type'    => $attachment->getType(),
-                'name'    => $attachment->getID(),
+                'name'    => $attachment->getId(),
                 'content' => base64_encode($contentCallback($attachment)),
             );
         }

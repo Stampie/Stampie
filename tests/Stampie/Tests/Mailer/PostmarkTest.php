@@ -129,7 +129,7 @@ class PostmarkTest extends \Stampie\Tests\BaseMailerTest
                 'Name'        => $attachment->getName(),
                 'Content'     => base64_encode($contentCallback($attachment)),
                 'ContentType' => $attachment->getType(),
-                'ContentID'   => $attachment->getID(),
+                'ContentID'   => $attachment->getId(),
             );
         }
 
