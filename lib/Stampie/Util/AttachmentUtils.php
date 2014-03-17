@@ -9,8 +9,13 @@ use Stampie\AttachmentInterface;
  *
  * @author Adam Averay <adam@averay.com>
  */
-abstract class AttachmentUtils
+final class AttachmentUtils
 {
+	/**
+	 * This class should not be instantiated
+	 */
+	private function __construct() {}
+
     /**
      * Applies a function to each attachment, and finds a unique name for any conflicting names
      *
