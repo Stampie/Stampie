@@ -120,7 +120,7 @@ class Attachment implements AttachmentInterface
     /**
      * @return string|null
      */
-    public function getID()
+    public function getId()
     {
         return $this->id;
     }

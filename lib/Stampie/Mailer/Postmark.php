@@ -127,7 +127,7 @@ class Postmark extends Mailer
                 'ContentType' => $attachment->getType(),
             );
 
-            $id = $attachment->getID();
+            $id = $attachment->getId();
             if (isset($id)) {
                 $item['ContentID'] = $id;
             }

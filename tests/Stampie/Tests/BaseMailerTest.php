@@ -137,7 +137,7 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
         ;
         $attachment
             ->expects($this->any())
-            ->method('getID')
+            ->method('getId')
             ->will($this->returnValue($id))
         ;
 

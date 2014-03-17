@@ -143,7 +143,7 @@ class Mandrill extends Mailer
                 'content' => base64_encode($this->getAttachmentContent($attachment)),
             );
 
-            $id = $attachment->getID();
+            $id = $attachment->getId();
             if (strpos($type, 'image/') === 0 && isset($id)) {
                 // Inline image
                 $item['name'] = $id;

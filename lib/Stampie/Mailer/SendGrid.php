@@ -151,7 +151,7 @@ class SendGrid extends Mailer
         $processedAttachments = array();
         $inline = array();
         foreach ($attachments as $name => $attachment) {
-            $id = $attachment->getID();
+            $id = $attachment->getId();
             if (isset($id)) {
                 // Reference inline
                 $inline[$id] = $name;

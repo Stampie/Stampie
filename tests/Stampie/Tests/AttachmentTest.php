@@ -87,7 +87,7 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
      * @covers ::getPath
      * @covers ::getName
      * @covers ::getType
-     * @covers ::getID
+     * @covers ::getId
      */
     public function testDefaults()
     {
@@ -109,7 +109,7 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($file, $attachment->getPath(), 'The path should be stored correctly');
         $this->assertEquals($name, $attachment->getName(), 'The name should be stored correctly');
         $this->assertEquals($type, $attachment->getType(), 'The type should be stored correctly');
-        $this->assertEquals($id, $attachment->getID(), 'The ID should be stored correctly');
+        $this->assertEquals($id, $attachment->getId(), 'The ID should be stored correctly');
     }
 
     /**

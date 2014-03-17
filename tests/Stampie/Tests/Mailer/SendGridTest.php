@@ -168,7 +168,7 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
 
         $processedInline = array();
         foreach ($inline as $attachment){
-            $processedInline[$attachment->getID()] = $attachment->getName();
+            $processedInline[$attachment->getId()] = $attachment->getName();
         }
         $query['content'] = $processedInline;
 

@@ -132,7 +132,7 @@ class MailGun extends Mailer
         $inline = array();
         foreach ($attachments as $attachment) {
             $path = $attachment->getPath();
-            $id   = $attachment->getID();
+            $id   = $attachment->getId();
             if (isset($id)) {
                 // Inline
                 $inline[] = $path;
