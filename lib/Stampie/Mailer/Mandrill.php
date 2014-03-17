@@ -6,7 +6,7 @@ use Stampie\Mailer;
 use Stampie\Message\MetadataAwareInterface;
 use Stampie\MessageInterface;
 use Stampie\Message\TaggableInterface;
-use Stampie\Message\AttachmentsContainerInterface;
+use Stampie\Message\AttachmentsAwareInterface;
 use Stampie\Adapter\ResponseInterface;
 use Stampie\AttachmentInterface;
 use Stampie\Exception\HttpException;
@@ -67,7 +67,7 @@ class Mandrill extends Mailer
 
         $images      = array();
         $attachments = array();
-        if ($message instanceof AttachmentsContainerInterface) {
+        if ($message instanceof AttachmentsAwareInterface) {
             list($attachments, $images) = $this->processAttachments($message->getAttachments());
         }
 

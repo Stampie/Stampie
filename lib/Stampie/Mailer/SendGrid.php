@@ -6,7 +6,7 @@ use Stampie\Mailer;
 use Stampie\Message\MetadataAwareInterface;
 use Stampie\MessageInterface;
 use Stampie\Message\TaggableInterface;
-use Stampie\Message\AttachmentsContainerInterface;
+use Stampie\Message\AttachmentsAwareInterface;
 use Stampie\Adapter\ResponseInterface;
 use Stampie\AttachmentInterface;
 use Stampie\Exception\HttpException;
@@ -46,7 +46,7 @@ class SendGrid extends Mailer
      */
     protected function getFiles(MessageInterface $message)
     {
-        if (!($message instanceof AttachmentsContainerInterface)) {
+        if (!($message instanceof AttachmentsAwareInterface)) {
             return array();
         }
 
@@ -112,7 +112,7 @@ class SendGrid extends Mailer
         }
 
         $inline = array();
-        if ($message instanceof AttachmentsContainerInterface) {
+        if ($message instanceof AttachmentsAwareInterface) {
             // Store inline attachment references
             list(,$inline) = $this->processAttachments($message->getAttachments());
         }

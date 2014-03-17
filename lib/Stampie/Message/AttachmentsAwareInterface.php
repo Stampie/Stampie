@@ -9,7 +9,7 @@ use Stampie\AttachmentInterface;
  *
  * @author Adam Averay <adam@averay.com>
  */
-interface AttachmentsContainerInterface
+interface AttachmentsAwareInterface
 {
     /**
      * @return AttachmentInterface[]
