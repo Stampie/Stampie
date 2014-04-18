@@ -2,7 +2,7 @@
 
 namespace Stampie\Message;
 
-use Stampie\AttachmentInterface;
+use Stampie\Attachment;
 
 /**
  * Represents a Message that contains Attachments
@@ -12,7 +12,7 @@ use Stampie\AttachmentInterface;
 interface AttachmentsAwareInterface
 {
     /**
-     * @return AttachmentInterface[]
+     * @return Attachment[]
      */
     public function getAttachments();
 }

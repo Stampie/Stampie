@@ -8,7 +8,7 @@ use Stampie\MessageInterface;
 use Stampie\Message\TaggableInterface;
 use Stampie\Message\AttachmentsAwareInterface;
 use Stampie\Adapter\ResponseInterface;
-use Stampie\AttachmentInterface;
+use Stampie\Attachment;
 use Stampie\Exception\HttpException;
 use Stampie\Exception\ApiException;
 use Stampie\Util\AttachmentUtils;
@@ -113,7 +113,7 @@ class Mandrill extends Mailer
     }
 
     /**
-     * @param AttachmentInterface[] $attachments
+     * @param Attachment[] $attachments
      * @return array
      *     First element: Attachments – an array containing arrays of the following format
      *         array(
@@ -158,10 +158,10 @@ class Mandrill extends Mailer
     }
 
     /**
-     * @param AttachmentInterface $attachment
+     * @param Attachment $attachment
      * @return string
      */
-    protected function getAttachmentContent(AttachmentInterface $attachment)
+    protected function getAttachmentContent(Attachment $attachment)
     {
         return file_get_contents($attachment->getPath());
     }

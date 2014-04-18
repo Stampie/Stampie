@@ -3,11 +3,11 @@
 namespace Stampie;
 
 /**
- * Implementation of AttachmentInterface.
+ * An Attachment is a container for a file that will be included with a Message.
  *
  * @author Adam Averay <adam@averay.com>
  */
-class Attachment implements AttachmentInterface
+class Attachment
 {
     /**
      * @var string
