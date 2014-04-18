@@ -8,7 +8,7 @@ use Stampie\MessageInterface;
 use Stampie\Message\TaggableInterface;
 use Stampie\Message\AttachmentsAwareInterface;
 use Stampie\Adapter\ResponseInterface;
-use Stampie\AttachmentInterface;
+use Stampie\Attachment;
 use Stampie\Exception\HttpException;
 use Stampie\Exception\ApiException;
 use Stampie\Util\AttachmentUtils;
@@ -141,7 +141,7 @@ class SendGrid extends Mailer
     }
 
     /**
-     * @param AttachmentInterface[] $attachments
+     * @param Attachment[] $attachments
      * @return array First element: All attachments – array(name => path). Second element: Inline attachments – array(id => name)
      */
     protected function processAttachments(array $attachments)

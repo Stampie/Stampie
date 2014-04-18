@@ -2,7 +2,7 @@
 
 namespace Stampie\Util;
 
-use Stampie\AttachmentInterface;
+use Stampie\Attachment;
 
 /**
  * Stampie Attachment utility functions
@@ -19,7 +19,7 @@ final class AttachmentUtils
     /**
      * Applies a function to each attachment, and finds a unique name for any conflicting names
      *
-     * @param AttachmentInterface[] $attachments
+     * @param Attachment[] $attachments
      * @return array
      *
      * @throws \InvalidArgumentException
@@ -29,8 +29,8 @@ final class AttachmentUtils
         $processed    = array();
 
         foreach ($attachments as $attachment) {
-            if (!($attachment instanceof AttachmentInterface)) {
-                throw new \InvalidArgumentException('Attachments must implement Stampie\\AttachmentInterface');
+            if (!($attachment instanceof Attachment)) {
+                throw new \InvalidArgumentException('Attachments must implement Stampie\\Attachment');
             }
 
             $name = $attachment->getName();

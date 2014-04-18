@@ -3,7 +3,7 @@
 namespace Stampie\Tests\Util;
 
 use Stampie\Util\AttachmentUtils;
-use Stampie\AttachmentInterface;
+use Stampie\Attachment;
 
 /**
  * @coversDefaultClass \Stampie\Util\AttachmentUtils
@@ -112,7 +112,7 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
     /**
      * @param array|null $mockMethods
      * @param string $name
-     * a@return \PHPUnit_Framework_MockObject_MockObject|AttachmentInterface
+     * a@return \PHPUnit_Framework_MockObject_MockObject|Attachment
      */
     protected function buildAttachment(array $mockMethods = null, $name = null)
     {
@@ -121,9 +121,10 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
             $mockMethods[] = 'getName';
         }
 
-        $mock    = $this->getMockBuilder('\\Stampie\\AttachmentInterface')
+        $mock    = $this->getMockBuilder('\\Stampie\\Attachment')
                         ->setMethods($mockMethods)
-                        ->getMockForAbstractClass();
+                        ->disableOriginalConstructor()
+                        ->getMock();
 
         $mock
             ->expects($this->any())

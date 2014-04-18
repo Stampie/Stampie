@@ -8,7 +8,7 @@ use Stampie\MessageInterface;
 use Stampie\Message\TaggableInterface;
 use Stampie\Message\AttachmentsAwareInterface;
 use Stampie\Adapter\ResponseInterface;
-use Stampie\AttachmentInterface;
+use Stampie\Attachment;
 use Stampie\Exception\HttpException;
 
 /**
@@ -123,7 +123,7 @@ class MailGun extends Mailer
     }
 
     /**
-     * @param AttachmentInterface[] $attachments
+     * @param Attachment[] $attachments
      * @return array    First element: An array of attachment paths. Second element: An array of inline paths
      */
     protected function processAttachments(array $attachments)
