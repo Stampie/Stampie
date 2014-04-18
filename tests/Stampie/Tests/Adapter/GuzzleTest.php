@@ -29,6 +29,17 @@ class GuzzleTest extends \PHPUnit_Framework_TestCase
         $request = $this->getRequestMock();
         $client = $this->client;
 
+        $files = array(
+            'filename.jpg' => 'path/to/file.jpg',
+        );
+
+        $request
+            ->expects($this->once())
+            ->method('addPostFiles')
+            ->with($files)
+            ->will($this->returnValue(null))
+        ;
+
         $request
             ->expects($this->once())
             ->method('send')
@@ -68,12 +79,12 @@ class GuzzleTest extends \PHPUnit_Framework_TestCase
         $adapter->send('http://google.com', 'content', array(
             'Content-Type' => 'application/json',
             'X-Postmark-Server-Token' => 'MySuperToken',
-        ));
+        ), $files);
     }
 
     protected function getRequestMock()
     {
-        return $this->getMock('Guzzle\Http\Message\Request', array(), array(), '', null, true);
+        return $this->getMock('Guzzle\Http\Message\EntityEnclosingRequestInterface', array(), array(), '', null, true);
     }
 
     protected function getResponseMock()

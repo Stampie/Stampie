@@ -6,9 +6,12 @@ use Stampie\Mailer;
 use Stampie\Message\MetadataAwareInterface;
 use Stampie\MessageInterface;
 use Stampie\Message\TaggableInterface;
+use Stampie\Message\AttachmentsAwareInterface;
 use Stampie\Adapter\ResponseInterface;
+use Stampie\Attachment;
 use Stampie\Exception\HttpException;
 use Stampie\Exception\ApiException;
+use Stampie\Util\AttachmentUtils;
 
 /**
  * Sends emails to Mandrill server
@@ -62,18 +65,26 @@ class Mandrill extends Mailer
             $metadata = array_filter($message->getMetadata());
         }
 
+        $images      = array();
+        $attachments = array();
+        if ($message instanceof AttachmentsAwareInterface) {
+            list($attachments, $images) = $this->processAttachments($message->getAttachments());
+        }
+
         $parameters = array(
             'key'     => $this->getServerToken(),
             'message' => array_filter(array(
-                'from_email' => $from->getEmail(),
-                'from_name'  => $from->getName(),
-                'to'         => $to,
-                'subject'    => $message->getSubject(),
-                'headers'    => $headers,
-                'text'       => $message->getText(),
-                'html'       => $message->getHtml(),
-                'tags'       => $tags,
-                'metadata'   => $metadata,
+                'from_email'  => $from->getEmail(),
+                'from_name'   => $from->getName(),
+                'to'          => $to,
+                'subject'     => $message->getSubject(),
+                'headers'     => $headers,
+                'text'        => $message->getText(),
+                'html'        => $message->getHtml(),
+                'tags'        => $tags,
+                'metadata'    => $metadata,
+                'attachments' => $attachments,
+                'images'      => $images,
             )),
         );
 
@@ -91,5 +102,59 @@ class Mandrill extends Mailer
         $error         = json_decode($response->getContent());
 
         throw new ApiException($error->message, $httpException, $error->code);
+    }
+
+    /**
+     * @param Attachment[] $attachments
+     * @return array
+     *     First element: Attachments – an array containing arrays of the following format
+     *         array(
+     *             'type'    => type,
+     *             'name'    => name,
+     *             'content' => base64-encoded content,
+     *         )
+     *
+     *     Second element: Inline images – an array containing arrays of the following format
+     *         array(
+     *             'type'    => type,
+     *             'name'    => id,
+     *             'content' => base64-encoded content,
+     *         )
+     */
+    protected function processAttachments(array $attachments)
+    {
+        $attachments = AttachmentUtils::processAttachments($attachments);
+
+        $processedAttachments = array();
+        $images = array();
+        foreach ($attachments as $name => $attachment) {
+            $type = $attachment->getType();
+            $item = array(
+                'type'    => $type,
+                'name'    => $name,
+                'content' => base64_encode($this->getAttachmentContent($attachment)),
+            );
+
+            $id = $attachment->getId();
+            if (strpos($type, 'image/') === 0 && isset($id)) {
+                // Inline image
+                $item['name'] = $id;
+                $images[] = $item;
+            } else {
+                // Attached
+                $processedAttachments[] = $item;
+            }
+        }
+
+        return array($processedAttachments, $images);
+    }
+
+    /**
+     * @param Attachment $attachment
+     * @return string
+     */
+    protected function getAttachmentContent(Attachment $attachment)
+    {
+        return file_get_contents($attachment->getPath());
     }
 }
