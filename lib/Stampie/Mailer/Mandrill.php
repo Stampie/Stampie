@@ -2,6 +2,7 @@
 
 namespace Stampie\Mailer;
 
+use Stampie\IdentityInterface;
 use Stampie\Mailer;
 use Stampie\Message\MetadataAwareInterface;
 use Stampie\MessageInterface;
@@ -48,8 +49,17 @@ class Mandrill extends Mailer
         $from = $this->normalizeIdentity($message->getFrom());
 
         $to = array();
+
         foreach ($this->normalizeIdentities($message->getTo()) as $recipient) {
-            $to[] = array('email' => $recipient->getEmail(), 'name' => $recipient->getName());
+            $to[] = array('email' => $recipient->getEmail(), 'name' => $recipient->getName(), 'type' => 'to');
+        }
+
+        foreach ($this->normalizeIdentities($message->getCc()) as $recipient) {
+            $to[] = array('email' => $recipient->getEmail(), 'name' => $recipient->getName(), 'type' => 'cc');
+        }
+
+        foreach ($this->normalizeIdentities($message->getBcc()) as $recipient) {
+            $to[] = array('email' => $recipient->getEmail(), 'name' => $recipient->getName(), 'type' => 'bcc');
         }
 
         $tags = array();

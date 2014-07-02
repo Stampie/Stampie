@@ -46,7 +46,7 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
             'key' => self::SERVER_TOKEN,
             'message' => array(
                 'from_email' => $from,
-                'to' => array(array('email' => $to, 'name' => null)),
+                'to' => array(array('email' => $to, 'name' => null, 'type' => 'to')),
                 'subject' => $subject,
                 'html' => $html,
             ),
@@ -69,7 +69,7 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
             'key' => self::SERVER_TOKEN,
             'message' => array(
                 'from_email' => $from,
-                'to' => array(array('email' => $to, 'name' => null)),
+                'to' => array(array('email' => $to, 'name' => null, 'type' => 'to')),
                 'subject' => $subject,
                 'headers' => $headers,
                 'text' => $text,
@@ -95,7 +95,7 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
             'key' => self::SERVER_TOKEN,
             'message' => array(
                 'from_email' => $from,
-                'to' => array(array('email' => $to, 'name' => null)),
+                'to' => array(array('email' => $to, 'name' => null, 'type' => 'to')),
                 'subject' => $subject,
                 'headers' => $headers,
                 'text' => $text,
