@@ -3,9 +3,10 @@ language: php
 php:
     - 5.3
     - 5.4
+    - 5.5
+    - hhvm
 
 before_script:
-    - wget http://getcomposer.org/composer.phar
-    - php composer.phar install --dev
+    - composer install
 
-script: phpunit --coverage-text
+script: phpunit
