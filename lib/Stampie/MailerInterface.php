@@ -5,7 +5,7 @@ namespace Stampie;
 use Stampie\Adapter\AdapterInterface;
 
 /**
- * Takes a MailerInterface and sends to to Postmark throgh Buzz
+ * Takes a MailerInterface and sends to Postmark through Buzz
  *
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  */

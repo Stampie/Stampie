@@ -73,6 +73,34 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
         return $message;
     }
 
+    protected function getCarbonCopyMock($from, $to, $subject, $html = null, $text = null, array $headers = array(), $cc = null)
+    {
+        $message = $this->getMock('Stampie\MessageInterface');
+
+        $this->configureMessageMock($message, $from, $to, $subject, $html, $text, $headers);
+
+        $message
+            ->expects($this->any())
+            ->method('getCc')
+            ->will($this->returnValue($cc));
+
+        return $message;
+    }
+
+    protected function getBlindCarbonCopyMock($from, $to, $subject, $html = null, $text = null, array $headers = array(), $bcc = null)
+    {
+        $message = $this->getMock('Stampie\MessageInterface');
+
+        $this->configureMessageMock($message, $from, $to, $subject, $html, $text, $headers);
+
+        $message
+            ->expects($this->any())
+            ->method('getBcc')
+            ->will($this->returnValue($bcc));
+
+        return $message;
+    }
+
     private function configureMessageMock(\PHPUnit_Framework_MockObject_MockObject $message, $from, $to, $subject, $html = null, $text = null, array $headers = array())
     {
         $message
