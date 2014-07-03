@@ -2,6 +2,7 @@
 
 namespace Stampie\Tests\Mailer;
 
+use Stampie\Identity;
 use Stampie\Mailer\Mandrill;
 use Stampie\Adapter\Response;
 use Stampie\Adapter\ResponseInterface;
@@ -46,7 +47,7 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
             'key' => self::SERVER_TOKEN,
             'message' => array(
                 'from_email' => $from,
-                'to' => array(array('email' => $to, 'name' => null)),
+                'to' => array(array('email' => $to, 'name' => null, 'type' => 'to')),
                 'subject' => $subject,
                 'html' => $html,
             ),
@@ -69,7 +70,7 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
             'key' => self::SERVER_TOKEN,
             'message' => array(
                 'from_email' => $from,
-                'to' => array(array('email' => $to, 'name' => null)),
+                'to' => array(array('email' => $to, 'name' => null, 'type' => 'to')),
                 'subject' => $subject,
                 'headers' => $headers,
                 'text' => $text,
@@ -95,12 +96,68 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
             'key' => self::SERVER_TOKEN,
             'message' => array(
                 'from_email' => $from,
-                'to' => array(array('email' => $to, 'name' => null)),
+                'to' => array(array('email' => $to, 'name' => null, 'type' => 'to')),
                 'subject' => $subject,
                 'headers' => $headers,
                 'text' => $text,
                 'html' => $html,
                 'metadata' => $metadata
+            ),
+        )), $this->mailer->format($message));
+    }
+
+    /**
+     * @dataProvider carbonCopyProvider
+     */
+    public function testFormatCarbonCopy($recipient, $ccs, $expectedTos)
+    {
+        $message = $this->getCarbonCopyMock(
+            $from = 'hb@peytz.dk',
+            $to = $recipient,
+            $subject = 'Stampie is awesome, right?',
+            $html = 'So what do you think',
+            $text = 'text',
+            $headers = array('X-Stampie-To' => 'henrik+to@bjrnskov.dk'),
+            $cc = $ccs
+        );
+
+        $this->assertEquals(json_encode(array(
+            'key' => self::SERVER_TOKEN,
+            'message' => array(
+                'from_email' => $from,
+                'to' => $expectedTos,
+                'subject' => $subject,
+                'headers' => $headers,
+                'text' => $text,
+                'html' => $html,
+            ),
+        )), $this->mailer->format($message));
+    }
+
+    /**
+     * @dataProvider blindCarbonCopyProvider
+     */
+    public function testFormatBlindCarbonCopy($recipient, $bccs, $expectedTos)
+    {
+        $message = $this->getBlindCarbonCopyMock(
+            $from = 'hb@peytz.dk',
+            $to = $recipient,
+            $subject = 'Stampie is awesome, right?',
+            $html = 'So what do you think',
+            $text = 'text',
+            $headers = array('X-Stampie-To' => 'henrik+to@bjrnskov.dk'),
+            $bcc = $bccs
+        );
+
+        $this->assertEquals(json_encode(array(
+            'key' => self::SERVER_TOKEN,
+            'message' => array(
+                'from_email' => $from,
+                'to' => $expectedTos,
+                'subject' => $subject,
+                'headers' => $headers,
+                'text' => $text,
+                'html' => $html,
             ),
         )), $this->mailer->format($message));
     }
@@ -130,6 +187,74 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
             array(400, 'Bad Request'),
             array(401, 'Unauthorized'),
             array(504, 'Gateway Timeout'),
+        );
+    }
+
+    public function blindCarbonCopyProvider()
+    {
+        return array(
+            array('henrik@bjrnskov.dk', 'gauthier.wallet@gmail.com', array(
+                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
+                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc')
+            )),
+            array(array(new Identity('henrik@bjrnskov.dk')), 'gauthier.wallet@gmail.com', array(
+                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
+                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc')
+            )),
+            array(array(new Identity('henrik@bjrnskov.dk'), new Identity('henrik2@bjrnskov.dk')), 'gauthier.wallet@gmail.com', array(
+                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
+                array('email' => 'henrik2@bjrnskov.dk', 'name' => null, 'type' => 'to'),
+                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc')
+            )),
+            array(array(new Identity('henrik@bjrnskov.dk')), array(new Identity('gauthier.wallet@gmail.com')), array(
+                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
+                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc')
+            )),
+            array(array(new Identity('henrik@bjrnskov.dk'), new Identity('henrik2@bjrnskov.dk')), array(new Identity('gauthier.wallet@gmail.com'), new Identity('gauthier.wallet2@gmail.com')), array(
+                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
+                array('email' => 'henrik2@bjrnskov.dk', 'name' => null, 'type' => 'to'),
+                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc'),
+                array('email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'bcc')
+            )),
+            array('henrik@bjrnskov.dk', array(new Identity('gauthier.wallet@gmail.com'), new Identity('gauthier.wallet2@gmail.com')), array(
+                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
+                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc'),
+                array('email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'bcc')
+            )),
+        );
+    }
+
+    public function carbonCopyProvider()
+    {
+        return array(
+            array('henrik@bjrnskov.dk', 'gauthier.wallet@gmail.com', array(
+                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
+                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc')
+            )),
+            array(array(new Identity('henrik@bjrnskov.dk')), 'gauthier.wallet@gmail.com', array(
+                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
+                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc')
+            )),
+            array(array(new Identity('henrik@bjrnskov.dk'), new Identity('henrik2@bjrnskov.dk')), 'gauthier.wallet@gmail.com', array(
+                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
+                array('email' => 'henrik2@bjrnskov.dk', 'name' => null, 'type' => 'to'),
+                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc')
+            )),
+            array(array(new Identity('henrik@bjrnskov.dk')), array(new Identity('gauthier.wallet@gmail.com')), array(
+                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
+                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc')
+            )),
+            array(array(new Identity('henrik@bjrnskov.dk'), new Identity('henrik2@bjrnskov.dk')), array(new Identity('gauthier.wallet@gmail.com'), new Identity('gauthier.wallet2@gmail.com')), array(
+                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
+                array('email' => 'henrik2@bjrnskov.dk', 'name' => null, 'type' => 'to'),
+                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc'),
+                array('email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'cc')
+            )),
+            array('henrik@bjrnskov.dk', array(new Identity('gauthier.wallet@gmail.com'), new Identity('gauthier.wallet2@gmail.com')), array(
+                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
+                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc'),
+                array('email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'cc')
+            )),
         );
     }
 }
