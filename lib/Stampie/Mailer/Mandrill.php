@@ -100,4 +100,27 @@ class Mandrill extends Mailer
 
         throw new ApiException($error->message, $httpException, $error->code);
     }
+
+    /**
+     * Verify success from the reponse of the API in HTTP 200 OK scenario
+     */
+    protected function verifySuccess(ResponseInterface $response)
+    {
+        $parsed_response = json_decode($response->getContent());
+        $errors = array();
+
+        if(is_array($parsed_response)) {
+            foreach ($parsed_response as $email) {
+                if($email->status !== "sent") {
+                    $errors[] = "Email to {$email->email} was {$email->status} because {$email->reject_reason}";
+                }
+            }
+        }
+
+        if(!empty($errors)) {
+            throw new ApiException(implode(' & ', $errors));
+        }
+
+        return true;
+    }
 }

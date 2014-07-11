@@ -81,8 +81,9 @@ abstract class Mailer implements MailerInterface
             $this->getHeaders()
         );
 
-        // We are all clear if status is HTTP 2xx OK
-        if ($response->isSuccessful()) {
+        // We are clear if status is HTTP 2xx OK and are able to verify success
+        // in the response from the API
+        if ($response->isSuccessful() && $this->verifySuccess($response)) {
             return true;
         }
 
@@ -128,6 +129,24 @@ abstract class Mailer implements MailerInterface
      * @throws \Stampie\Exception\HttpException
      */
     abstract protected function handle(ResponseInterface $response);
+
+    /**
+     * If a Response is successful it will be passed to this method
+     * each Mailer should parse the response to validate the success
+     * or then throw an HttpException with an optional
+     * ApiException to help identify the problem.
+     *
+     * @param ResponseInterface $response
+     *
+     * @throws \Stampie\Exception\ApiException
+     * @throws \Stampie\Exception\HttpException
+     * @return boolean
+     */
+    protected function verifySuccess(ResponseInterface $response)
+    {
+        // default implemetation for Mailers who skip this
+        return true;
+    }
 
     /**
      * @param IdentityInterface|string $identity
