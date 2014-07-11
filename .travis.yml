@@ -4,8 +4,10 @@ php:
     - 5.3
     - 5.4
     - 5.5
+    - hhvm
 
 before_script:
-    - composer install --dev -o -q
+    - "composer require --dev phpspec/phpspec:~2.0 --no-update"
+    - "composer install --dev"
 
 script: vendor/bin/phpspec run -v -f p

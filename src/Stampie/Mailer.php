@@ -52,7 +52,7 @@ class Mailer
      */
     public function send(Identity $to, Message $message)
     {
-        $event = $this->dispatcher->dispatch(Events::SEND, new MessageEvent($to, $message));
+        $event = $this->dispatcher->dispatch(StampieEvents::SEND, new MessageEvent($to, $message));
 
         if ($event->isDefaultPrevented()) {
             return new MessageHeader(null);
@@ -63,9 +63,7 @@ class Mailer
 
             return new MessageHeader($messageId);
         } catch (\Exception $e) {
-            // When a message fails should be just ignore the exception and handle it with
-            // an event an return nothing?
-            $this->dispatcher->dispatch(Events::FAILED, new FailedMessageEvent($to, $message, $e));
+            $event = $this->dispatcher->dispatch(StampieEvents::FAILED, new FailedMessageEvent($to, $message, $e));
 
             throw $e;
         }

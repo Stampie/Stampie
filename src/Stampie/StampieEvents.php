@@ -13,7 +13,7 @@ namespace Stampie;
  * @author Christophe Coevoet <stof@notk.org>
  * @package Stampie
  */
-final class Events
+final class StampieEvents
 {
     /**
      * The SEND event occurs right before sending a message

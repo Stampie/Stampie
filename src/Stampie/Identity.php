@@ -19,8 +19,8 @@ namespace Stampie;
  */
 class Identity
 {
-    protected $name;
-    protected $email;
+    private $name;
+    private $email;
 
     /**
      * @param string $email

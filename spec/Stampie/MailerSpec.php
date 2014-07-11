@@ -10,7 +10,7 @@
 namespace spec\Stampie;
 
 use Prophecy\Argument;
-use Stampie\Events;
+use Stampie\StampieEvents;
 
 class MailerSpec extends \PhpSpec\ObjectBehavior
 {
@@ -30,7 +30,7 @@ class MailerSpec extends \PhpSpec\ObjectBehavior
      */
     function it_dispatches_event_and_calls_handler($event, $identity, $message, $dispatcher, $handler)
     {
-        $dispatcher->dispatch(Events::SEND, Argument::type('Stampie\Event\MessageEvent'))->shouldBeCalled()->willReturn($event);
+        $dispatcher->dispatch(StampieEvents::SEND, Argument::type('Stampie\Event\MessageEvent'))->shouldBeCalled()->willReturn($event);
 
         $event->getTo()->willReturn($identity);
         $event->isDefaultPrevented()->willReturn(false);
@@ -72,8 +72,8 @@ class MailerSpec extends \PhpSpec\ObjectBehavior
         $event->getMessage()->willReturn($message);
         $event->isDefaultPrevented()->willReturn(false);
 
-        $dispatcher->dispatch(Events::SEND, Argument::any())->willReturn($event);
-        $dispatcher->dispatch(Events::FAILED, Argument::type('Stampie\Event\FailedMessageEvent'))->shouldBeCalled();
+        $dispatcher->dispatch(StampieEvents::SEND, Argument::any())->willReturn($event);
+        $dispatcher->dispatch(StampieEvents::FAILED, Argument::type('Stampie\Event\FailedMessageEvent'))->shouldBeCalled();
 
         $handler->send($identity, $message)->willThrow('RuntimeException');
 

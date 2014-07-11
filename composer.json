@@ -12,7 +12,6 @@
     },
 
     "require-dev" : {
-        "kriswallsmith/buzz" : "0.7",
-        "phpspec/phpspec" : "2.0.0-BETA4"
+        "kriswallsmith/buzz" : "0.7"
     }
 }
