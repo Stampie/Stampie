@@ -46,6 +46,10 @@ class IdentityUtils
             $identities = array(self::normalizeIdentity($identities));
         }
 
+        if (!is_array($identities) && $identities instanceof IdentityInterface) {
+            $identities = array($identities);
+        }
+
         return $identities;
     }
 
