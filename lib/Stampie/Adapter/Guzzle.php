@@ -41,7 +41,7 @@ class Guzzle implements AdapterInterface
      */
     public function send($endpoint, $content, array $headers = array())
     {
-        $request = $this->client->createRequest(RequestInterface::POST, $endpoint, $headers, $content);
+        $request = $this->client->createRequest(RequestInterface::POST, $endpoint, $headers, $content, array('exceptions' => false));
         $response = $request->send();
 
         return new Response($response->getStatusCode(), $response->getBody(true));
