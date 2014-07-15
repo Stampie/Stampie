@@ -10,9 +10,10 @@ class Identity implements IdentityInterface
     private $email;
     private $name;
 
-    public function __construct($email = null)
+    public function __construct($email = null, $name = null)
     {
         $this->email = $email;
+        $this->name = $name;
     }
 
     public function setEmail($email)
