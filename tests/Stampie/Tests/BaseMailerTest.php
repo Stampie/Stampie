@@ -101,6 +101,50 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
         return $message;
     }
 
+    public function getAttachmentsMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = array(), array $attachments = array())
+    {
+        $message = $this->getMock('Stampie\\Tests\\Mailer\\AttachmentMessage');
+
+        $this->configureMessageMock($message, $from, $to, $subject, $html, $text, $headers);
+
+        $message
+            ->expects($this->any())
+            ->method('getAttachments')
+            ->will($this->returnValue($attachments))
+        ;
+
+        return $message;
+    }
+
+    protected function getAttachmentMock($path, $name, $type, $id = null)
+    {
+        $attachment = $this->getMock('\\Stampie\\Attachment', array(), array(), '', false);
+
+        $attachment
+            ->expects($this->any())
+            ->method('getPath')
+            ->will($this->returnValue($path))
+        ;
+        $attachment
+            ->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue($name))
+        ;
+        $attachment
+            ->expects($this->any())
+            ->method('getType')
+            ->will($this->returnValue($type))
+        ;
+        $attachment
+            ->expects($this->any())
+            ->method('getId')
+            ->will($this->returnValue($id))
+        ;
+
+        /** @var \Stampie\Attachment $attachment */
+        return $attachment;
+    }
+
     private function configureMessageMock(\PHPUnit_Framework_MockObject_MockObject $message, $from, $to, $subject, $html = null, $text = null, array $headers = array())
     {
         $message

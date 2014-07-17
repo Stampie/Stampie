@@ -6,9 +6,12 @@ use Stampie\Mailer;
 use Stampie\Message\MetadataAwareInterface;
 use Stampie\MessageInterface;
 use Stampie\Message\TaggableInterface;
+use Stampie\Message\AttachmentsAwareInterface;
 use Stampie\Adapter\ResponseInterface;
+use Stampie\Attachment;
 use Stampie\Exception\HttpException;
 use Stampie\Exception\ApiException;
+use Stampie\Util\AttachmentUtils;
 
 /**
  * Mailer to be used with SendGrid Web API
@@ -36,6 +39,26 @@ class SendGrid extends Mailer
         }
 
         parent::setServerToken($serverToken);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getFiles(MessageInterface $message)
+    {
+        if (!($message instanceof AttachmentsAwareInterface)) {
+            return array();
+        }
+
+        // Process files
+        list($attachments,) = $this->processAttachments($message->getAttachments());
+
+        // Format params
+        $files = array();
+        if ($attachments) {
+            $files['files'] = $attachments;
+        }
+        return $files;
     }
 
     /**
@@ -88,6 +111,12 @@ class SendGrid extends Mailer
             $smtpApi['unique_args'] = array_filter($message->getMetadata());
         }
 
+        $inline = array();
+        if ($message instanceof AttachmentsAwareInterface) {
+            // Store inline attachment references
+            list(,$inline) = $this->processAttachments($message->getAttachments());
+        }
+
         $parameters = array(
             'api_user' => $username,
             'api_key'  => $password,
@@ -101,6 +130,7 @@ class SendGrid extends Mailer
             'bcc'      => $bccEmails,
             'replyto'  => $message->getReplyTo(),
             'headers'  => json_encode($message->getHeaders()),
+            'content'  => $inline,
         );
 
         if ($smtpApi) {
@@ -108,5 +138,28 @@ class SendGrid extends Mailer
         }
 
         return http_build_query(array_filter($parameters));
+    }
+
+    /**
+     * @param Attachment[] $attachments
+     * @return array First element: All attachments – array(name => path). Second element: Inline attachments – array(id => name)
+     */
+    protected function processAttachments(array $attachments)
+    {
+        $attachments = AttachmentUtils::processAttachments($attachments);
+
+        $processedAttachments = array();
+        $inline = array();
+        foreach ($attachments as $name => $attachment) {
+            $id = $attachment->getId();
+            if (isset($id)) {
+                // Reference inline
+                $inline[$id] = $name;
+            }
+
+            $processedAttachments[$name] = $attachment->getPath();
+        }
+
+        return array($processedAttachments, $inline);
     }
 }
