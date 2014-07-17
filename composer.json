@@ -4,10 +4,11 @@
     "license" : "MIT",
 
     "autoload" : {
-        "psr-0" : { "Stampie" : "src" }
+        "psr-4" : { "Stampie\\" : "src" }
     },
 
     "require" : {
+        "php"                      : "~5.4",
         "symfony/event-dispatcher" : "~2.0"
     },
 
