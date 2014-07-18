@@ -10,6 +10,7 @@
 namespace Stampie\Handler;
 
 use Stampie\Adapter\Request;
+use Stampie\Adapter\Response;
 use Stampie\Exception\UnauthorizedException;
 use Stampie\Identity;
 use Stampie\Message;
@@ -25,15 +26,8 @@ class PostmarkHandler extends AbstractHandler
     /**
      * {@inheritDoc}
      */
-    public function send(Identity $to, Message $message)
+    protected function handleResponse(Response $response)
     {
-        $request = new Request($this->endpoint, 'POST');
-        $request->setContent($this->format($to, $message));
-
-        $this->prepare($request);
-
-        $response = $this->adapter->request($request);
-
         if ($response->isSuccessful()) {
             return json_decode($response->getContent())->MessageID;
         }

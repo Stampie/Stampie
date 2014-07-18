@@ -38,10 +38,10 @@ class Identity
     public function __toString()
     {
         if ($this->name) {
-            return sprintf('%s <%s>', $this->name, $this->email);
+            return (string) sprintf('%s <%s>', $this->name, $this->email);
         }
 
-        return $this->email;
+        return (string) $this->email;
     }
 
     /**

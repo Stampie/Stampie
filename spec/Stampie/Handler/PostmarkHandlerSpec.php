@@ -4,7 +4,7 @@ namespace spec\Stampie\Handler;
 
 use Prophecy\Argument;
 
-class PostmarkHandler extends \PhpSpec\ObjectBehavior
+class PostmarkHandlerSpec extends \PhpSpec\ObjectBehavior
 {
     /**
      * @param Stampie\Adapter $adapter
@@ -21,10 +21,12 @@ class PostmarkHandler extends \PhpSpec\ObjectBehavior
      */
     function it_calls_the_adapter_with_a_request($response, $adapter, $message, $identity)
     {
-        $message->getFrom()->willReturn($identity);
-        $message->getHeaders()->willReturn(array());
+        $this->prepareMessageMock($message, $identity);
 
-        $response->isUnauthorized()->willReturn(false);
+        $identity->__toString()->willReturn('henrik@bjrnskov.dk');
+
+        $response->isSuccessful()->willReturn(true);
+        $response->getContent()->willReturn('{"MessageID" : "This is the MessageID" }');
 
         $adapter->request(Argument::type('Stampie\Adapter\Request'))->shouldBeCalled()->willReturn($response);
 
@@ -36,13 +38,24 @@ class PostmarkHandler extends \PhpSpec\ObjectBehavior
      */
     function it_throws_an_exception_when_response_is_unauthorized($response, $adapter, $message, $identity)
     {
-        $message->getFrom()->willReturn($identity);
-        $message->getHeaders()->willReturn(array());
+        $this->prepareMessageMock($message, $identity);
+
+        $identity->__toString()->willReturn('henrik@bjrnskov.dk');
 
         $adapter->request(Argument::any())->willReturn($response);
 
+        $response->isSuccessful()->willReturn(false);
         $response->isUnauthorized()->willReturn(true);
 
-        $this->shouldThrow('Stampie\Exception\UnauthorizedException')->duringSend(new Identity('henrik@bjrnskov.dk'), $message);
+        $this->shouldThrow('Stampie\Exception\UnauthorizedException')->duringSend($identity, $message);
+    }
+
+    private function prepareMessageMock($message, $identity)
+    {
+        $message->getFrom()->willReturn($identity);
+        $message->getHeaders()->willReturn(array());
+        $message->getSubject()->willReturn('Subject');
+        $message->getHtml()->willReturn('<b>Html</b>');
+        $message->getText()->willReturn('Text');
     }
 }
