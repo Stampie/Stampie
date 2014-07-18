@@ -9,4 +9,4 @@ before_script:
     - "composer require --dev phpspec/phpspec:~2.0 --no-update"
     - "composer install --dev"
 
-script: vendor/bin/phpspec run -v -f p
+script: vendor/bin/phpspec run -v -fpretty
