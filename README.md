@@ -2,15 +2,26 @@
     <img src="https://raw.github.com/henrikbjorn/Stampie/next-version/doc/logo.png" alt="Stampie" />
 </p>
 
-Stampie is a mailer for online services such as Mandrill or Postmark and with support for even more.
-It was created to have a lightwieight alternative to Swift.
 
-Stampie is created in 3 parts.
+Stampie is a small library that makes it easy to send emails through online services. It does this by
+implementing specific handlers for each of them.
 
-1. Adapters. Adapters provide the funcationality to talk to API endpoints in a structured way.
-2. Handlers. Handlers handle formatting of messages and sending the request. There is a Handler
-for each supported service.
-3. Mailer. The mailer calls the Handler and dispatch events for the lifecycle of sending each
-message.
+Supported services are currently:
+
+ * [Mandrill](https://www.mandrill.com/)
+ * [Postmark](https://postmarkapp.com/)
 
 
+Whats the deal?
+---------------
+
+This branch aims to fix some of the messy stuff that have happended over time in the stable releases.
+Together with integrating most of the features from StampieExtra. This makes it more feature complete
+and enjoyable to work with.
+
+Warning
+-------
+
+This branch contains the next iteration of Stampie. This means all the features currently in the
+stable version are not yet migrated over. Also this means the code here is extremely conceptional
+and may not work as intended.
