@@ -57,10 +57,11 @@ abstract class AbstractHandler implements \Stampie\Handler
      * Used to format a message and identity into a string representation.
      * Normally this will be json or a query string.
      *
-     * @param Identity $to
-     * @param Message $message
+     * @param Identity     $to
+     * @param Message      $message
+     * @param Attachment[] $attachments
      */
-    abstract protected function format(Identity $to, Message $message);
+    abstract protected function format(Identity $to, Message $message, $attachments = []);
 
     /**
      * Used to set additional headers or if the API key is

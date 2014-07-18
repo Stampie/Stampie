@@ -75,14 +75,17 @@ class MandrillHandler extends AbstractHandler
         return json_encode($parameters);
     }
 
-    /**
-     * Used to pluck the _id parameter from a successful response
-     *
-     * @param object $result
-     * @return string
-     */
-    protected function pluckMessageId($result)
+    private function pluckMessageId($result)
     {
         return $result->_id;
+    }
+
+    private function formatAttachment(Attachment $attachment)
+    {
+        return [
+            'type'    => $attachment->getContentType(),
+            'name'    => $attachment->getName(),
+            'content' => $attachment->getEncodedContent(),
+        ];
     }
 }

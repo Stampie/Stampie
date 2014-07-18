@@ -38,16 +38,22 @@ class PostmarkHandler extends AbstractHandler
     /**
      * {@inheritDoc}
      */
-    protected function format(Identity $to, Message $message)
+    protected function format(Identity $to, Message $message, $attachments = [])
     {
-        return json_encode([
+        $parameters = [
             'To'       => (string) $to,
             'From'     => (string) $message->getFrom(),
             'Subject'  => $message->getSubject(),
             'HtmlBody' => $message->getHtml(),
             'TextBody' => $message->getText(),
             'Headers'  => $message->getHeaders(),
-        ]);
+        ];
+
+        if ($attachments) {
+            $parameters['Attachments'] = array_map([$this, 'formatAttachment'], $attachments);
+        }
+
+        return json_encode($parameters);
     }
 
     /**
@@ -60,5 +66,14 @@ class PostmarkHandler extends AbstractHandler
             'Content-Type'            => 'application/json',
             'X-Postmark-Server-Token' => $this->key,
         ]);
+    }
+
+    private function formatAttachment(Attachment $attachment)
+    {
+        return [
+            'Name'        => $attachment->getName(),
+            'Content'     => $attachment->getEncodedContent(),
+            'ContentType' => $attachment->getContentType(),
+        ];
     }
 }
