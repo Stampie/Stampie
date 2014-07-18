@@ -14,13 +14,13 @@ class DefaultMessageSpec extends \PhpSpec\ObjectBehavior
 
     function it_returns_constructor_arguments_through_getters($identity)
     {
-        $this->beConstructedWith($identity, 'subject', 'html', 'text', array('value' => 'key'));
+        $this->beConstructedWith($identity, 'subject', 'html', 'text', ['value' => 'key']);
 
         $this->getSubject()->shouldReturn('subject');
         $this->getHtml()->shouldReturn('html');
         $this->getText()->shouldReturn('text');
         $this->getFrom()->shouldReturn($identity);
-        $this->getHeaders()->shouldReturn(array('value' => 'key'));
+        $this->getHeaders()->shouldReturn(['value' => 'key']);
 
         $this->getSubject();
         $this->getHtml();
@@ -34,7 +34,7 @@ class DefaultMessageSpec extends \PhpSpec\ObjectBehavior
         $this->getSubject()->shouldReturn(null);
         $this->getHtml()->shouldReturn(null);
         $this->getText()->shouldReturn(null);
-        $this->getHeaders()->shouldReturn(array());
+        $this->getHeaders()->shouldReturn([]);
 
         $this->getSubject();
         $this->getHtml();

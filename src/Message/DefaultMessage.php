@@ -27,13 +27,14 @@ class DefaultMessage implements \Stampie\Message
      * @param string   $subject
      * @param string   $html
      * @param string   $text
+     * @param array    $headers
      */
-    public function __construct(Identity $from, $subject = null, $html = null, $text = null, array $headers = array())
+    public function __construct(Identity $from, $subject = null, $html = null, $text = null, array $headers = [])
     {
-        $this->from = $from;
+        $this->from    = $from;
         $this->subject = $subject;
-        $this->html = $html;
-        $this->text = $text;
+        $this->html    = $html;
+        $this->text    = $text;
         $this->headers = $headers;
     }
 

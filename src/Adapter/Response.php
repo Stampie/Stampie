@@ -7,20 +7,20 @@ namespace Stampie\Adapter;
  */
 class Response
 {
-    protected $statusCode;
-    protected $content;
-    protected $headers;
+    private $statusCode;
+    private $content;
+    private $headers;
 
     /**
      * @param integer $statusCode
      * @param string $content
      * @param array $headers
      */
-    public function __construct($statusCode, $content, array $headers = array())
+    public function __construct($statusCode, $content, array $headers = [])
     {
         $this->statusCode = $statusCode;
-        $this->content = $content;
-        $this->headers = $headers;
+        $this->content    = $content;
+        $this->headers    = $headers;
     }
 
     /**

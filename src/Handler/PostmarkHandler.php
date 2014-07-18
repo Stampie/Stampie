@@ -40,14 +40,14 @@ class PostmarkHandler extends AbstractHandler
      */
     protected function format(Identity $to, Message $message)
     {
-        return json_encode(array(
+        return json_encode([
             'To'       => (string) $to,
             'From'     => (string) $message->getFrom(),
             'Subject'  => $message->getSubject(),
             'HtmlBody' => $message->getHtml(),
             'TextBody' => $message->getText(),
             'Headers'  => $message->getHeaders(),
-        ));
+        ]);
     }
 
     /**
@@ -55,10 +55,10 @@ class PostmarkHandler extends AbstractHandler
      */
     protected function prepare(Request $request)
     {
-        $request->setHeaders(array(
+        $request->setHeaders([
             'Accept'                  => 'application/json',
             'Content-Type'            => 'application/json',
             'X-Postmark-Server-Token' => $this->key,
-        ));
+        ]);
     }
 }

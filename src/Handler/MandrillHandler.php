@@ -32,7 +32,7 @@ class MandrillHandler extends AbstractHandler
             $content = json_decode($response->getContent());
 
             // Mandril returns an array for each recipient
-            return array_map(array($this, 'pluckMessageId'), $content);
+            return array_map([$this, 'pluckMessageId'], $content);
         }
 
         throw new \RuntimeException($response->getContent());
@@ -43,9 +43,9 @@ class MandrillHandler extends AbstractHandler
      */
     protected function prepare(Request $request)
     {
-        $request->setHeaders(array(
+        $request->setHeaders([
             'Content-Type' => 'application/json',
-        ));
+        ]);
     }
 
     /**
@@ -55,13 +55,13 @@ class MandrillHandler extends AbstractHandler
     {
         $from = $message->getFrom();
 
-        $parameters = array(
+        $parameters = [
             'key'     => $this->key,
-            'message' => array_filter(array(
-                'to' => array(array(
+            'message' => array_filter([
+                'to' => [[
                     'email' => $to->email,
                     'name' => $to->name,
-                )),
+                ]],
                 'from_email' => $from->email,
                 'from_name'  => $from->name,
                 'subject'    => $message->getSubject(),
@@ -69,8 +69,8 @@ class MandrillHandler extends AbstractHandler
                 'text'       => $message->getText(),
                 'html'       => $message->getHtml(),
                 'async'      => true,
-            )),
-        );
+            ]),
+        ];
 
         return json_encode($parameters);
     }

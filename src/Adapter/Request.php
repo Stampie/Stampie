@@ -7,10 +7,10 @@ namespace Stampie\Adapter;
  */
 class Request
 {
-    protected $url;
-    protected $method;
-    protected $content;
-    protected $headers = array();
+    private $url;
+    private $method;
+    private $content;
+    private $headers = [];
 
     /**
      * @param string $url
@@ -87,10 +87,10 @@ class Request
     {
         $parts = parse_url($this->url);
 
-        $lines  = array(
+        $lines = [
             strtoupper($this->method) . ' ' . $parts['path'] . ' HTTP/1.0',
             'Host: ' . $parts['host'],
-        );
+        ];
 
         foreach ($this->headers as $key => $value) {
             $lines[] = sprintf('%s: %s', $key, $value);
