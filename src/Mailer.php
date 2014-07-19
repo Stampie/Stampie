@@ -12,7 +12,6 @@ namespace Stampie;
 use Stampie\Event\FailedMessageEvent;
 use Stampie\Event\MessageEvent;
 use Stampie\Message\MessageHeader;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -28,17 +27,17 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class Mailer
 {
-    protected $handler;
-    protected $dispatcher;
+    private $provider;
+    private $dispatcher;
 
     /**
-     * @param Handler $handler
+     * @param Provider $provider
      * @param EventDispatcherInterface $dispatcher
      */
-    public function __construct(Handler $handler, EventDispatcherInterface $dispatcher = null)
+    public function __construct(Provider $provider, EventDispatcherInterface $dispatcher)
     {
-        $this->handler = $handler;
-        $this->dispatcher = $dispatcher ?: new EventDispatcher;
+        $this->provider   = $provider;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -59,7 +58,7 @@ class Mailer
         }
 
         try {
-            $messageId = $this->handler->send($event->getTo(), $event->getMessage());
+            $messageId = $this->provider->send($event->getTo(), $event->getMessage());
 
             return new MessageHeader($messageId);
         } catch (\Exception $e) {

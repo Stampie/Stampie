@@ -15,12 +15,12 @@ use Stampie\StampieEvents;
 class MailerSpec extends \PhpSpec\ObjectBehavior
 {
     /**
-     * @param Stampie\Handler $handler
+     * @param Stampie\Provider $provider
      * @param Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
      */
-    function let($handler, $dispatcher)
+    function let($provider, $dispatcher)
     {
-        $this->beConstructedWith($handler, $dispatcher);
+        $this->beConstructedWith($provider, $dispatcher);
     }
 
     /**
@@ -28,7 +28,7 @@ class MailerSpec extends \PhpSpec\ObjectBehavior
      * @param Stampie\Identity $identity
      * @param Stampie\Message $message
      */
-    function it_dispatches_event_and_calls_handler($event, $identity, $message, $dispatcher, $handler)
+    function it_dispatches_event_and_calls_handler($event, $identity, $message, $dispatcher, $provider)
     {
         $dispatcher->dispatch(StampieEvents::SEND, Argument::type('Stampie\Event\MessageEvent'))->shouldBeCalled()->willReturn($event);
 
@@ -36,7 +36,7 @@ class MailerSpec extends \PhpSpec\ObjectBehavior
         $event->isDefaultPrevented()->willReturn(false);
         $event->getMessage()->willReturn($message);
 
-        $handler->send($identity, $message)->shouldBeCalled()->willReturn('message-id');
+        $provider->send($identity, $message)->shouldBeCalled()->willReturn('message-id');
 
         $header = $this->send($identity, $message);
         $header->getMessageId()->shouldReturn('message-id');
@@ -47,14 +47,14 @@ class MailerSpec extends \PhpSpec\ObjectBehavior
      * @param Stampie\Identity $identity
      * @param Stampie\Message $message
      */
-    function it_skips_calling_handler_when_defaut_prevented($event, $identity, $message, $dispatcher, $handler)
+    function it_skips_calling_provider_when_defaut_prevented($event, $identity, $message, $dispatcher, $provider)
     {
         $dispatcher->dispatch(Argument::any(), Argument::any())->willReturn($event);
 
         $event->isDefaultPrevented()->shouldBeCalled()->willReturn(true);
         $event->getTo()->willReturn($identity);
 
-        $handler->send()->shouldNotBeCalled();
+        $provider->send()->shouldNotBeCalled();
 
         $header = $this->send($identity, $message);
         $header->getMessageId()->shouldReturn(null);
@@ -65,7 +65,7 @@ class MailerSpec extends \PhpSpec\ObjectBehavior
      * @param Stampie\Identity $identity
      * @param Stampie\Message $message
      */
-    function it_dispatches_failed_event_when_handler_raises_exception($event, $identity, $message, $dispatcher, $handler)
+    function it_dispatches_failed_event_when_provider_raises_exception($event, $identity, $message, $dispatcher, $provider)
     {
 
         $event->getTo()->willReturn($identity);
@@ -75,7 +75,7 @@ class MailerSpec extends \PhpSpec\ObjectBehavior
         $dispatcher->dispatch(StampieEvents::SEND, Argument::any())->willReturn($event);
         $dispatcher->dispatch(StampieEvents::FAILED, Argument::type('Stampie\Event\FailedMessageEvent'))->shouldBeCalled();
 
-        $handler->send($identity, $message)->willThrow('RuntimeException');
+        $provider->send($identity, $message)->willThrow('RuntimeException');
 
         $this->shouldThrow('RuntimeException')->duringSend($identity, $message);
     }

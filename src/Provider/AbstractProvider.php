@@ -1,13 +1,6 @@
 <?php
 
-/*
- * (c) Henrik Bjornskov <henrik@bjrnskov.dk>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-namespace Stampie\Handler;
+namespace Stampie\Provider;
 
 use Stampie\Adapter;
 use Stampie\Adapter\Request;
@@ -16,10 +9,7 @@ use Stampie\Message;
 use Stampie\Message\MessageHeader;
 use Stampie\Identity;
 
-/**
- * @package Stampie
- */
-abstract class AbstractHandler implements \Stampie\Handler
+abstract class AbstractProvider implements \Stampie\Provider
 {
     protected $key;
     protected $adapter;

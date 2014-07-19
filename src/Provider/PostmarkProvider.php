@@ -1,25 +1,14 @@
 <?php
 
-/*
- * (c) Henrik Bjornskov <henrik@bjrnskov.dk>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-namespace Stampie\Handler;
+namespace Stampie\Provider;
 
 use Stampie\Adapter\Request;
 use Stampie\Adapter\Response;
-use Stampie\Exception\UnauthorizedException;
 use Stampie\Identity;
 use Stampie\Message;
 use Stampie\Utils;
 
-/**
- * @package Stampie
- */
-class PostmarkHandler extends AbstractHandler
+class PostmarkProvider extends AbstractProvider
 {
     protected $endpoint = 'http://api.postmarkapp.com/email';
 
