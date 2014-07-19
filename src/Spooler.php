@@ -23,7 +23,6 @@ final class Spooler implements Mailer
     public function flushSpool()
     {
         while ($item = $this->storage->pop()) {
-            print "called\n";
             // What happens if a sending fails?
             $this->mailer->send($item[0], $item[1]);
         }

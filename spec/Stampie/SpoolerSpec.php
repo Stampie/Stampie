@@ -49,6 +49,6 @@ class SpoolerSpec extends \PhpSpec\ObjectBehavior
             return ($count += 1) < 3 ? [$to, $message] : null;
         });
 
-        $this->flush();
+        $this->flushSpool();
     }
 }
