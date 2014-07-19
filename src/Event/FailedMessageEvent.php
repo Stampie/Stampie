@@ -8,7 +8,7 @@ use Stampie\Message;
 /**
  * @package Stampie
  */
-class FailedMessageEvent extends MessageEvent
+class FailedMessageEvent extends AbstractMessageEvent
 {
     protected $exception;
 

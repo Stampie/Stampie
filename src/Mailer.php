@@ -10,7 +10,7 @@
 namespace Stampie;
 
 use Stampie\Event\FailedMessageEvent;
-use Stampie\Event\MessageEvent;
+use Stampie\Event\SendMessageEvent;
 use Stampie\Message\MessageHeader;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -54,7 +54,7 @@ class Mailer
      */
     public function send(Identity $to, Message $message)
     {
-        $event = $this->dispatcher->dispatch(StampieEvents::SEND, new MessageEvent($to, $message));
+        $event = $this->dispatcher->dispatch(StampieEvents::SEND, new SendMessageEvent($to, $message));
 
         if ($event->isDefaultPrevented()) {
             return new MessageHeader(null);

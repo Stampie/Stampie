@@ -26,7 +26,7 @@ class MailerSpec extends \PhpSpec\ObjectBehavior
     }
 
     /**
-     * @param Stampie\Event\MessageEvent $event
+     * @param Stampie\Event\SendMessageEvent $event
      * @param Stampie\Identity $identity
      * @param Stampie\Message $message
      * @param Stampie\Request $request
@@ -34,7 +34,7 @@ class MailerSpec extends \PhpSpec\ObjectBehavior
      */
     function it_dispatches_event_sends_request($event, $identity, $message, $request, $response, $dispatcher, $carrier, $adapter)
     {
-        $dispatcher->dispatch(StampieEvents::SEND, Argument::type('Stampie\Event\MessageEvent'))->shouldBeCalled()->willReturn($event);
+        $dispatcher->dispatch(StampieEvents::SEND, Argument::type('Stampie\Event\SendMessageEvent'))->shouldBeCalled()->willReturn($event);
 
         $event->getTo()->willReturn($identity);
         $event->getMessage()->willReturn($message);
@@ -49,7 +49,7 @@ class MailerSpec extends \PhpSpec\ObjectBehavior
     }
 
     /**
-     * @param Stampie\Event\MessageEvent $event
+     * @param Stampie\Event\SendMessageEvent $event
      * @param Stampie\Identity $identity
      * @param Stampie\Message $message
      */
@@ -66,7 +66,7 @@ class MailerSpec extends \PhpSpec\ObjectBehavior
     }
 
     /**
-     * @param Stampie\Event\MessageEvent $event
+     * @param Stampie\Event\SendMessageEvent $event
      * @param Stampie\Identity $identity
      * @param Stampie\Message $message
      * @param Stampie\Request $request

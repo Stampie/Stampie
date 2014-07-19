@@ -15,7 +15,7 @@ use Stampie\Message;
 /**
  * @author Christophe Coevoet <stof@notk.org>
  */
-class MessageEvent extends Event
+abstract class AbstractMessageEvent extends Event
 {
     protected $message;
     protected $to;
