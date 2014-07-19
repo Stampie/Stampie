@@ -13,7 +13,7 @@ use Prophecy\Argument;
 use Stampie\StampieEvents;
 use Stampie\Message\MessageHeader;
 
-class MailerSpec extends \PhpSpec\ObjectBehavior
+class DirectMailerSpec extends \PhpSpec\ObjectBehavior
 {
     /**
      * @param Stampie\Carrier $carrier
