@@ -43,8 +43,6 @@ class MandrillCarrier extends AbstractCarrier
 
     private function format(Identity $to, Message $message)
     {
-        $from = $message->getFrom();
-
         $parameters = [
             'key'     => $this->key,
             'message' => array_filter([
@@ -52,8 +50,6 @@ class MandrillCarrier extends AbstractCarrier
                     'email' => $to->email,
                     'name' => $to->name,
                 ]],
-                'from_email' => $from->email,
-                'from_name'  => $from->name,
                 'subject'    => $message->getSubject(),
                 'headers'    => $message->getHeaders(),
                 'text'       => $message->getText(),
