@@ -2,8 +2,8 @@
 
 use Stampie\Carrier\MandrillCarrier;
 
-function get_carrier($adapter, $key) {
-    return new MandrillCarrier($adapter, $key);
+function get_carrier($key) {
+    return new MandrillCarrier($key);
 }
 
 require __DIR__ . '/bootstrap.php';

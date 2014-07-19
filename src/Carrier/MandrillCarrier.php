@@ -2,7 +2,8 @@
 
 namespace Stampie\Carrier;
 
-use Stampie\Adapter\Request;
+use Stampie\Request;
+use Stampie\Response;
 use Stampie\Message;
 use Stampie\Identity;
 
@@ -19,39 +20,28 @@ class MandrillCarrier extends AbstractCarrier
     /**
      * {@inheritdoc}
      */
-    public function send(Identity $to, Message $message)
+    public function createRequest(Identity $to, Message $message)
     {
         $request = new Request($this->endpoint, 'POST');
         $request->setContent($this->format($to, $message));
-
-        $this->prepare($request);
-
-        $response = $this->adapter->request($request);
-
-        if ($response->isSuccessful()) {
-            $content = json_decode($response->getContent());
-
-            // Mandril returns an array for each recipient
-            return array_map([$this, 'pluckMessageId'], $content);
-        }
-
-        throw new \RuntimeException($response->getContent());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function prepare(Request $request)
-    {
         $request->setHeaders([
             'Content-Type' => 'application/json',
         ]);
+
+        return $request;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function format(Identity $to, Message $message)
+    public function handleResponse(Response $response)
+    {
+        if (!$response->isSuccessful()) {
+            throw new \RuntimeException($response->getContent());
+        }
+
+        // Mandril returns an array for each recipient
+        return array_map([$this, 'pluckMessageId'], json_decode($response->getContent()));
+    }
+
+    private function format(Identity $to, Message $message)
     {
         $from = $message->getFrom();
 
