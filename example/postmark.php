@@ -1,9 +1,9 @@
 <?php
 
-use Stampie\Handler\PostmarkHandler;
+use Stampie\Carrier\PostmarkCarrier;
 
-function get_handler($adapter, $key) {
-    return new PostmarkHandler($adapter, $key);
+function get_carrier($adapter, $key) {
+    return new PostmarkCarrier($adapter, $key);
 }
 
 require __DIR__ . '/bootstrap.php';

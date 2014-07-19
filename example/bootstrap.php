@@ -6,8 +6,12 @@ function get_adapter() {
     return new Stampie\Adapter\BuzzAdapter(new Buzz\Browser);
 }
 
+function get_event_dispatcher() {
+    return new Symfony\Component\EventDispatcher\EventDispatcher();
+}
+
 function get_mailer($key) {
-    return new Stampie\Mailer(get_handler(get_adapter(), $key));
+    return new Stampie\Mailer(get_carrier(get_adapter(), $key), get_event_dispatcher());
 }
 
 function get_message($from) {

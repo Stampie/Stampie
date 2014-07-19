@@ -1,9 +1,9 @@
 <?php
 
-use Stampie\Handler\MandrillHandler;
+use Stampie\Carrier\MandrillCarrier;
 
-function get_handler($adapter, $key) {
-    return new MandrillHandler($adapter, $key);
+function get_carrier($adapter, $key) {
+    return new MandrillCarrier($adapter, $key);
 }
 
 require __DIR__ . '/bootstrap.php';
