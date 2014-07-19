@@ -2,7 +2,7 @@
 
 namespace Stampie;
 
-use Stampie\Adapter\Response;
+use Stampie\Response;
 use Stampie\Exception;
 
 /**

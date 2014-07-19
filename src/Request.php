@@ -8,18 +8,15 @@ namespace Stampie;
 class Request
 {
     private $url;
-    private $method;
     private $content;
     private $headers = [];
 
     /**
      * @param string $url
-     * @param string $method
      */
-    public function __construct($url, $method = 'POST')
+    public function __construct($url)
     {
         $this->url = $url;
-        $this->method = $method;
     }
 
     /**
@@ -36,14 +33,6 @@ class Request
     public function getContent()
     {
         return $this->content;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMethod()
-    {
-        return $this->method;
     }
 
     /**
@@ -88,7 +77,7 @@ class Request
         $parts = parse_url($this->url);
 
         $lines = [
-            strtoupper($this->method) . ' ' . $parts['path'] . ' HTTP/1.0',
+            'POST ' . $parts['path'] . ' HTTP/1.0',
             'Host: ' . $parts['host'],
         ];
 
