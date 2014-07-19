@@ -9,10 +9,11 @@
 
     "require" : {
         "php"                      : "~5.4",
-        "symfony/event-dispatcher" : "~2.0"
+        "symfony/event-dispatcher" : "~2.3"
     },
 
     "require-dev" : {
-        "kriswallsmith/buzz" : "0.7"
+        "kriswallsmith/buzz" : "~0.10",
+        "guzzlehttp/guzzle"  : "~4.0"
     }
 }
