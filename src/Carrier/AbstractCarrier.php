@@ -1,6 +1,6 @@
 <?php
 
-namespace Stampie\Provider;
+namespace Stampie\Carrier;
 
 use Stampie\Adapter;
 use Stampie\Adapter\Request;
@@ -9,7 +9,7 @@ use Stampie\Message;
 use Stampie\Message\MessageHeader;
 use Stampie\Identity;
 
-abstract class AbstractProvider implements \Stampie\Provider
+abstract class AbstractCarrier implements \Stampie\Carrier
 {
     protected $key;
     protected $adapter;

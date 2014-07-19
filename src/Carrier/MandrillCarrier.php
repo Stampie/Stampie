@@ -1,6 +1,6 @@
 <?php
 
-namespace Stampie\Provider;
+namespace Stampie\Carrier;
 
 use Stampie\Adapter\Request;
 use Stampie\Message;
@@ -12,7 +12,7 @@ use Stampie\Identity;
  * @author Christophe Coevoet <stof@notk.org>
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  */
-class MandrillProvider extends AbstractProvider
+class MandrillCarrier extends AbstractCarrier
 {
     protected $endpoint = 'https://mandrillapp.com/api/1.0/messages/send.json';
 

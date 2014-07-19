@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Stampie\Provider;
+namespace spec\Stampie\Carrier;
 
 use Prophecy\Argument;
 use Stampie\Message\MessageHeader;
 
-class PostmarkProviderSpec extends \PhpSpec\ObjectBehavior
+class PostmarkCarrierSpec extends \PhpSpec\ObjectBehavior
 {
     /**
      * @param Stampie\Adapter $adapter

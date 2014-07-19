@@ -2,7 +2,7 @@
 
 namespace Stampie;
 
-interface Provider
+interface Carrier
 {
     /**
      * @param Identity         $to

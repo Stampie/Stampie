@@ -1,6 +1,6 @@
 <?php
 
-namespace Stampie\Provider;
+namespace Stampie\Carrier;
 
 use Stampie\Adapter\Request;
 use Stampie\Adapter\Response;
@@ -8,7 +8,7 @@ use Stampie\Identity;
 use Stampie\Message;
 use Stampie\Utils;
 
-class PostmarkProvider extends AbstractProvider
+class PostmarkCarrier extends AbstractCarrier
 {
     protected $endpoint = 'http://api.postmarkapp.com/email';
 

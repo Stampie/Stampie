@@ -27,16 +27,16 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class Mailer
 {
-    private $provider;
+    private $carrier;
     private $dispatcher;
 
     /**
-     * @param Provider $provider
+     * @param Carrier $carrier
      * @param EventDispatcherInterface $dispatcher
      */
-    public function __construct(Provider $provider, EventDispatcherInterface $dispatcher)
+    public function __construct(Carrier $carrier, EventDispatcherInterface $dispatcher)
     {
-        $this->provider   = $provider;
+        $this->carrier   = $carrier;
         $this->dispatcher = $dispatcher;
     }
 
@@ -58,7 +58,7 @@ class Mailer
         }
 
         try {
-            $messageId = $this->provider->send($event->getTo(), $event->getMessage());
+            $messageId = $this->carrier->send($event->getTo(), $event->getMessage());
 
             return new MessageHeader($messageId);
         } catch (\Exception $e) {
