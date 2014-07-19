@@ -12,22 +12,21 @@ Supported services are currently:
  * [Postmark](https://postmarkapp.com/)
 
 
-Whats the deal?
----------------
+Warning
+-------
 
 This branch aims to fix some of the messy stuff that have happended over time in the stable releases.
 Together with integrating most of the features from StampieExtra. This makes it more feature complete
 and enjoyable to work with.
 
-Warning
--------
-
 This branch contains the next iteration of Stampie. This means all the features currently in the
 stable version are not yet migrated over. Also this means the code here is extremely conceptional
 and may not work as intended.
 
-Setup
------
+Documentation
+--------------
+
+### Setup
 
 Stampie is made up of a couple of different things. The first is a "Carrier" the carrier is responsible
 for creating and formatting a Message into a Request. The Request is then given to an Adapter which
@@ -48,8 +47,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 $mailer = new Mailer(new PostmarkCarrier('my-api-key'), new BuzzAdapter(new Browser), new EventDispatcher);
 ```
 
-Sending Messages
-----------------
+### Sending Messages
 
 Stampie comes with an implemetation of the Message interface called DefaultMessage. DefaultMessage makes it
 easy to start sending out messages. DefaultMessage is a simple ValueObject and takes every possible argument
@@ -77,3 +75,11 @@ $mailer->send(new Identity('to@domain.tld', 'Optional To Name'), $message);
 
 The send method returns a MessageHeader. The MessageHeader contains a identifier given by the carrier. This identifier
 is different from carrier to carrier. Also if an event stopped the sending the identifier will be null.
+
+### Running the Examples
+
+Stampie comes with a example for each carrier. This will send a email through the carrier to the email you provide.
+
+``` bash
+$ php example/insert-carrier.php "my-api-key" "to@domain.tld" "from@domain.tld"
+```
