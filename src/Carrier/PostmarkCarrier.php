@@ -2,8 +2,8 @@
 
 namespace Stampie\Carrier;
 
-use Stampie\Adapter\Request;
-use Stampie\Adapter\Response;
+use Stampie\Request;
+use Stampie\Response;
 use Stampie\Identity;
 use Stampie\Message;
 use Stampie\Utils;
@@ -12,10 +12,20 @@ class PostmarkCarrier extends AbstractCarrier
 {
     protected $endpoint = 'http://api.postmarkapp.com/email';
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function handleResponse(Response $response)
+    public function createRequest(Identity $to, Message $message)
+    {
+        $request = new Request($this->endpoint);
+        $request->setContent($this->format($to, $message));
+        $request->setHeaders([
+            'Accept'                  => 'application/json',
+            'Content-Type'            => 'application/json',
+            'X-Postmark-Server-Token' => $this->key,
+        ]);
+
+        return $request;
+    }
+
+    public function handleResponse(Response $response)
     {
         if ($response->isSuccessful()) {
             return json_decode($response->getContent())->MessageID;
@@ -24,10 +34,7 @@ class PostmarkCarrier extends AbstractCarrier
         throw Utils::convertResponseToException($response);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function format(Identity $to, Message $message)
+    private function format(Identity $to, Message $message)
     {
         $parameters = [
             'To'       => (string) $to,
@@ -43,18 +50,6 @@ class PostmarkCarrier extends AbstractCarrier
         }
 
         return json_encode($parameters);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function prepare(Request $request)
-    {
-        $request->setHeaders([
-            'Accept'                  => 'application/json',
-            'Content-Type'            => 'application/json',
-            'X-Postmark-Server-Token' => $this->key,
-        ]);
     }
 
     private function formatAttachment(Attachment $attachment)

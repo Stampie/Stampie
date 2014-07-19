@@ -2,8 +2,8 @@
 
 use Stampie\Carrier\PostmarkCarrier;
 
-function get_carrier($adapter, $key) {
-    return new PostmarkCarrier($adapter, $key);
+function get_carrier($key) {
+    return new PostmarkCarrier($key);
 }
 
 require __DIR__ . '/bootstrap.php';

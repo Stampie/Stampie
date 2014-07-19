@@ -10,6 +10,8 @@
 namespace Stampie\Adapter;
 
 use Buzz\Browser;
+use Stampie\Request;
+use Stampie\Response;
 
 /**
  * @package Stampie

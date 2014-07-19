@@ -11,7 +11,7 @@ function get_event_dispatcher() {
 }
 
 function get_mailer($key) {
-    return new Stampie\Mailer(get_carrier(get_adapter(), $key), get_event_dispatcher());
+    return new Stampie\Mailer(get_carrier($key), get_adapter(), get_event_dispatcher());
 }
 
 function get_message($from) {

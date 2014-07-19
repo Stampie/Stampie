@@ -1,10 +1,7 @@
 <?php
 
-namespace Stampie\Adapter;
+namespace Stampie;
 
-/**
- * @package Stampie
- */
 class Response
 {
     private $statusCode;

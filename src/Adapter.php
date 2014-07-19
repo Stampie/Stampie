@@ -9,8 +9,6 @@
 
 namespace Stampie;
 
-use Stampie\Adapter\Request;
-
 /**
  * @package Stampie
  */

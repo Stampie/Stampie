@@ -4,9 +4,7 @@ namespace Stampie;
 
 interface Carrier
 {
-    /**
-     * @param Identity         $to
-     * @param MessageInterface $message
-     */
-    public function send(Identity $to, Message $message);
+    public function createRequest(Identity $to, Message $message);
+
+    public function handleResponse(Response $response);
 }

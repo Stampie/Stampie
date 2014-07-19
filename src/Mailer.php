@@ -28,15 +28,18 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class Mailer
 {
     private $carrier;
+    private $adapter;
     private $dispatcher;
 
     /**
      * @param Carrier $carrier
+     * @param Adapter $adapter
      * @param EventDispatcherInterface $dispatcher
      */
-    public function __construct(Carrier $carrier, EventDispatcherInterface $dispatcher)
+    public function __construct(Carrier $carrier, Adapter $adapter, EventDispatcherInterface $dispatcher)
     {
-        $this->carrier   = $carrier;
+        $this->carrier    = $carrier;
+        $this->adapter    = $adapter;
         $this->dispatcher = $dispatcher;
     }
 
@@ -57,12 +60,14 @@ class Mailer
             return new MessageHeader(null);
         }
 
+        $request = $this->carrier->createRequest($event->getTo(), $event->getMessage());
+
         try {
-            $messageId = $this->carrier->send($event->getTo(), $event->getMessage());
+            $messageId = $this->carrier->handleResponse($this->adapter->request($request));
 
             return new MessageHeader($messageId);
         } catch (\Exception $e) {
-            $event = $this->dispatcher->dispatch(StampieEvents::FAILED, new FailedMessageEvent($to, $message, $e));
+            $this->dispatcher->dispatch(StampieEvents::FAILED, new FailedMessageEvent($to, $message, $e));
 
             throw $e;
         }
