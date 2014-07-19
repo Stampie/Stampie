@@ -27,7 +27,7 @@ class PostmarkCarrier extends AbstractCarrier
     /**
      * {@inheritDoc}
      */
-    protected function format(Identity $to, Message $message, $attachments = [])
+    protected function format(Identity $to, Message $message)
     {
         $parameters = [
             'To'       => (string) $to,
@@ -38,7 +38,7 @@ class PostmarkCarrier extends AbstractCarrier
             'Headers'  => $message->getHeaders(),
         ];
 
-        if ($attachments) {
+        if ($attachments = $message->getAttachments()) {
             $parameters['Attachments'] = array_map([$this, 'formatAttachment'], $attachments);
         }
 

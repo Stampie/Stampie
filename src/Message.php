@@ -38,4 +38,6 @@ interface Message
      * @return array
      */
     public function getHeaders();
+
+    public function getAttachments();
 }

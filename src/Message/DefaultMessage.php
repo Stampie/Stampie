@@ -77,4 +77,9 @@ class DefaultMessage implements \Stampie\Message
     {
         return $this->headers;
     }
+
+    public function getAttachments()
+    {
+        return [];
+    }
 }

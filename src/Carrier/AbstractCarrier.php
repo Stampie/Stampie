@@ -49,9 +49,8 @@ abstract class AbstractCarrier implements \Stampie\Carrier
      *
      * @param Identity     $to
      * @param Message      $message
-     * @param Attachment[] $attachments
      */
-    abstract protected function format(Identity $to, Message $message, $attachments = []);
+    abstract protected function format(Identity $to, Message $message);
 
     /**
      * Used to set additional headers or if the API key is
