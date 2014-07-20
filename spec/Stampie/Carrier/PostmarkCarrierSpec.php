@@ -3,7 +3,7 @@
 namespace spec\Stampie\Carrier;
 
 use Prophecy\Argument;
-use Stampie\Message\MessageHeader;
+use Stampie\Request;
 
 class PostmarkCarrierSpec extends \PhpSpec\ObjectBehavior
 {
@@ -20,7 +20,16 @@ class PostmarkCarrierSpec extends \PhpSpec\ObjectBehavior
     {
         $identity->__toString()->willReturn('henrik@bjrnskov.dk');
 
-        $this->createRequest($identity, $message)->shouldBeAnInstanceOf('Stampie\Request');
+        $request = $this->createRequest($identity, $message);
+        $request->getUrl()->shouldReturn('http://api.postmarkapp.com/email');
+        $request->getHeaders()->shouldReturn([
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'X-Postmark-Server-Token' => 'my-personal-key',
+        ]);
+
+        $request->getContent()
+            ->shouldReturn('{"To":"henrik@bjrnskov.dk","From":"","Subject":null,"HtmlBody":null,"TextBody":null,"Headers":null}');
     }
 
     /**
