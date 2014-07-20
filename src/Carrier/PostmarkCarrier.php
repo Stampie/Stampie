@@ -12,15 +12,14 @@ class PostmarkCarrier extends AbstractCarrier
 {
     public function createRequest(Identity $to, Message $message)
     {
-        $request = new Request('http://api.postmarkapp.com/email');
-        $request->setContent($this->format($to, $message));
-        $request->setHeaders([
-            'Accept'                  => 'application/json',
-            'Content-Type'            => 'application/json',
-            'X-Postmark-Server-Token' => $this->key,
-        ]);
-
-        return $request;
+        return Request::create('http://api.postmarkapp.com/email')
+            ->setContent($this->format($to, $message))
+            ->setHeaders([
+                'Accept'                  => 'application/json',
+                'Content-Type'            => 'application/json',
+                'X-Postmark-Server-Token' => $this->key,
+            ])
+        ;
     }
 
     public function handleResponse(Response $response)

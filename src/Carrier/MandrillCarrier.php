@@ -17,13 +17,12 @@ class MandrillCarrier extends AbstractCarrier
 {
     public function createRequest(Identity $to, Message $message)
     {
-        $request = new Request('https://mandrillapp.com/api/1.0/messages/send.json');
-        $request->setContent($this->format($to, $message));
-        $request->setHeaders([
-            'Content-Type' => 'application/json',
-        ]);
-
-        return $request;
+        return Request::create('https://mandrillapp.com/api/1.0/messages/send.json')
+            ->setContent($this->format($to, $message))
+            ->setHeaders([
+                'Content-Type' => 'application/json',
+            ])
+        ;
     }
 
     public function handleResponse(Response $response)
