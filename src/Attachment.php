@@ -2,20 +2,36 @@
 
 namespace Stampie;
 
-class Attachment
+final class Attachment
 {
+    private $path;
+    private $name;
+
+    public function __construct($path, $name = null)
+    {
+        $this->path = $path;
+        $this->name = $name;
+    }
+
     public function getName()
     {
-        return 'myattachment.jpg';
+        return $this->name ?: basename($this->path);
     }
 
     public function getContentType()
     {
-        return 'image/jpeg';
+        $file = new \finfo(FILEINFO_MIME_TYPE);
+
+        return $file->file($this->path);
     }
 
     public function getEncodedContent()
     {
-        return '';
+        return base64_encode($this->getContent());
+    }
+
+    public function getContent()
+    {
+        return file_get_contents($this->path);
     }
 }
