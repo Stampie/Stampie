@@ -15,14 +15,9 @@ use Stampie\Identity;
  */
 class MandrillCarrier extends AbstractCarrier
 {
-    protected $endpoint = 'https://mandrillapp.com/api/1.0/messages/send.json';
-
-    /**
-     * {@inheritdoc}
-     */
     public function createRequest(Identity $to, Message $message)
     {
-        $request = new Request($this->endpoint, 'POST');
+        $request = new Request('https://mandrillapp.com/api/1.0/messages/send.json');
         $request->setContent($this->format($to, $message));
         $request->setHeaders([
             'Content-Type' => 'application/json',

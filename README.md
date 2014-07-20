@@ -41,10 +41,28 @@ but Stampie comes with an Adapter for Guzzle aswell.
 use Buzz\Browser;
 use Stampie\Adapter\BuzzAdapter;
 use Stampie\Carrier\PostmarkCarrier;
-use Stampie\Mailer;
+use Stampie\DirectMailer;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-$mailer = new Mailer(new PostmarkCarrier('my-api-key'), new BuzzAdapter(new Browser), new EventDispatcher);
+$mailer = new DirectMailer(new PostmarkCarrier('my-api-key'), new BuzzAdapter(new Browser), new EventDispatcher);
+```
+
+The DirectMailer sends the message right away. There can be use cases where this is not desired, therefor Spooler
+is a mailer implementation that stores your Messages until it is flushed.
+
+
+```
+<?php
+
+use Stampie\Spooler;
+use Stampie\Spool\MemoryStorage;
+
+$mailer = new Spooler(new DirectMailer, new MemoryStorage);
+
+// send some messages
+
+// flush
+$mailer->flushSpool();
 ```
 
 ### Sending Messages

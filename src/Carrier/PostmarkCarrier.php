@@ -10,11 +10,9 @@ use Stampie\Utils;
 
 class PostmarkCarrier extends AbstractCarrier
 {
-    protected $endpoint = 'http://api.postmarkapp.com/email';
-
     public function createRequest(Identity $to, Message $message)
     {
-        $request = new Request($this->endpoint);
+        $request = new Request('http://api.postmarkapp.com/email');
         $request->setContent($this->format($to, $message));
         $request->setHeaders([
             'Accept'                  => 'application/json',
