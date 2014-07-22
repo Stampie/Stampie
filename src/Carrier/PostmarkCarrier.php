@@ -34,8 +34,8 @@ class PostmarkCarrier extends AbstractCarrier
     private function format(Identity $to, Message $message)
     {
         $parameters = [
-            'To'       => (string) $to,
-            'From'     => (string) $message->getFrom(),
+            'To'       => $to->formatAsAddress(),
+            'From'     => $message->getFrom() ? $message->getFrom()->formatAsAddress() : null,
             'Subject'  => $message->getSubject(),
             'HtmlBody' => $message->getHtml(),
             'TextBody' => $message->getText(),

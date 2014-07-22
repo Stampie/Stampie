@@ -18,7 +18,7 @@ class PostmarkCarrierSpec extends \PhpSpec\ObjectBehavior
      */
     function it_creates_a_request_with_formatted_message($message, $identity)
     {
-        $identity->__toString()->willReturn('henrik@bjrnskov.dk');
+        $identity->formatAsAddress()->willReturn('henrik@bjrnskov.dk');
 
         $request = $this->createRequest($identity, $message);
         $request->getUrl()->shouldReturn('http://api.postmarkapp.com/email');
@@ -29,7 +29,7 @@ class PostmarkCarrierSpec extends \PhpSpec\ObjectBehavior
         ]);
 
         $request->getContent()
-            ->shouldReturn('{"To":"henrik@bjrnskov.dk","From":"","Subject":null,"HtmlBody":null,"TextBody":null,"Headers":null}');
+            ->shouldReturn('{"To":"henrik@bjrnskov.dk","From":null,"Subject":null,"HtmlBody":null,"TextBody":null,"Headers":null}');
     }
 
     /**

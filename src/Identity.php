@@ -22,10 +22,6 @@ class Identity
     private $name;
     private $email;
 
-    /**
-     * @param string $email
-     * @param string $name
-     */
     public function __construct($email, $name = null)
     {
         $this->email = $email;
@@ -33,30 +29,22 @@ class Identity
     }
 
     /**
+     * Formats as a name-addr if name is provided otherwise as
+     * a addr-spec. According to RFC #2822 rules.
+     *
      * @return string
+     * @link http://tools.ietf.org/html/rfc2822#section-3.6.3
      */
-    public function __toString()
+    public function formatAsAddress()
     {
-        if ($this->name) {
-            return (string) sprintf('%s <%s>', $this->name, $this->email);
-        }
-
-        return (string) $this->email;
+        return $this->name ? sprintf('%s <%s>', $this->name, $this->email) : $this->email;
     }
 
-    /**
-     * @param  string $property
-     * @return mixed
-     */
     public function __get($property)
     {
         return $this->$property;
     }
 
-    /**
-     * @param  string  $property
-     * @return boolean
-     */
     public function __isset($property)
     {
         return isset($this->$property);

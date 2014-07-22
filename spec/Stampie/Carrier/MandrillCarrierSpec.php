@@ -18,7 +18,7 @@ class MandrillCarrierSpec extends \PhpSpec\ObjectBehavior
      */
     function it_creates_a_request_with_formatted_message($message, $identity)
     {
-        $identity->__toString()->willReturn('henrik@bjrnskov.dk');
+        $identity->formatAsAddress()->willReturn('henrik@bjrnskov.dk');
 
         $this->createRequest($identity, $message)->shouldBeAnInstanceOf('Stampie\Request');
     }
