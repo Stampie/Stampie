@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * Handles the sending of messages by proxying the message to the right handler
  * implementation.
  *
- * Through out the process there is dispatched events. This enables extensions
+ * Throughout the process there is dispatched events. This enables extensions
  * to integrate deeply.
  *
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
