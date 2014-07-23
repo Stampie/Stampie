@@ -54,7 +54,7 @@ class DirectMailer implements Mailer
      */
     public function send(Identity $to, Message $message)
     {
-        $event = $this->dispatcher->dispatch(StampieEvents::SEND, new SendMessageEvent($to, $message));
+        $this->dispatcher->dispatch(StampieEvents::SEND, new SendMessageEvent($to, $message));
 
         if ($event->isDefaultPrevented()) {
             return new MessageHeader(null);

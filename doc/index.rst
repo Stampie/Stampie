@@ -92,7 +92,14 @@ Carriers
 Postmark
 ~~~~~~~~
 
-Coming soon
+Using Postmark is simple, but first you have to obtain a key from [their website](http://postmarkapp.com) and configure
+your Server and Sender Profile.
+
+.. code-block:: php
+
+    <?php
+
+    $carrier = new Stampie\Carrier\PostmarkCarrier('my-api-key');
 
 Mandrill
 ~~~~~~~~
@@ -102,6 +109,12 @@ Coming soon
 MailGun
 ~~~~~~~
 
-Coming soon
+Using MailGun you first have to create an account and setup you domain and so on. The key used for configuring MailGun
+is ``{$domain}:{$API-Key}``. An example of that would be ``bjrnskov.mailgun.org:my-secret-api-key``.
 
+.. code-block:: php
+
+    <?php
+
+    $carrier = new Stampie\Carrier\MailGunCarrier('domain:secret-api-key');
 
