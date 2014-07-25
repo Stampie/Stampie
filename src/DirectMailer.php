@@ -29,18 +29,15 @@ class DirectMailer implements Mailer
 {
     private $carrier;
     private $adapter;
-    private $dispatcher;
 
     /**
      * @param Carrier $carrier
      * @param Adapter $adapter
-     * @param EventDispatcherInterface $dispatcher
      */
-    public function __construct(Carrier $carrier, Adapter $adapter, EventDispatcherInterface $dispatcher)
+    public function __construct(Carrier $carrier, Adapter $adapter)
     {
-        $this->carrier    = $carrier;
-        $this->adapter    = $adapter;
-        $this->dispatcher = $dispatcher;
+        $this->carrier = $carrier;
+        $this->adapter = $adapter;
     }
 
     /**
@@ -54,22 +51,13 @@ class DirectMailer implements Mailer
      */
     public function send(Identity $to, Message $message)
     {
-        $event = $this->dispatcher->dispatch(StampieEvents::SEND, new SendMessageEvent($to, $message));
+        return new MessageHeader($this->doSend($to, $message));
+    }
 
-        if ($event->isDefaultPrevented()) {
-            return new MessageHeader(null);
-        }
+    private function doSend(Identity $to, Message $message)
+    {
+        $request = $this->carrier->createRequest($to, $message);
 
-        $request = $this->carrier->createRequest($event->getTo(), $event->getMessage());
-
-        try {
-            $messageId = $this->carrier->handleResponse($this->adapter->request($request));
-
-            return new MessageHeader($messageId);
-        } catch (\Exception $e) {
-            $this->dispatcher->dispatch(StampieEvents::FAILED, new FailedMessageEvent($to, $message, $e));
-
-            throw $e;
-        }
+        return $this->carrier->handleResponse($this->adapter->request($request));
     }
 }
