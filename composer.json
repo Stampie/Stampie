@@ -1,9 +1,17 @@
 {
     "name" : "henrikbjorn/stampie",
-    "description" : "A Postmarkapp API Mailer",
+    "description" : "Stampie is a simple API Wrapper for different email providers such as Postmark, SendGrid, Mailgun, Mandrill.",
     "homepage" : "https://github.com/henrikbjorn/Stampie",
     "type" : "library",
     "license" : "MIT",
+    "keywords": [
+        "postmark",
+        "sendgrid",
+        "mailgun",
+        "mandrill",
+        "adapter",
+        "wrapper"
+    ],
     "authors" : [
         {
             "name" : "Henrik Bjornskov",
