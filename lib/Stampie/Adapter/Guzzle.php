@@ -2,7 +2,7 @@
 
 namespace Stampie\Adapter;
 
-use Guzzle\Service\Client;
+use Guzzle\Http\ClientInterface;
 use Guzzle\Http\Message\RequestInterface;
 use Guzzle\Http\Message\EntityEnclosingRequestInterface;
 
@@ -14,20 +14,20 @@ use Guzzle\Http\Message\EntityEnclosingRequestInterface;
 class Guzzle implements AdapterInterface
 {
     /**
-     * @var Client
+     * @var ClientInterface
      */
     protected $client;
 
     /**
-     * @param Client $client
+     * @param ClientInterface $client
      */
-    public function __construct(Client $client)
+    public function __construct(ClientInterface $client)
     {
         $this->client = $client;
     }
 
     /**
-     * @return Client
+     * @return ClientInterface
      */
     public function getClient()
     {
@@ -39,6 +39,7 @@ class Guzzle implements AdapterInterface
      * @param string $content
      * @param array $headers
      * @param array $files
+     *
      * @return Response
      */
     public function send($endpoint, $content, array $headers = array(), array $files = array())
