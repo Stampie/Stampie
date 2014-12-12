@@ -28,13 +28,13 @@
         "php"                : ">=5.3.3"
     },
     "require-dev" : {
-        "kriswallsmith/buzz" : "*",
-        "guzzle/guzzle"      : "*"
+        "kriswallsmith/buzz" : "~0.8",
+        "guzzle/http"        : "~3"
     },
     "suggest" : {
         "stof/stampie-extra" : "Extensions for Stampie",
         "kriswallsmith/buzz" : "Lightweight HTTP Client",
-        "guzzle/guzzle"      : "HTTP Client and Framework for building RESTful webservice clients"
+        "guzzle/http"        : "HTTP Client and Framework for building RESTful webservice clients"
     },
     "extra": {
         "branch-alias": {

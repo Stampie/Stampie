@@ -7,16 +7,18 @@ use Guzzle\Http\Message\RequestInterface;
 
 class GuzzleTest extends \PHPUnit_Framework_TestCase
 {
+    private $client;
+
     public function setUp()
     {
-        if (!class_exists('Guzzle\Service\Client')) {
-            $this->markTestSkipped('Cannot find Guzzle\Service\Client');
+        if (!interface_exists('Guzzle\Http\ClientInterface')) {
+            $this->markTestSkipped('Cannot find Guzzle\Http\ClientInterface');
         }
 
-        $this->client = $this->getMock('Guzzle\Service\Client');
+        $this->client = $this->getMock('Guzzle\Http\ClientInterface');
     }
 
-    public function testAccesibility()
+    public function testAccessibility()
     {
         $adapter = new Guzzle($this->client);
         $this->assertEquals($this->client, $adapter->getClient());
@@ -66,7 +68,7 @@ class GuzzleTest extends \PHPUnit_Framework_TestCase
                 $this->equalTo('http://google.com'),
                 $this->equalTo(array(
                     'Content-Type' => 'application/json',
-                    'X-Postmark-Server-Token' => 'MySuperToken', 
+                    'X-Postmark-Server-Token' => 'MySuperToken',
                 )),
                 $this->equalTo('content')
             )
