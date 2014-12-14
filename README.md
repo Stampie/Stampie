@@ -1,5 +1,7 @@
 # Stampie
 
+Stampie have been moved to the "Flint" organization in order to get a better collaborative flow.
+
 [![Build Status](https://secure.travis-ci.org/henrikbjorn/Stampie.png)](http://travis-ci.org/henrikbjorn/Stampie)
 
 Stampie is a simple API Wrapper for different email providers such as [Postmark](http://postmarkapp.com) and [SendGrid](http://sendgrid.com).
