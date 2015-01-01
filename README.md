@@ -1,5 +1,7 @@
 # Stampie
 
+Stampie have been moved to the "Flint" organization in order to get a better collaborative flow.
+
 [![Build Status](https://secure.travis-ci.org/henrikbjorn/Stampie.png)](http://travis-ci.org/henrikbjorn/Stampie)
 
 Stampie is a simple API Wrapper for different email providers such as [Postmark](http://postmarkapp.com) and [SendGrid](http://sendgrid.com).
@@ -16,8 +18,8 @@ It is very easy to use and to integrate into your application as demonstrated be
 ``` php
 <?php
 
-// Stampie.phar does Autoloading through its Stup.php
-require '/path/to/stampie.phar';
+// composer autoloading.
+require 'vendor/autoload.php';
 
 class Message extends \Stampie\Message
 {
@@ -44,7 +46,7 @@ Last their is an Interface for every type of class or abstract implementation th
 
 ## Documentation
 
-There is generated API documentation for all tags and released versions. Those can be found at [henrikbjorn.github.com/Stampie/api/master](http://henrikbjorn.github.com/Stampie/api/master).
+There is generated API documentation for all tags and released versions. Those can be found at [flint.github.com/Stampie/api/master](http://flint.github.com/Stampie/api/master).
 
 ## Extensions
 
