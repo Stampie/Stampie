@@ -48,18 +48,18 @@ class Mandrill extends Mailer
             array('Reply-To' => $message->getReplyTo())
         ));
 
-        $from = $this->normalizeIdentity($message->getFrom());
+        $from = $this->normalizeRecipient($message->getFrom());
 
         $to = array();
-        foreach ($this->normalizeIdentities($message->getTo()) as $recipient) {
+        foreach ($this->normalizeRecipients($message->getTo()) as $recipient) {
             $to[] = array('email' => $recipient->getEmail(), 'name' => $recipient->getName(), 'type' => 'to');
         }
 
-        foreach ($this->normalizeIdentities($message->getCc()) as $recipient) {
+        foreach ($this->normalizeRecipients($message->getCc()) as $recipient) {
             $to[] = array('email' => $recipient->getEmail(), 'name' => $recipient->getName(), 'type' => 'cc');
         }
 
-        foreach ($this->normalizeIdentities($message->getBcc()) as $recipient) {
+        foreach ($this->normalizeRecipients($message->getBcc()) as $recipient) {
             $to[] = array('email' => $recipient->getEmail(), 'name' => $recipient->getName(), 'type' => 'bcc');
         }
 

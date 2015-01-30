@@ -26,11 +26,12 @@ abstract class Message implements MessageInterface
     protected $text;
 
     /**
-     * @param IdentityInterface|string $to
+     * @param RecipientInterface|string $to
+     * @throws \InvalidArgumentException
      */
     public function __construct($to)
     {
-        $email = $to instanceof IdentityInterface ? $to->getEmail() : $to;
+        $email = $to instanceof RecipientInterface ? $to->getEmail() : $to;
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new \InvalidArgumentException('Invalid email');
         }
@@ -98,7 +99,7 @@ abstract class Message implements MessageInterface
     {
         $from = $this->getFrom();
 
-        if ($from instanceof IdentityInterface) {
+        if ($from instanceof RecipientInterface) {
             $from = $from->getEmail();
         }
 

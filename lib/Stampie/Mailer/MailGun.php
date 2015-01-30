@@ -89,13 +89,13 @@ class MailGun extends Mailer
         });
 
         $parameters = array(
-            'from'    => $this->buildIdentityString($message->getFrom()),
-            'to'      => $this->buildIdentityString($message->getTo()),
+            'from'    => $this->buildRecipientString($message->getFrom()),
+            'to'      => $this->buildRecipientString($message->getTo()),
             'subject' => $message->getSubject(),
             'text'    => $message->getText(),
             'html'    => $message->getHtml(),
-            'cc'      => $this->buildIdentityString($message->getCc()),
-            'bcc'     => $this->buildIdentityString($message->getBcc()),
+            'cc'      => $this->buildRecipientString($message->getCc()),
+            'bcc'     => $this->buildRecipientString($message->getBcc()),
         );
 
         if ($message instanceof TaggableInterface) {
