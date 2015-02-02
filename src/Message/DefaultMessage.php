@@ -9,7 +9,7 @@
 
 namespace Stampie\Message;
 
-use Stampie\Identity;
+use Stampie\Recipient;
 
 /**
  * @package Stampie
@@ -23,13 +23,13 @@ class DefaultMessage implements \Stampie\Message
     protected $headers;
 
     /**
-     * @param Identity $from
-     * @param string   $subject
-     * @param string   $html
-     * @param string   $text
-     * @param array    $headers
+     * @param Recipient $from
+     * @param string    $subject
+     * @param string    $html
+     * @param string    $text
+     * @param array     $headers
      */
-    public function __construct(Identity $from, $subject = null, $html = null, $text = null, array $headers = [])
+    public function __construct(Recipient $from, $subject = null, $html = null, $text = null, array $headers = [])
     {
         $this->from    = $from;
         $this->subject = $subject;

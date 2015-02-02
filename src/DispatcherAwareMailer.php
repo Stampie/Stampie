@@ -17,7 +17,7 @@ class DispatcherAwareMailer implements Mailer
         $this->dispatcher = $dispatcher;
     }
 
-    public function send(Identity $to, Message $message)
+    public function send(Recipient $to, Message $message)
     {
         $event = $this->dispatcher->dispatch(StampieEvents::SEND, new SendMessageEvent($to, $message));
 

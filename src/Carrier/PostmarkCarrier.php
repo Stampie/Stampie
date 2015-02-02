@@ -2,15 +2,15 @@
 
 namespace Stampie\Carrier;
 
+use Stampie\Message;
+use Stampie\Recipient;
 use Stampie\Request;
 use Stampie\Response;
-use Stampie\Identity;
-use Stampie\Message;
 use Stampie\Utils;
 
 class PostmarkCarrier extends AbstractCarrier
 {
-    public function createRequest(Identity $to, Message $message)
+    public function createRequest(Recipient $to, Message $message)
     {
         return Request::create('http://api.postmarkapp.com/email')
             ->setContent($this->format($to, $message))
@@ -31,7 +31,7 @@ class PostmarkCarrier extends AbstractCarrier
         throw Utils::convertResponseToException($response);
     }
 
-    private function format(Identity $to, Message $message)
+    private function format(Recipient $to, Message $message)
     {
         $parameters = [
             'To'       => $to->formatAsAddress(),

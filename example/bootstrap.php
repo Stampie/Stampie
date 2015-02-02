@@ -19,11 +19,11 @@ function get_message($from) {
 }
 
 function get_to($to) {
-    return new Stampie\Identity($to);
+    return new Stampie\Recipient($to);
 }
 
 function get_from($from) {
-    return new Stampie\Identity($from);
+    return new Stampie\Recipient($from);
 }
 
 function main($argv) {

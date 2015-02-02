@@ -2,12 +2,12 @@
 
 namespace Stampie\Spool;
 
-use Stampie\Identity;
 use Stampie\Message;
+use Stampie\Recipient;
 
 interface Storage
 {
-    public function push(Identity $to, Message $message);
+    public function push(Recipient $to, Message $message);
 
     public function pop();
 }

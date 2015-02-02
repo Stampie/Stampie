@@ -1,5 +1,5 @@
 Stampie
-=====
+=======
 
 Stampie is a small library that makes it easy to send emails through online services. It does this by
 implementing specific handlers for each of them.
@@ -12,10 +12,10 @@ Setup
 
 Stampie is made up of a couple of different things. The first is a "Carrier" the carrier is responsible
 for creating and formatting a Message into a Request. The Request is then given to an Adapter which
-responsibility is to actually do the call to the service. Theese are all bound together by the Mailer.
+responsibility is to actually do the call to the service. These are all bound together by the Mailer.
 
 In order to setup you need a Mailer, an Adapter and a Carrier. The following uses Buzz as an example
-but Stampie comes with an Adapter for Guzzle aswell.
+but Stampie comes with an Adapter for Guzzle as well.
 
 .. code-block:: php
 
@@ -57,7 +57,7 @@ in its constructor.
 It is important to know that a Message does not contain the recipient as it did in version 0.x.x. This is because
 the recipient is almost always a dynamic value, and therefor it does not make sense to have it on the message.
 
-The recipient is wrapped as an Identity. An Identity always consists of the recipient email and sometimes also the
+The recipient is wrapped as an Recipient. An Recipient always consists of the recipient email and sometimes also the
 name. If you use the name it will show up as "My Name <noreply@email.tld>" in your inbox.
 
 .. code-block:: php
@@ -65,14 +65,14 @@ name. If you use the name it will show up as "My Name <noreply@email.tld>" in yo
     <?php
 
     use Stampie\Message\DefaultMessage;
-    use Stampie\Identity;
+    use Stampie\Recipient;
 
     // assuming $mailer is the same as the previous example.
-    $from = new Identity('from@domain.tld', 'Optional From Name');
+    $from = new Recipient('from@domain.tld', 'Optional From Name');
 
     $message = new DefaultMessage($from, 'Subject', '<b>Html</b>', 'Text');
 
-    $mailer->send(new Identity('to@domain.tld', 'Optional To Name'), $message);
+    $mailer->send(new Recipient('to@domain.tld', 'Optional To Name'), $message);
 
 The send method returns a MessageHeader. The MessageHeader contains a identifier given by the carrier. This identifier
 is different from carrier to carrier. Also if an event stopped the sending the identifier will be null.

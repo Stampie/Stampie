@@ -2,8 +2,8 @@
 
 namespace Stampie\Event;
 
-use Stampie\Identity;
 use Stampie\Message;
+use Stampie\Recipient;
 
 /**
  * @package Stampie
@@ -13,11 +13,11 @@ class FailedMessageEvent extends AbstractMessageEvent
     protected $exception;
 
     /**
-     * @param Identity $to
-     * @param Message $message
-     * @param Exception $exception
+     * @param Recipient  $to
+     * @param Message    $message
+     * @param \Exception $exception
      */
-    public function __construct(Identity $to, Message $message, \Exception $exception)
+    public function __construct(Recipient $to, Message $message, \Exception $exception)
     {
         parent::__construct($to, $message);
 
@@ -25,7 +25,7 @@ class FailedMessageEvent extends AbstractMessageEvent
     }
 
     /**
-     * @return Exception
+     * @return \Exception
      */
     public function getException()
     {

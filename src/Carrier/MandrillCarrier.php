@@ -2,10 +2,10 @@
 
 namespace Stampie\Carrier;
 
+use Stampie\Message;
+use Stampie\Recipient;
 use Stampie\Request;
 use Stampie\Response;
-use Stampie\Message;
-use Stampie\Identity;
 
 /**
  * Sends emails to Mandrill server
@@ -15,7 +15,7 @@ use Stampie\Identity;
  */
 class MandrillCarrier extends AbstractCarrier
 {
-    public function createRequest(Identity $to, Message $message)
+    public function createRequest(Recipient $to, Message $message)
     {
         return Request::create('https://mandrillapp.com/api/1.0/messages/send.json')
             ->setContent($this->format($to, $message))
@@ -35,7 +35,7 @@ class MandrillCarrier extends AbstractCarrier
         return array_map([$this, 'pluckMessageId'], json_decode($response->getContent()));
     }
 
-    private function format(Identity $to, Message $message)
+    private function format(Recipient $to, Message $message)
     {
         $parameters = [
             'key'     => $this->key,

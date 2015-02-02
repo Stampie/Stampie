@@ -25,34 +25,34 @@ class DirectMailerSpec extends \PhpSpec\ObjectBehavior
     }
 
     /**
-     * @param Stampie\Identity $identity
+     * @param Stampie\Recipient $recipient
      * @param Stampie\Message $message
      * @param Stampie\Request $request
      * @param Stampie\Response $response
      */
-    function it_sends_message($identity, $message, $request, $response, $carrier, $adapter)
+    function it_sends_message($recipient, $message, $request, $response, $carrier, $adapter)
     {
-        $carrier->createRequest($identity, $message)->shouldBeCalled()->willReturn($request);
+        $carrier->createRequest($recipient, $message)->shouldBeCalled()->willReturn($request);
         $carrier->handleResponse($response)->willReturn('my-message-id');
 
         $adapter->request($request)->shouldBeCalled()->willReturn($response);
 
-        $this->send($identity, $message)->shouldBeLike(new MessageHeader('my-message-id'));
+        $this->send($recipient, $message)->shouldBeLike(new MessageHeader('my-message-id'));
     }
 
     /**
-     * @param Stampie\Identity $identity
+     * @param Stampie\Recipient $recipient
      * @param Stampie\Message $message
      * @param Stampie\Request $request
      * @param Stampie\Response $response
      */
-    function it_raises_exception($identity, $message, $request, $response, $carrier, $adapter)
+    function it_raises_exception($recipient, $message, $request, $response, $carrier, $adapter)
     {
         $adapter->request($request)->willReturn($response);
 
-        $carrier->createRequest($identity, $message)->willReturn($request);
+        $carrier->createRequest($recipient, $message)->willReturn($request);
         $carrier->handleResponse($response)->willThrow('RuntimeException');
 
-        $this->shouldThrow('RuntimeException')->duringSend($identity, $message);
+        $this->shouldThrow('RuntimeException')->duringSend($recipient, $message);
     }
 }

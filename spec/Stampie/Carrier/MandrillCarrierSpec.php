@@ -14,12 +14,12 @@ class MandrillCarrierSpec extends \PhpSpec\ObjectBehavior
 
     /**
      * @param Stampie\Message $message
-     * @param Stampie\Identity $identity
+     * @param Stampie\Recipient $recipient
      */
-    function it_creates_a_request_with_formatted_message($message, $identity)
+    function it_creates_a_request_with_formatted_message($message, $recipient)
     {
-        $identity->formatAsAddress()->willReturn('henrik@bjrnskov.dk');
+        $recipient->formatAsAddress()->willReturn('henrik@bjrnskov.dk');
 
-        $this->createRequest($identity, $message)->shouldBeAnInstanceOf('Stampie\Request');
+        $this->createRequest($recipient, $message)->shouldBeAnInstanceOf('Stampie\Request');
     }
 }
