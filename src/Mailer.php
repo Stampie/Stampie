@@ -5,9 +5,9 @@ namespace Stampie;
 interface Mailer
 {
     /**
-     * @param Identity $to
-     * @param Message $message
+     * @param  Recipient $to
+     * @param  Message   $message
      * @return boolean
      */
-    public function send(Identity $to, Message $message);
+    public function send(Recipient $to, Message $message);
 }

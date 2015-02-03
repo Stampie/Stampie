@@ -14,13 +14,13 @@ class PostmarkCarrierSpec extends \PhpSpec\ObjectBehavior
 
     /**
      * @param Stampie\Message $message
-     * @param Stampie\Identity $identity
+     * @param Stampie\Recipient $recipient
      */
-    function it_creates_a_request_with_formatted_message($message, $identity)
+    function it_creates_a_request_with_formatted_message($message, $recipient)
     {
-        $identity->formatAsAddress()->willReturn('henrik@bjrnskov.dk');
+        $recipient->formatAsAddress()->willReturn('henrik@bjrnskov.dk');
 
-        $request = $this->createRequest($identity, $message);
+        $request = $this->createRequest($recipient, $message);
         $request->getUrl()->shouldReturn('http://api.postmarkapp.com/email');
         $request->getHeaders()->shouldReturn([
             'Accept' => 'application/json',

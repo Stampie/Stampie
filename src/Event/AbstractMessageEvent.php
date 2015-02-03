@@ -9,8 +9,8 @@
 
 namespace Stampie\Event;
 
-use Stampie\Identity;
 use Stampie\Message;
+use Stampie\Recipient;
 
 /**
  * @author Christophe Coevoet <stof@notk.org>
@@ -21,10 +21,10 @@ abstract class AbstractMessageEvent extends Event
     protected $to;
 
     /**
-     * @param Identity $to
-     * @param Message  $message
+     * @param Recipient $to
+     * @param Message   $message
      */
-    public function __construct(Identity $to, Message $message)
+    public function __construct(Recipient $to, Message $message)
     {
         $this->message = $message;
         $this->to = $to;
@@ -47,15 +47,15 @@ abstract class AbstractMessageEvent extends Event
     }
 
     /**
-     * @param Identity $to
+     * @param Recipient $to
      */
-    public function setTo(Identity $to)
+    public function setTo(Recipient $to)
     {
         $this->to = $to;
     }
 
     /**
-     * @return Identity
+     * @return Recipient
      */
     public function getTo()
     {

@@ -15,7 +15,7 @@ namespace Stampie;
 interface Message
 {
     /**
-     * @return Identity
+     * @return Recipient
      */
     public function getFrom();
 

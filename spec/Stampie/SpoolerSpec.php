@@ -21,7 +21,7 @@ class SpoolerSpec extends \PhpSpec\ObjectBehavior
     }
 
     /**
-     * @param Stampie\Identity $to
+     * @param Stampie\Recipient $to
      * @param Stampie\Message $message
      */
     function it_stores_instead_of_sending($to, $message, $mailer, $storage)
@@ -34,7 +34,7 @@ class SpoolerSpec extends \PhpSpec\ObjectBehavior
     }
 
     /**
-     * @param Stampie\Identity $to
+     * @param Stampie\Recipient $to
      * @param Stampie\Message $message
      */
     function it_delegates_stored_messages_to_mailer($to, $message, $mailer, $storage)

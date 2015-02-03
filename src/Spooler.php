@@ -15,7 +15,7 @@ final class Spooler implements Mailer
         $this->storage = $storage;
     }
 
-    public function send(Identity $to, Message $message)
+    public function send(Recipient $to, Message $message)
     {
         $this->storage->push($to, $message);
     }

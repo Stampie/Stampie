@@ -5,21 +5,21 @@ namespace spec\Stampie\Message;
 class DefaultMessageSpec extends \PhpSpec\ObjectBehavior
 {
     /**
-     * @param Stampie\Identity $identity
+     * @param Stampie\Recipient $recipient
      */
-    function let($identity)
+    function let($recipient)
     {
-        $this->beConstructedWith($identity);
+        $this->beConstructedWith($recipient);
     }
 
-    function it_returns_constructor_arguments_through_getters($identity)
+    function it_returns_constructor_arguments_through_getters($recipient)
     {
-        $this->beConstructedWith($identity, 'subject', 'html', 'text', ['value' => 'key']);
+        $this->beConstructedWith($recipient, 'subject', 'html', 'text', ['value' => 'key']);
 
         $this->getSubject()->shouldReturn('subject');
         $this->getHtml()->shouldReturn('html');
         $this->getText()->shouldReturn('text');
-        $this->getFrom()->shouldReturn($identity);
+        $this->getFrom()->shouldReturn($recipient);
         $this->getHeaders()->shouldReturn(['value' => 'key']);
 
         $this->getSubject();

@@ -17,7 +17,7 @@ namespace Stampie;
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  * @package Stampie
  */
-class Identity
+class Recipient
 {
     private $name;
     private $email;

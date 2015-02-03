@@ -2,14 +2,14 @@
 
 namespace Stampie\Carrier;
 
+use Stampie\Message;
+use Stampie\Recipient;
 use Stampie\Request;
 use Stampie\Response;
-use Stampie\Identity;
-use Stampie\Message;
 
 class MailGunCarrier extends AbstractCarrier
 {
-    public function createRequest(Identity $to, Message $message)
+    public function createRequest(Recipient $to, Message $message)
     {
         list($domain, $token) = explode(':', $this->key);
 
@@ -30,7 +30,7 @@ class MailGunCarrier extends AbstractCarrier
         throw new \LogicException('Something Happended');
     }
 
-    private function format(Identity $to, Message $message)
+    private function format(Recipient $to, Message $message)
     {
         return http_build_query([
             'to'      => (string) $to,

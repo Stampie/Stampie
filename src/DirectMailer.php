@@ -45,16 +45,16 @@ class DirectMailer implements Mailer
      * a DefferedResult will be returned otherwise a the Result object from the handler is
      * returned. If sending fails a failed event will be emitted and the exception rethrown.
      *
-     * @param Identity $to
+     * @param Recipient $to
      * @param Message $message
      * @return boolean
      */
-    public function send(Identity $to, Message $message)
+    public function send(Recipient $to, Message $message)
     {
         return new MessageHeader($this->doSend($to, $message));
     }
 
-    private function doSend(Identity $to, Message $message)
+    private function doSend(Recipient $to, Message $message)
     {
         $request = $this->carrier->createRequest($to, $message);
 
