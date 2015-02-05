@@ -17,22 +17,15 @@ use Stampie\Recipient;
  */
 abstract class AbstractMessageEvent extends Event
 {
-    protected $message;
     protected $to;
+    protected $message;
 
-    /**
-     * @param Recipient $to
-     * @param Message   $message
-     */
     public function __construct(Recipient $to, Message $message)
     {
-        $this->message = $message;
         $this->to = $to;
+        $this->message = $message;
     }
 
-    /**
-     * @param Message $message
-     */
     public function setMessage(Message $message)
     {
         $this->message = $message;
@@ -46,9 +39,6 @@ abstract class AbstractMessageEvent extends Event
         return $this->message;
     }
 
-    /**
-     * @param Recipient $to
-     */
     public function setTo(Recipient $to)
     {
         $this->to = $to;

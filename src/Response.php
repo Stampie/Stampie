@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Henrik Bjornskov <henrik@bjrnskov.dk>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Stampie;
 
 class Response
@@ -10,14 +17,14 @@ class Response
 
     /**
      * @param integer $statusCode
-     * @param string $content
-     * @param array $headers
+     * @param string  $content
+     * @param array   $headers
      */
     public function __construct($statusCode, $content, array $headers = [])
     {
         $this->statusCode = $statusCode;
-        $this->content    = $content;
-        $this->headers    = $headers;
+        $this->content = $content;
+        $this->headers = $headers;
     }
 
     /**

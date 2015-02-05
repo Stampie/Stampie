@@ -23,17 +23,12 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  * @author Christophe Coevoet <stof@notk.org>
- * @package Stampie
  */
 class DirectMailer implements Mailer
 {
     private $carrier;
     private $adapter;
 
-    /**
-     * @param Carrier $carrier
-     * @param Adapter $adapter
-     */
     public function __construct(Carrier $carrier, Adapter $adapter)
     {
         $this->carrier = $carrier;
@@ -46,8 +41,9 @@ class DirectMailer implements Mailer
      * returned. If sending fails a failed event will be emitted and the exception rethrown.
      *
      * @param Recipient $to
-     * @param Message $message
-     * @return boolean
+     * @param Message   $message
+     *
+     * @return MessageHeader
      */
     public function send(Recipient $to, Message $message)
     {

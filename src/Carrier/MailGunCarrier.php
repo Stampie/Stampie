@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Henrik Bjornskov <henrik@bjrnskov.dk>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Stampie\Carrier;
 
 use Stampie\Message;
@@ -9,6 +16,9 @@ use Stampie\Response;
 
 class MailGunCarrier extends AbstractCarrier
 {
+    /**
+     * {@inheritDoc}
+     */
     public function createRequest(Recipient $to, Message $message)
     {
         list($domain, $token) = explode(':', $this->key);
@@ -21,6 +31,9 @@ class MailGunCarrier extends AbstractCarrier
         ;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function handleResponse(Response $response)
     {
         if ($response->isSuccessful()) {

@@ -15,13 +15,16 @@ namespace Stampie;
  *
  * @author Christophe Coevoet <stof@notk.org>
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
- * @package Stampie
  */
 class Recipient
 {
     private $name;
     private $email;
 
+    /**
+     * @param string $email
+     * @param string $name
+     */
     public function __construct($email, $name = null)
     {
         $this->email = $email;
@@ -40,11 +43,21 @@ class Recipient
         return $this->name ? sprintf('%s <%s>', $this->name, $this->email) : $this->email;
     }
 
+    /**
+     * @param string $property
+     *
+     * @return mixed
+     */
     public function __get($property)
     {
         return $this->$property;
     }
 
+    /**
+     * @param string $property
+     *
+     * @return boolean
+     */
     public function __isset($property)
     {
         return isset($this->$property);

@@ -1,10 +1,17 @@
 <?php
 
+/*
+ * (c) Henrik Bjornskov <henrik@bjrnskov.dk>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Stampie;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Stampie\Event\SendMessageEvent;
 use Stampie\Event\FailedMessageEvent;
+use Stampie\Event\SendMessageEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class DispatcherAwareMailer implements Mailer
 {
@@ -17,6 +24,14 @@ class DispatcherAwareMailer implements Mailer
         $this->dispatcher = $dispatcher;
     }
 
+    /**
+     * @param Recipient $to
+     * @param Message   $message
+     *
+     * @throws \Exception
+     *
+     * @return MessageHeader|boolean
+     */
     public function send(Recipient $to, Message $message)
     {
         $event = $this->dispatcher->dispatch(StampieEvents::SEND, new SendMessageEvent($to, $message));

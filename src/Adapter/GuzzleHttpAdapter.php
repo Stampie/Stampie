@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Henrik Bjornskov <henrik@bjrnskov.dk>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Stampie\Adapter;
 
 use GuzzleHttp\ClientInterface;
@@ -14,6 +21,9 @@ class GuzzleHttpAdapter implements Stampie\Adapter
         $this->client = $client;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function request(Request $request, $attachments = [])
     {
         $request = $this->client->createRequest($request->getMethod(), $request->getUrl(), [
