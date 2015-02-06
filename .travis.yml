@@ -1,12 +1,18 @@
 language: php
 
+sudo: false
+
+cache:
+    directories:
+        - $HOME/.composer/cache
+
 php:
     - 5.4
     - 5.5
     - hhvm
 
 before_script:
-    - "composer require --dev phpspec/phpspec:~2.0 --no-update"
-    - "composer install --dev"
+    - composer require --dev phpspec/phpspec:~2.0 --no-update
+    - travis_retry composer install
 
 script: vendor/bin/phpspec run -v -fpretty
