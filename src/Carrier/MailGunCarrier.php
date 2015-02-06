@@ -33,8 +33,8 @@ class MailGunCarrier extends AbstractCarrier
     private function format(Recipient $to, Message $message)
     {
         return http_build_query([
-            'to'      => (string) $to,
-            'from'    => (string) $message->getFrom(),
+            'to'      => $to->formatAsAddress(),
+            'from'    => $message->getFrom() ? $message->getFrom()->formatAsAddress() : null,
             'subject' => $message->getSubject(),
             'text'    => $message->getText(),
             'html'    => $message->getHtml(),
