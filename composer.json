@@ -29,7 +29,8 @@
     },
     "require-dev" : {
         "kriswallsmith/buzz" : "~0.8",
-        "guzzle/http"        : "~3"
+        "guzzle/http"        : "~3",
+        "guzzlehttp/guzzle"  : "~5.2"
     },
     "suggest" : {
         "stof/stampie-extra" : "Extensions for Stampie",
