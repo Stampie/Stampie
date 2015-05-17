@@ -31,7 +31,7 @@ class GuzzleHttpTest extends \PHPUnit_Framework_TestCase
         $client = $this->client;
 
         $files = array(
-            'filename.jpg' => 'path/to/file.jpg',
+            'filename.jpg' => __DIR__ . '/../../../Fixtures/logo.png',
         );
 
         $client
