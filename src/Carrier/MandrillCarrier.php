@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Henrik Bjornskov <henrik@bjrnskov.dk>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Stampie\Carrier;
 
 use Stampie\Message;
@@ -15,6 +22,9 @@ use Stampie\Response;
  */
 class MandrillCarrier extends AbstractCarrier
 {
+    /**
+     * {@inheritDoc}
+     */
     public function createRequest(Recipient $to, Message $message)
     {
         return Request::create('https://mandrillapp.com/api/1.0/messages/send.json')
@@ -25,6 +35,9 @@ class MandrillCarrier extends AbstractCarrier
         ;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function handleResponse(Response $response)
     {
         if (!$response->isSuccessful()) {

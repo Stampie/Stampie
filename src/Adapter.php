@@ -9,14 +9,12 @@
 
 namespace Stampie;
 
-/**
- * @package Stampie
- */
 interface Adapter
 {
     /**
-     * @param  Request $request
-     * @return string
+     * @param Request $request
+     *
+     * @return Response
      */
     public function request(Request $request);
 }

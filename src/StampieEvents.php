@@ -11,7 +11,6 @@ namespace Stampie;
 
 /**
  * @author Christophe Coevoet <stof@notk.org>
- * @package Stampie
  */
 final class StampieEvents
 {

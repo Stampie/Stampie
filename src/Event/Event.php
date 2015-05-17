@@ -13,8 +13,6 @@ namespace Stampie\Event;
  * Adds `preventDefault` which indicates that the default behaviour should not
  * occur. Ex. when `Events::SEND` is dispatched and a listener sets `preventDefault`
  * to `true` it wont actually try and send the message.
- *
- * @package Stampie
  */
 class Event extends \Symfony\Component\EventDispatcher\Event
 {

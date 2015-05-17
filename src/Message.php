@@ -9,9 +9,6 @@
 
 namespace Stampie;
 
-/**
- * @package Stampie
- */
 interface Message
 {
     /**
@@ -39,5 +36,8 @@ interface Message
      */
     public function getHeaders();
 
+    /**
+     * @return Attachment[]
+     */
     public function getAttachments();
 }

@@ -11,15 +11,12 @@ namespace Stampie\Message;
 
 use Stampie\Recipient;
 
-/**
- * @package Stampie
- */
 class DefaultMessage implements \Stampie\Message
 {
     protected $from;
+    protected $subject;
     protected $html;
     protected $text;
-    protected $subject;
     protected $headers;
 
     /**
@@ -78,6 +75,9 @@ class DefaultMessage implements \Stampie\Message
         return $this->headers;
     }
 
+    /**
+     * {@inhertiDoc}
+     */
     public function getAttachments()
     {
         return [];

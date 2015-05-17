@@ -13,16 +13,10 @@ use Buzz\Browser;
 use Stampie\Request;
 use Stampie\Response;
 
-/**
- * @package Stampie
- */
 class BuzzAdapter implements \Stampie\Adapter
 {
     protected $browser;
 
-    /**
-     * @param Browser $browser
-     */
     public function __construct(Browser $browser)
     {
         $this->browser = $browser;
