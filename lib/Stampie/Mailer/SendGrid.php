@@ -117,7 +117,6 @@ class SendGrid extends Mailer
             list(,$inline) = $this->processAttachments($message->getAttachments());
         }
 
-        var_dump($message->getHeaders());
         $parameters = array(
             'api_user' => $username,
             'api_key'  => $password,
