@@ -117,6 +117,7 @@ class SendGrid extends Mailer
             list(,$inline) = $this->processAttachments($message->getAttachments());
         }
 
+        var_dump($message->getHeaders());
         $parameters = array(
             'api_user' => $username,
             'api_key'  => $password,
@@ -129,9 +130,13 @@ class SendGrid extends Mailer
             'html'     => $message->getHtml(),
             'bcc'      => $bccEmails,
             'replyto'  => $message->getReplyTo(),
-            'headers'  => json_encode($message->getHeaders()),
             'content'  => $inline,
         );
+
+        if ($headers = $message->getHeaders()) {
+            $parameters['headers'] = json_encode($headers);
+        }
+
 
         if ($smtpApi) {
             $parameters['x-smtpapi'] = json_encode(array_filter($smtpApi));
