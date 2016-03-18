@@ -2,9 +2,11 @@
 
 namespace Stampie\Tests\Adapter;
 
-use Stampie\Adapter\GuzzleHttp;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Stampie\Adapter\Guzzle6;
 
-class GuzzleHttpTest extends \PHPUnit_Framework_TestCase
+class Guzzle6Test extends \PHPUnit_Framework_TestCase
 {
     private $client;
 
@@ -14,22 +16,18 @@ class GuzzleHttpTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('Cannot find GuzzleHttp\ClientInterface');
         }
 
-        if (!class_exists('GuzzleHttp\Post\PostBody')) {
-            $this->markTestSkipped('Not testing Guzzle 5');
-        }
-
         $this->client = $this->getMock('GuzzleHttp\ClientInterface');
     }
 
     public function testAccessibility()
     {
-        $adapter = new GuzzleHttp($this->client);
+        $adapter = new Guzzle6($this->client);
         $this->assertEquals($this->client, $adapter->getClient());
     }
 
     public function testSend()
     {
-        $adapter = new GuzzleHttp($this->client);
+        $adapter = new Guzzle6($this->client);
         $response = $this->getResponseMock();
         $request = $this->getRequestMock();
         $client = $this->client;
@@ -80,11 +78,11 @@ class GuzzleHttpTest extends \PHPUnit_Framework_TestCase
 
     protected function getRequestMock()
     {
-        return $this->getMock('GuzzleHttp\Message\RequestInterface', array(), array(), '', null, true);
+        return $this->getMock(RequestInterface::class, array(), array(), '', null, true);
     }
 
     protected function getResponseMock()
     {
-        return $this->getMock('GuzzleHttp\Message\Response', array(), array(), '', null, true);
+        return $this->getMock(ResponseInterface::class, array(), array(), '', null, true);
     }
 }
