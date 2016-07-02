@@ -38,9 +38,10 @@ class MailGunTest extends \Stampie\Tests\BaseMailerTest
 
     public function testHeaders()
     {
-        $this->assertEquals(array(
-            'Authorization' => 'Basic ' . base64_encode('api:myCustomKey'),
-        ), $this->mailer->getHeaders());
+        $headers = $this->mailer->getHeaders();
+
+        $this->assertTrue(isset($headers['Authorization']));
+        $this->assertEquals('Basic ' . base64_encode('api:myCustomKey'), $headers['Authorization']);
     }
 
     public function testGetFiles()
@@ -85,7 +86,7 @@ class MailGunTest extends \Stampie\Tests\BaseMailerTest
 
         $i = 0;
         foreach ($result['attachment'] as $key => $path) {
-            $this->assertTrue(is_numeric($key), 'Attachments should not be associative');
+            $this->assertTrue(!is_numeric($key), 'Attachments should be associative');
             $this->assertEquals($attachments[$i]->getPath(), $path, 'Attachments should be formatted correctly');
             $i += 2;
         }
@@ -99,7 +100,7 @@ class MailGunTest extends \Stampie\Tests\BaseMailerTest
 
     protected function createMockAdapter()
     {
-        return $this->getMock('Stampie\Adapter\AdapterInterface');
+        return $this->getMock('Http\Client\HttpClient');
     }
 }
 

@@ -2,7 +2,7 @@
 
 namespace Stampie;
 
-use Stampie\Adapter\AdapterInterface;
+use Http\Client\HttpClient;
 
 /**
  * Takes a MailerInterface and sends to an AdapterInterface.
@@ -12,12 +12,12 @@ use Stampie\Adapter\AdapterInterface;
 interface MailerInterface
 {
     /**
-     * @param AdapterInterface $adapter
+     * @param HttpClient $adapter
      */
-    function setAdapter(AdapterInterface $adapter);
+    function setAdapter(HttpClient $adapter);
 
     /**
-     * @return AdapterInterface
+     * @return HttpClient
      */
     function getAdapter();
 

@@ -2,6 +2,9 @@
 
 namespace Stampie\Tests;
 
+
+use GuzzleHttp\Psr7\Response;
+
 class MailerTest extends \PHPUnit_Framework_TestCase
 {
     protected $adapter;
@@ -50,7 +53,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
 
         $adapter
             ->expects($this->once())
-            ->method('send')
+            ->method('sendRequest')
             ->will($this->returnValue(
                 $this->getResponseMock(true)
             ))
@@ -64,7 +67,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $this
             ->adapter
             ->expects($this->once())
-            ->method('send')
+            ->method('sendRequest')
             ->will($this->returnValue($this->getResponseMock(false)))
         ;
 
@@ -77,21 +80,20 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $this->mailer->send($this->getMock('Stampie\MessageInterface'));
     }
 
+    /**
+     * @param bool $isSuccessfull
+     *
+     * @return Response
+     */
     protected function getResponseMock($isSuccessfull)
     {
-        $response = $this->getMock('Stampie\Adapter\ResponseInterface');
-        $response
-            ->expects($this->any())
-            ->method('isSuccessful')
-            ->will($this->returnValue($isSuccessfull))
-        ;
+        return new Response($isSuccessfull ? 200 : 400, [], \GuzzleHttp\Psr7\stream_for('foobar'));
 
-        return $response;
     }
 
     protected function getAdapterMock()
     {
-        return $this->getMock('Stampie\Adapter\AdapterInterface');
+        return $this->getMock('Http\Client\HttpClient');
     }
 
     protected function getMailerMock(array $args = array())

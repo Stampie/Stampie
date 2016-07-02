@@ -48,6 +48,7 @@ class MailGun extends Mailer
 
         return array(
             'Authorization' => 'Basic ' . base64_encode('api:' . $serverToken),
+            'Content-Type' => 'application/x-www-form-urlencoded',
         );
     }
 
@@ -138,7 +139,7 @@ class MailGun extends Mailer
                 $inline[] = $path;
             } else {
                 // Attached
-                $processedAttachments[] = $path;
+                $processedAttachments[$attachment->getName()] = $path;
             }
         }
 
