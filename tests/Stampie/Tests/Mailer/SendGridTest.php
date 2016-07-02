@@ -162,16 +162,16 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
         $headers = json_encode($headers);
         $to = array($to);
 
-        $query = compact(
-            'api_user', 'api_key', 'to', 'from', 'subject', 'html', 'headers'
-        );
 
         $processedInline = array();
         foreach ($inline as $attachment){
             $processedInline[$attachment->getId()] = $attachment->getName();
         }
-        $query['content'] = $processedInline;
+        $content = $processedInline;
 
+        $query = compact(
+            'api_user', 'api_key', 'to', 'from', 'subject', 'html', 'content', 'headers'
+        );
 
         $this->assertEquals(http_build_query(
             $query
