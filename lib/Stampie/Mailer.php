@@ -2,12 +2,11 @@
 
 namespace Stampie;
 
-use GuzzleHttp\Psr7\MultipartStream;
 use Http\Client\HttpClient;
 use Http\Discovery\HttpClientDiscovery;
 use Http\Discovery\MessageFactoryDiscovery;
-use Http\Discovery\StreamFactoryDiscovery;
 use Http\Message\MessageFactory;
+use Http\Message\MultipartStream\MultipartStreamBuilder;
 use Stampie\Adapter\Response;
 use Stampie\Adapter\ResponseInterface;
 use Stampie\Util\IdentityUtils;
@@ -218,14 +217,14 @@ abstract class Mailer implements MailerInterface
         if (!empty($files)) {
             // HTTP query content
             parse_str($content, $fields);
-            $data = [];
+            $builder = new MultipartStreamBuilder();
 
             foreach ($fields as $name => $contents) {
                 if (!is_array($contents)) {
-                    $data[] = ['name'=>$name, 'contents'=>$contents];
+                    $builder->addResource($name, $contents);
                 } else {
                     foreach ($contents as $c) {
-                        $data[] = ['name'=>$name.'[]', 'contents'=>$c];
+                        $builder->addResource($name.'[]', $c);
                     }
                 }
             }
@@ -233,16 +232,17 @@ abstract class Mailer implements MailerInterface
             // Add files to request
             foreach ($files as $key => $items) {
                 foreach ($items as $name => $path) {
-                    $d = ['name' => $key, 'contents' => fopen($path, 'r')];
+                    $options = [];
                     if (!is_numeric($name)) {
-                        $d['filename'] = $name;
+                        $options['filename'] = $name;
                     }
-                    $data[] = $d;
+                    $contents = fopen($path, 'r');
+                    $builder->addResource($key, $contents, $options);
                 }
             }
 
-            $content = new MultipartStream($data);
-            $headers['Content-Type'] = 'multipart/form-data; boundary='.$content->getBoundary();
+            $content = $builder->build();
+            $headers['Content-Type'] = 'multipart/form-data; boundary='.$builder->getBoundary();
         }
 
         $request = $this->getMessageFactory()->createRequest('POST', $this->getEndpoint(), $headers, $content);
