@@ -19,9 +19,9 @@ use Stampie\Util\IdentityUtils;
 abstract class Mailer implements MailerInterface
 {
     /**
-     * @var HttpClient $adapter
+     * @var HttpClient $httpClient
      */
-    protected $adapter;
+    protected $httpClient;
 
     /**
      * @var string
@@ -34,29 +34,29 @@ abstract class Mailer implements MailerInterface
     private $messageFactory;
 
     /**
-     * @param HttpClient $adapter
+     * @param HttpClient $httpClient
      * @param string     $serverToken
      */
-    public function __construct(HttpClient $adapter = null, $serverToken)
+    public function __construct(HttpClient $httpClient, $serverToken)
     {
-        $this->setAdapter($adapter ?: HttpClientDiscovery::find());
+        $this->setHttpClient($httpClient);
         $this->setServerToken($serverToken);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setAdapter(HttpClient $adapter)
+    public function setHttpClient(HttpClient $httpClient)
     {
-        $this->adapter = $adapter;
+        $this->httpClient = $httpClient;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAdapter()
+    private function getHttpClient()
     {
-        return $this->adapter;
+        return $this->httpClient;
     }
 
     /**
@@ -127,7 +127,7 @@ abstract class Mailer implements MailerInterface
     {
         return array(
             'Content-Type' => 'application/x-www-form-urlencoded',
-            );
+        );
     }
 
     /**
@@ -219,14 +219,15 @@ abstract class Mailer implements MailerInterface
             parse_str($content, $fields);
             $builder = new MultipartStreamBuilder();
 
-            foreach ($fields as $name => $contents) {
-                if (!is_array($contents)) {
-                    $builder->addResource($name, $contents);
-                } else {
-                    foreach ($contents as $c) {
+            foreach ($fields as $name => $value) {
+                if (is_array($value)) {
+                    foreach ($value as $c) {
                         $builder->addResource($name.'[]', $c);
                     }
+                    continue;
                 }
+
+                $builder->addResource($name, $value);
             }
 
             // Add files to request
@@ -236,8 +237,8 @@ abstract class Mailer implements MailerInterface
                     if (!is_numeric($name)) {
                         $options['filename'] = $name;
                     }
-                    $contents = fopen($path, 'r');
-                    $builder->addResource($key, $contents, $options);
+                    $value = fopen($path, 'r');
+                    $builder->addResource($key, $value, $options);
                 }
             }
 
@@ -246,7 +247,7 @@ abstract class Mailer implements MailerInterface
         }
 
         $request = $this->getMessageFactory()->createRequest('POST', $this->getEndpoint(), $headers, $content);
-        $psr7Response = $this->getAdapter()->sendRequest($request);
+        $psr7Response = $this->getHttpClient()->sendRequest($request);
 
         return new Response($psr7Response->getStatusCode(), $psr7Response->getBody()->__toString());
     }

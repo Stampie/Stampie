@@ -2,12 +2,12 @@
 
 namespace Stampie\Tests;
 
-
-use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 
 class MailerTest extends \PHPUnit_Framework_TestCase
 {
-    protected $adapter;
+    protected $httpClient;
 
     /**
      * @var \Stampie\MailerInterface
@@ -17,17 +17,18 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->mailer = $this->getMailerMock(array(
-            $this->adapter = $this->getAdapterMock(),
+            $this->httpClient = $this->getHttpClientMock(),
             'Token',
         ));
     }
 
     public function testSettersAndGetters()
     {
+        $reflectionProperty = new \ReflectionProperty($this->mailer, 'httpClient');
+        $reflectionProperty->setAccessible(true);
 
         $this->assertEquals('Token', $this->mailer->getServerToken());
-        $this->assertEquals($this->adapter, $this->mailer->getAdapter());
-
+        $this->assertEquals($this->httpClient, $reflectionProperty->getValue($this->mailer));
     }
 
     public function testServerTokenCannotBeEmpty()
@@ -39,7 +40,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     public function testSendSuccessful()
     {
         $mailer = $this->mailer;
-        $adapter = $this->mailer->getAdapter();
+        $adapter = $this->httpClient;
 
         $mailer
             ->expects($this->once())
@@ -65,7 +66,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     public function testUnsuccessfulSendCallsHandle()
     {
         $this
-            ->adapter
+            ->httpClient
             ->expects($this->once())
             ->method('sendRequest')
             ->will($this->returnValue($this->getResponseMock(false)))
@@ -83,15 +84,22 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     /**
      * @param bool $isSuccessfull
      *
-     * @return Response
+     * @return ResponseInterface
      */
     protected function getResponseMock($isSuccessfull)
     {
-        return new Response($isSuccessfull ? 200 : 400, [], \GuzzleHttp\Psr7\stream_for('foobar'));
+        $response = $this->getMock(ResponseInterface::class);
+        $stream = $this->getMock(StreamInterface::class);
+        $stream->method('__toString')->willReturn('stream content');
+
+        $response->method('getStatusCode')->willReturn($isSuccessfull ? 200 : 400);
+        $response->method('getBody')->willReturn($stream);
+
+        return $response;
 
     }
 
-    protected function getAdapterMock()
+    protected function getHttpClientMock()
     {
         return $this->getMock('Http\Client\HttpClient');
     }

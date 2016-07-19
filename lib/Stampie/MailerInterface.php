@@ -14,12 +14,7 @@ interface MailerInterface
     /**
      * @param HttpClient $adapter
      */
-    function setAdapter(HttpClient $adapter);
-
-    /**
-     * @return HttpClient
-     */
-    function getAdapter();
+    function setHttpClient(HttpClient $adapter);
 
     /**
      * @param string $token
