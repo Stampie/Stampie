@@ -2,7 +2,12 @@
 
 namespace Stampie;
 
-use Stampie\Adapter\AdapterInterface;
+use Http\Client\HttpClient;
+use Http\Discovery\HttpClientDiscovery;
+use Http\Discovery\MessageFactoryDiscovery;
+use Http\Message\MessageFactory;
+use Http\Message\MultipartStream\MultipartStreamBuilder;
+use Stampie\Adapter\Response;
 use Stampie\Adapter\ResponseInterface;
 use Stampie\Util\IdentityUtils;
 
@@ -14,9 +19,9 @@ use Stampie\Util\IdentityUtils;
 abstract class Mailer implements MailerInterface
 {
     /**
-     * @var AdapterInterface $adapter
+     * @var HttpClient $httpClient
      */
-    protected $adapter;
+    protected $httpClient;
 
     /**
      * @var string
@@ -24,29 +29,54 @@ abstract class Mailer implements MailerInterface
     protected $serverToken;
 
     /**
-     * @param AdapterInterface $adapter
-     * @param string           $serverToken
+     * @var MessageFactory
      */
-    public function __construct(AdapterInterface $adapter, $serverToken)
+    private $messageFactory;
+
+    /**
+     * @param HttpClient $httpClient
+     * @param string     $serverToken
+     */
+    public function __construct(HttpClient $httpClient, $serverToken)
     {
-        $this->setAdapter($adapter);
+        $this->setHttpClient($httpClient);
         $this->setServerToken($serverToken);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setAdapter(AdapterInterface $adapter)
+    public function setHttpClient(HttpClient $httpClient)
     {
-        $this->adapter = $adapter;
+        $this->httpClient = $httpClient;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAdapter()
+    private function getHttpClient()
     {
-        return $this->adapter;
+        return $this->httpClient;
+    }
+
+    /**
+     * @return MessageFactory
+     */
+    private function getMessageFactory()
+    {
+        return $this->messageFactory ?: MessageFactoryDiscovery::find();
+    }
+
+    /**
+     * @param MessageFactory $messageFactory
+     *
+     * @return Mailer
+     */
+    public function setMessageFactory(MessageFactory $messageFactory)
+    {
+        $this->messageFactory = $messageFactory;
+
+        return $this;
     }
 
     /**
@@ -75,12 +105,7 @@ abstract class Mailer implements MailerInterface
      */
     public function send(MessageInterface $message)
     {
-        $response = $this->getAdapter()->send(
-            $this->getEndpoint(),
-            $this->format($message),
-            $this->getHeaders(),
-            $this->getFiles($message)
-        );
+        $response = $this->doSend($message);
 
         // We are all clear if status is HTTP 2xx OK
         if ($response->isSuccessful()) {
@@ -100,7 +125,9 @@ abstract class Mailer implements MailerInterface
      */
     protected function getHeaders()
     {
-        return array();
+        return array(
+            'Content-Type' => 'application/x-www-form-urlencoded',
+        );
     }
 
     /**
@@ -172,5 +199,56 @@ abstract class Mailer implements MailerInterface
     protected function buildIdentityString($identities)
     {
         return IdentityUtils::buildIdentityString($identities);
+    }
+
+    /**
+     * Take a Message and return a Stampie Response
+     *
+     * @param MessageInterface $message
+     *
+     * @return Response
+     */
+    private function doSend(MessageInterface $message)
+    {
+        $content = $this->format($message);
+        $headers = $this->getHeaders();
+        $files = $this->getFiles($message);
+
+        if (!empty($files)) {
+            // HTTP query content
+            parse_str($content, $fields);
+            $builder = new MultipartStreamBuilder();
+
+            foreach ($fields as $name => $value) {
+                if (is_array($value)) {
+                    foreach ($value as $c) {
+                        $builder->addResource($name.'[]', $c);
+                    }
+                    continue;
+                }
+
+                $builder->addResource($name, $value);
+            }
+
+            // Add files to request
+            foreach ($files as $key => $items) {
+                foreach ($items as $name => $path) {
+                    $options = [];
+                    if (!is_numeric($name)) {
+                        $options['filename'] = $name;
+                    }
+                    $value = fopen($path, 'r');
+                    $builder->addResource($key, $value, $options);
+                }
+            }
+
+            $content = $builder->build();
+            $headers['Content-Type'] = 'multipart/form-data; boundary='.$builder->getBoundary();
+        }
+
+        $request = $this->getMessageFactory()->createRequest('POST', $this->getEndpoint(), $headers, $content);
+        $psr7Response = $this->getHttpClient()->sendRequest($request);
+
+        return new Response($psr7Response->getStatusCode(), $psr7Response->getBody()->__toString());
     }
 }

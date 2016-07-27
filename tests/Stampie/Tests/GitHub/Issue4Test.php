@@ -13,7 +13,7 @@ class Issue4Test extends \PHPUnit_Framework_TestCase
     public function testMissingErrorMessageInResponse()
     {
         $response = new Response(422, '{}');
-        $mailer = new TestPostmark($this->getMock('Stampie\Adapter\AdapterInterface'), 'ServerToken');
+        $mailer = new TestPostmark($this->getMock('Http\Client\HttpClient'), 'ServerToken');
 
         $this->setExpectedException('Stampie\Exception\ApiException', 'Unprocessable Entity');
 

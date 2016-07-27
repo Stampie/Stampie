@@ -13,7 +13,7 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->adapter = $this->getMock('Stampie\Adapter\AdapterInterface');
+        $this->adapter = $this->getMock('Http\Client\HttpClient');
     }
 
     protected function getResponseMock($statusCode, array $content)

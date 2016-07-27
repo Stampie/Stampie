@@ -25,17 +25,21 @@
         }
     },
     "require" : {
-        "php"                : ">=5.3.3"
+        "php"                               : "^5.5 || ^7.0",
+        "php-http/httplug"                  : "^1.0",
+        "php-http/message-factory"          : "^1.0",
+        "php-http/discovery"                : "^1.0",
+        "php-http/multipart-stream-builder" : "^0.1",
+        "php-http/client-implementation"    : "^1.0"
     },
     "require-dev" : {
-        "kriswallsmith/buzz" : "~0.8",
-        "guzzle/http"        : "~3",
-        "guzzlehttp/guzzle"  : "~5.2"
+        "phpunit/phpunit" : "^4.8 || 5.0 - 5.3",
+        "php-http/message" : "^1.0",
+        "guzzlehttp/psr7" : "^1.3",
+        "php-http/mock-client" : "^0.3"
     },
     "suggest" : {
-        "stof/stampie-extra" : "Extensions for Stampie",
-        "kriswallsmith/buzz" : "Lightweight HTTP Client",
-        "guzzle/http"        : "HTTP Client and Framework for building RESTful webservice clients"
+        "stof/stampie-extra" : "Extensions for Stampie"
     },
     "extra": {
         "branch-alias": {
