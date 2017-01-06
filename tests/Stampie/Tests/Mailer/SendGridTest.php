@@ -27,6 +27,20 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
         $this->mailer->setServerToken('invalid');
     }
 
+    public function testPasswordContainingTokenSeparator()
+    {
+        $this->mailer->setServerToken('rudolph:rednose:reindeer');
+
+        $message =  $this->getMessageMock(
+            $from = 'john@example.com',
+            $to = 'jane@example.com',
+            $subject = 'Testing password that contains :',
+            $html = 'Stampie is Awesome'
+        );
+
+        $this->assertContains('api_key=rednose:reindeer', urldecode($this->mailer->format($message)));
+    }
+
     public function testEndpoint()
     {
         $this->assertEquals('https://sendgrid.com/api/mail.send.json', $this->mailer->getEndpoint());
