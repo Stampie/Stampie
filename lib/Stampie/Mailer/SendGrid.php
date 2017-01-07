@@ -83,7 +83,7 @@ class SendGrid extends Mailer
     protected function format(MessageInterface $message)
     {
         // We should split up the ServerToken on : to get username and password
-        list($username, $password) = explode(':', $this->getServerToken());
+        list($username, $password) = explode(':', $this->getServerToken(), 2);
 
         $from = $this->normalizeIdentity($message->getFrom());
 
