@@ -109,7 +109,9 @@ abstract class Mailer implements MailerInterface
 
         // We are all clear if status is HTTP 2xx OK
         if ($response->isSuccessful()) {
-            return true;
+            // Send back the contents from the response. Successful Postmark API response has the message ID
+            // on it which can be used to logs the email responses.
+            return $response;
         }
 
         return $this->handle($response);
