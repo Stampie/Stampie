@@ -9,7 +9,7 @@ use Http\Message\MessageFactory;
 use Http\Message\MultipartStream\MultipartStreamBuilder;
 use Stampie\Adapter\Response;
 use Stampie\Adapter\ResponseInterface;
-use Stampie\Util\IdentityUtils;
+use Stampie\Util\RecipientUtils;
 
 /**
  * Minimal implementation of a MailerInterface
@@ -172,33 +172,33 @@ abstract class Mailer implements MailerInterface
     abstract protected function handle(ResponseInterface $response);
 
     /**
-     * @param IdentityInterface|string $identity
+     * @param RecipientInterface|string $recipient
      *
-     * @return IdentityInterface
+     * @return RecipientInterface
      */
-    protected function normalizeIdentity($identity)
+    protected function normalizeRecipient($recipient)
     {
-        return IdentityUtils::normalizeIdentity($identity);
+        return RecipientUtils::normalizeRecipient($recipient);
     }
 
     /**
-     * @param IdentityInterface[]|string $identities
+     * @param RecipientInterface[]|string $recipients
      *
-     * @return IdentityInterface[]
+     * @return RecipientInterface[]
      */
-    protected function normalizeIdentities($identities)
+    protected function normalizeRecipients($recipients)
     {
-        return IdentityUtils::normalizeIdentities($identities);
+        return RecipientUtils::normalizeRecipients($recipients);
     }
 
     /**
-     * @param IdentityInterface[]|IdentityInterface|string $identities
+     * @param RecipientInterface[]|RecipientInterface|string $recipients
      *
      * @return string
      */
-    protected function buildIdentityString($identities)
+    protected function buildRecipientString($recipients)
     {
-        return IdentityUtils::buildIdentityString($identities);
+        return RecipientUtils::buildRecipientString($recipients);
     }
 
     /**

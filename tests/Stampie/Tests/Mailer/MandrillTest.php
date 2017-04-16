@@ -2,7 +2,7 @@
 
 namespace Stampie\Tests\Mailer;
 
-use Stampie\Identity;
+use Stampie\Recipient;
 use Stampie\Mailer\Mandrill;
 use Stampie\Adapter\Response;
 use Stampie\Adapter\ResponseInterface;
@@ -301,26 +301,26 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
                 array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
                 array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc')
             )),
-            array(array(new Identity('henrik@bjrnskov.dk')), 'gauthier.wallet@gmail.com', array(
+            array(array(new Recipient('henrik@bjrnskov.dk')), 'gauthier.wallet@gmail.com', array(
                 array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
                 array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc')
             )),
-            array(array(new Identity('henrik@bjrnskov.dk'), new Identity('henrik2@bjrnskov.dk')), 'gauthier.wallet@gmail.com', array(
+            array(array(new Recipient('henrik@bjrnskov.dk'), new Recipient('henrik2@bjrnskov.dk')), 'gauthier.wallet@gmail.com', array(
                 array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
                 array('email' => 'henrik2@bjrnskov.dk', 'name' => null, 'type' => 'to'),
                 array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc')
             )),
-            array(array(new Identity('henrik@bjrnskov.dk')), array(new Identity('gauthier.wallet@gmail.com')), array(
+            array(array(new Recipient('henrik@bjrnskov.dk')), array(new Recipient('gauthier.wallet@gmail.com')), array(
                 array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
                 array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc')
             )),
-            array(array(new Identity('henrik@bjrnskov.dk'), new Identity('henrik2@bjrnskov.dk')), array(new Identity('gauthier.wallet@gmail.com'), new Identity('gauthier.wallet2@gmail.com')), array(
+            array(array(new Recipient('henrik@bjrnskov.dk'), new Recipient('henrik2@bjrnskov.dk')), array(new Recipient('gauthier.wallet@gmail.com'), new Recipient('gauthier.wallet2@gmail.com')), array(
                 array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
                 array('email' => 'henrik2@bjrnskov.dk', 'name' => null, 'type' => 'to'),
                 array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc'),
                 array('email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'bcc')
             )),
-            array('henrik@bjrnskov.dk', array(new Identity('gauthier.wallet@gmail.com'), new Identity('gauthier.wallet2@gmail.com')), array(
+            array('henrik@bjrnskov.dk', array(new Recipient('gauthier.wallet@gmail.com'), new Recipient('gauthier.wallet2@gmail.com')), array(
                 array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
                 array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc'),
                 array('email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'bcc')
@@ -335,26 +335,26 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
                 array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
                 array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc')
             )),
-            array(array(new Identity('henrik@bjrnskov.dk')), 'gauthier.wallet@gmail.com', array(
+            array(array(new Recipient('henrik@bjrnskov.dk')), 'gauthier.wallet@gmail.com', array(
                 array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
                 array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc')
             )),
-            array(array(new Identity('henrik@bjrnskov.dk'), new Identity('henrik2@bjrnskov.dk')), 'gauthier.wallet@gmail.com', array(
+            array(array(new Recipient('henrik@bjrnskov.dk'), new Recipient('henrik2@bjrnskov.dk')), 'gauthier.wallet@gmail.com', array(
                 array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
                 array('email' => 'henrik2@bjrnskov.dk', 'name' => null, 'type' => 'to'),
                 array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc')
             )),
-            array(array(new Identity('henrik@bjrnskov.dk')), array(new Identity('gauthier.wallet@gmail.com')), array(
+            array(array(new Recipient('henrik@bjrnskov.dk')), array(new Recipient('gauthier.wallet@gmail.com')), array(
                 array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
                 array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc')
             )),
-            array(array(new Identity('henrik@bjrnskov.dk'), new Identity('henrik2@bjrnskov.dk')), array(new Identity('gauthier.wallet@gmail.com'), new Identity('gauthier.wallet2@gmail.com')), array(
+            array(array(new Recipient('henrik@bjrnskov.dk'), new Recipient('henrik2@bjrnskov.dk')), array(new Recipient('gauthier.wallet@gmail.com'), new Recipient('gauthier.wallet2@gmail.com')), array(
                 array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
                 array('email' => 'henrik2@bjrnskov.dk', 'name' => null, 'type' => 'to'),
                 array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc'),
                 array('email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'cc')
             )),
-            array('henrik@bjrnskov.dk', array(new Identity('gauthier.wallet@gmail.com'), new Identity('gauthier.wallet2@gmail.com')), array(
+            array('henrik@bjrnskov.dk', array(new Recipient('gauthier.wallet@gmail.com'), new Recipient('gauthier.wallet2@gmail.com')), array(
                 array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
                 array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc'),
                 array('email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'cc')
