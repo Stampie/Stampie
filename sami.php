@@ -3,6 +3,7 @@
 use Sami\Sami;
 use Sami\Version\GitVersionCollection;
 use Symfony\Component\Finder\Finder;
+use Sami\RemoteRepository\GitHubRemoteRepository;
 
 $iterator = Finder::create()
     ->files()
@@ -13,13 +14,15 @@ $iterator = Finder::create()
 
 // generate documentation for all v2.0.* tags, the 2.0 branch, and the master one
 $versions = GitVersionCollection::create($dir)
-    ->addFromTags('v0.6.0')
-    ->add('master', 'master branch');
+    ->addFromTags(['0.8.0', '0.9.0', '0.10.0', '0.11.0'])
+    ->add('master', 'master branch')
+;
 
 return new Sami($iterator, [
     'versions'             => $versions,
     'title'                => 'Stampie API',
     'build_dir'            => __DIR__.'/api/%version%',
     'cache_dir'            => __DIR__.'/cache/%version%',
+    'remote_repository'    => new GitHubRemoteRepository('Stampie/Stampie', dirname($dir)),
     'default_opened_level' => 2,
 ]);

@@ -1,17 +1,17 @@
 # Stampie
 
-[![Build Status](https://secure.travis-ci.org/henrikbjorn/Stampie.png)](http://travis-ci.org/henrikbjorn/Stampie)
+[![Build Status](https://travis-ci.org/Stampie/Stampie.svg?branch=master)](https://travis-ci.org/Stampie/Stampie)
 
-Stampie is a simple API Wrapper for different email providers such as [Postmark](http://postmarkapp.com) and [SendGrid](http://sendgrid.com).
+Stampie is a simple API Wrapper for different email providers such as [Postmark](https://postmarkapp.com) and [SendGrid](https://sendgrid.com).
 
 It is very easy to use and to integrate into your application as demonstrated below with a `SendGrid` mailer.
 
 ## Providers
 
-* [Postmark](http://postmarkapp.com)
-* [SendGrid](http://sendgrid.com)
-* [MailGun](http://www.mailgun.com)
-* [Mandrill](http://mandrill.com/)
+* [Postmark](https://postmarkapp.com)
+* [SendGrid](https://sendgrid.com)
+* [MailGun](https://www.mailgun.com)
+* [Mandrill](https://mandrill.com/)
 
 ``` php
 <?php
@@ -44,7 +44,7 @@ Last their is an Interface for every type of class or abstract implementation th
 
 ## Documentation
 
-There is generated API documentation for all tags and released versions. Those can be found at [flint.github.com/Stampie/api/master](http://flint.github.com/Stampie/api/master).
+There is generated API documentation for all tags and released versions. Those can be found at [stampie.github.io/Stampie/api/master/](https://stampie.github.io/Stampie/api/master/).
 
 ## Extensions
 
@@ -57,11 +57,11 @@ Stampie is itself completly decoupled and does not depend on any framework.
 
 ### Integrations
 
-* [HBStampieBundle](http://github.com/henrikbjorn/HBStampieBundle) it is also [on packagist](http://packagist.org/packages/henrikbjorn/stampie-bundle)
+* [HBStampieBundle](https://github.com/Stampie/HBStampieBundle) it is also [on packagist](https://packagist.org/packages/henrikbjorn/stampie-bundle)
 
 ## Testing
 
-Stampie is [Continuous Integration](http://en.wikipedia.org/wiki/Continuous_integration) tested with [Travis](http://travis-ci.org) and aims for a high coverage percentage.
+Stampie is [Continuous Integration](https://en.wikipedia.org/wiki/Continuous_integration) tested with [Travis](https://travis-ci.org) and aims for a high coverage percentage.
 
 ## Developing
 
