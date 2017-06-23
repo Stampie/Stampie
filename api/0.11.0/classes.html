@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>All Classes | Stampie API</title>
+
+            <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="css/sami.css">
+        <script src="js/jquery-1.11.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/typeahead.min.js"></script>
+        <script src="sami.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    
+    
+    </head>
+
+    <body id="classes" data-name="" data-root-path="">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                    <form action="#" method="GET">
+                <select id="version-switcher" name="version">
+                                            <option value="../0.8.0/index.html" data-version="0.8.0">0.8.0</option>
+                                            <option value="../0.9.0/index.html" data-version="0.9.0">0.9.0</option>
+                                            <option value="../0.10.0/index.html" data-version="0.10.0">0.10.0</option>
+                                            <option value="../0.11.0/index.html" data-version="0.11.0">0.11.0</option>
+                                            <option value="../master/index.html" data-version="master">master branch</option>
+                                    </select>
+            </form>
+                <script>
+            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
+        </script>
+        <form id="search-form" action="search.html" method="GET">
+            <span class="glyphicon glyphicon-search"></span>
+            <input name="search"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search">
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Stampie API</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="classes.html">Classes</a></li>
+                                            <li><a href="namespaces.html">Namespaces</a></li>
+                                        <li><a href="interfaces.html">Interfaces</a></li>
+                    <li><a href="traits.html">Traits</a></li>
+                    <li><a href="doc-index.html">Index</a></li>
+                    <li><a href="search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div id="page-content">
+                    <div class="page-header">
+        <h1>Classes</h1>
+    </div>
+
+    
+    <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Stampie/Adapter/AdapterInterface.html"><abbr title="Stampie\Adapter\AdapterInterface">AdapterInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Interface all adapters must implement.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Adapter/Buzz.html"><abbr title="Stampie\Adapter\Buzz">Buzz</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Adapter for Kriss Wallsmith's Buzz library
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Adapter/Guzzle.html"><abbr title="Stampie\Adapter\Guzzle">Guzzle</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Guzzle Adapter (guzzlephp.org)
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Adapter/GuzzleHttp.html"><abbr title="Stampie\Adapter\GuzzleHttp">GuzzleHttp</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    GuzzleHttp Adapter (guzzlephp.org) - Version 5+
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Adapter/NoopAdapter.html"><abbr title="Stampie\Adapter\NoopAdapter">NoopAdapter</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Adapter/Response.html"><abbr title="Stampie\Adapter\Response">Response</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Immutable implementation of ResponseInterface
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Stampie/Adapter/ResponseInterface.html"><abbr title="Stampie\Adapter\ResponseInterface">ResponseInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Interface for returned content by adapters
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Attachment.html"><abbr title="Stampie\Attachment">Attachment</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    An Attachment is a container for a file that will be included with a Message.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Exception/ApiException.html"><abbr title="Stampie\Exception\ApiException">ApiException</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    SubException
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Exception/HttpException.html"><abbr title="Stampie\Exception\HttpException">HttpException</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Exception thrown for all HTTP Error codes where the Api's doesn't themselves provide an error
+message.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Identity.html"><abbr title="Stampie\Identity">Identity</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Mailer.html"><abbr title="Stampie\Mailer">Mailer</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Minimal implementation of a MailerInterface
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Stampie/MailerInterface.html"><abbr title="Stampie\MailerInterface">MailerInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Takes a MailerInterface and sends to an AdapterInterface.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Mailer/MailGun.html"><abbr title="Stampie\Mailer\MailGun">MailGun</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Mailer/Mandrill.html"><abbr title="Stampie\Mailer\Mandrill">Mandrill</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Sends emails to Mandrill server
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Mailer/Postmark.html"><abbr title="Stampie\Mailer\Postmark">Postmark</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Sends emails to Postmark server
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Mailer/SendGrid.html"><abbr title="Stampie\Mailer\SendGrid">SendGrid</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Mailer to be used with SendGrid Web API
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Message.html"><abbr title="Stampie\Message">Message</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Implementation of MessageInterface where only getFrom() and getSubject()
+is required to be implemented.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Stampie/MessageInterface.html"><abbr title="Stampie\MessageInterface">MessageInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Represents a simple Message. A Message is a storage of a message that
+will be converted into an API call
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Stampie/Message/AttachmentsAwareInterface.html"><abbr title="Stampie\Message\AttachmentsAwareInterface">AttachmentsAwareInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Represents a Message that contains Attachments
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Stampie/Message/MetadataAwareInterface.html"><abbr title="Stampie\Message\MetadataAwareInterface">MetadataAwareInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Stampie/Message/TaggableInterface.html"><abbr title="Stampie\Message\TaggableInterface">TaggableInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Util/AttachmentUtils.html"><abbr title="Stampie\Util\AttachmentUtils">AttachmentUtils</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Stampie Attachment utility functions
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Util/IdentityUtils.html"><abbr title="Stampie\Util\IdentityUtils">IdentityUtils</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Stampie Identity utility functions
+                </div>
+            </div>
+            </div>
+            </div>
+                <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+    </div>
+
+        </div>
+    </div>
+    </body>
+
+</html>

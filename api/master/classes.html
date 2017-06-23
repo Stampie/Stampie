@@ -1,199 +1,275 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="robots" content="index, follow, all" />
-        <title>Classes | Stampie API</title>
-                    <link rel="stylesheet" type="text/css" href="stylesheet.css">
-                            </head>
-        <body id="overview">
-            <div class="header">
-        <ul>
-            <li><a href="classes.html">Classes</a></li>
-                            <li><a href="namespaces.html">Namespaces</a></li>
-                        <li><a href="interfaces.html">Interfaces</a></li>
-            <li><a href="doc-index.html">Index</a></li>
-            
-        </ul>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>All Classes | Stampie API</title>
 
-        <div id="title">Stampie API</div>
+            <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="css/sami.css">
+        <script src="js/jquery-1.11.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/typeahead.min.js"></script>
+        <script src="sami.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    
+    
+    </head>
 
-            <h1>Classes</h1>
+    <body id="classes" data-name="" data-root-path="">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                    <form action="#" method="GET">
+                <select id="version-switcher" name="version">
+                                            <option value="../0.8.0/index.html" data-version="0.8.0">0.8.0</option>
+                                            <option value="../0.9.0/index.html" data-version="0.9.0">0.9.0</option>
+                                            <option value="../0.10.0/index.html" data-version="0.10.0">0.10.0</option>
+                                            <option value="../0.11.0/index.html" data-version="0.11.0">0.11.0</option>
+                                            <option value="../master/index.html" data-version="master">master branch</option>
+                                    </select>
+            </form>
+                <script>
+            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
+        </script>
+        <form id="search-form" action="search.html" method="GET">
+            <span class="glyphicon glyphicon-search"></span>
+            <input name="search"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search">
+        </form>
     </div>
-        <div class="content">
-                <table>
-                    <tr>
-                <td>
-                    <em>                    <a href="Stampie/Adapter/AdapterInterface.html" target="main"><abbr title="Stampie\Adapter\AdapterInterface">Stampie\Adapter\AdapterInterface</abbr></a>
-                    </em>                </td>
-                <td>
-                    Interface all adapters must implement.
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                                        <a href="Stampie/Adapter/Buzz.html" target="main"><abbr title="Stampie\Adapter\Buzz">Stampie\Adapter\Buzz</abbr></a>
-                                    </td>
-                <td>
-                    Adapter for Kriss Wallsmith&#039;s Buzz library
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                                        <a href="Stampie/Adapter/Guzzle.html" target="main"><abbr title="Stampie\Adapter\Guzzle">Stampie\Adapter\Guzzle</abbr></a>
-                                    </td>
-                <td>
-                    Guzzle Adapter (guzzlephp.org)
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                                        <a href="Stampie/Adapter/NoopAdapter.html" target="main"><abbr title="Stampie\Adapter\NoopAdapter">Stampie\Adapter\NoopAdapter</abbr></a>
-                                    </td>
-                <td>
-                    
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                                        <a href="Stampie/Adapter/Response.html" target="main"><abbr title="Stampie\Adapter\Response">Stampie\Adapter\Response</abbr></a>
-                                    </td>
-                <td>
-                    Immutable implementation of ResponseInterface
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                    <em>                    <a href="Stampie/Adapter/ResponseInterface.html" target="main"><abbr title="Stampie\Adapter\ResponseInterface">Stampie\Adapter\ResponseInterface</abbr></a>
-                    </em>                </td>
-                <td>
-                    Interface for returned content by adapters
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                                        <a href="Stampie/Exception/ApiException.html" target="main"><abbr title="Stampie\Exception\ApiException">Stampie\Exception\ApiException</abbr></a>
-                                    </td>
-                <td>
-                    SubException
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                                        <a href="Stampie/Exception/HttpException.html" target="main"><abbr title="Stampie\Exception\HttpException">Stampie\Exception\HttpException</abbr></a>
-                                    </td>
-                <td>
-                    Exception thrown for all HTTP Error codes where the Api&#039;s doesn&#039;t themselves provide an error message.
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                                        <a href="Stampie/Identity.html" target="main"><abbr title="Stampie\Identity">Stampie\Identity</abbr></a>
-                                    </td>
-                <td>
-                    
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                    <em>                    <a href="Stampie/IdentityInterface.html" target="main"><abbr title="Stampie\IdentityInterface">Stampie\IdentityInterface</abbr></a>
-                    </em>                </td>
-                <td>
-                    
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                                        <a href="Stampie/Mailer.html" target="main"><abbr title="Stampie\Mailer">Stampie\Mailer</abbr></a>
-                                    </td>
-                <td>
-                    Minimal implementation of a MailerInterface
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                    <em>                    <a href="Stampie/MailerInterface.html" target="main"><abbr title="Stampie\MailerInterface">Stampie\MailerInterface</abbr></a>
-                    </em>                </td>
-                <td>
-                    Takes a MailerInterface and sends to to Postmark throgh Buzz
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                                        <a href="Stampie/Mailer/MailChimpSts.html" target="main"><abbr title="Stampie\Mailer\MailChimpSts">Stampie\Mailer\MailChimpSts</abbr></a>
-                                    </td>
-                <td>
-                    A Mailer for MailChimp STS http://mailchimp.com/features/simple-transactional-service/
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                                        <a href="Stampie/Mailer/MailGun.html" target="main"><abbr title="Stampie\Mailer\MailGun">Stampie\Mailer\MailGun</abbr></a>
-                                    </td>
-                <td>
-                    
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                                        <a href="Stampie/Mailer/Mandrill.html" target="main"><abbr title="Stampie\Mailer\Mandrill">Stampie\Mailer\Mandrill</abbr></a>
-                                    </td>
-                <td>
-                    Sends emails to Mandrill server
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                                        <a href="Stampie/Mailer/Postmark.html" target="main"><abbr title="Stampie\Mailer\Postmark">Stampie\Mailer\Postmark</abbr></a>
-                                    </td>
-                <td>
-                    Sends emails to Postmark server
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                                        <a href="Stampie/Mailer/SendGrid.html" target="main"><abbr title="Stampie\Mailer\SendGrid">Stampie\Mailer\SendGrid</abbr></a>
-                                    </td>
-                <td>
-                    Mailer to be used with SendGrid Web API
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                                        <a href="Stampie/Message.html" target="main"><abbr title="Stampie\Message">Stampie\Message</abbr></a>
-                                    </td>
-                <td>
-                    Implementation of MessageInterface where only getFrom() and getSubject() is required to be implemented.
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                    <em>                    <a href="Stampie/MessageInterface.html" target="main"><abbr title="Stampie\MessageInterface">Stampie\MessageInterface</abbr></a>
-                    </em>                </td>
-                <td>
-                    Represents a simple Message.
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                    <em>                    <a href="Stampie/Message/TaggableInterface.html" target="main"><abbr title="Stampie\Message\TaggableInterface">Stampie\Message\TaggableInterface</abbr></a>
-                    </em>                </td>
-                <td>
-                    
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                                        <a href="Stampie/Util/IdentityUtils.html" target="main"><abbr title="Stampie\Util\IdentityUtils">Stampie\Util\IdentityUtils</abbr></a>
-                                    </td>
-                <td>
-                    Stampie Identity utility functions
-                </td>
-            </tr>
-            </table>
+
+                <div id="api-tree"></div>
+
         </div>
-            <div id="footer">
-        Generated by <a href="http://sami.sensiolabs.org/" target="_top">Sami, the API Documentation Generator</a>.
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Stampie API</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="classes.html">Classes</a></li>
+                                            <li><a href="namespaces.html">Namespaces</a></li>
+                                        <li><a href="interfaces.html">Interfaces</a></li>
+                    <li><a href="traits.html">Traits</a></li>
+                    <li><a href="doc-index.html">Index</a></li>
+                    <li><a href="search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div id="page-content">
+                    <div class="page-header">
+        <h1>Classes</h1>
+    </div>
+
+    
+    <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Adapter/Response.html"><abbr title="Stampie\Adapter\Response">Response</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Immutable implementation of ResponseInterface
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Stampie/Adapter/ResponseInterface.html"><abbr title="Stampie\Adapter\ResponseInterface">ResponseInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Interface for returned content by adapters
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Attachment.html"><abbr title="Stampie\Attachment">Attachment</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    An Attachment is a container for a file that will be included with a Message.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Exception/ApiException.html"><abbr title="Stampie\Exception\ApiException">ApiException</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    SubException
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Exception/HttpException.html"><abbr title="Stampie\Exception\HttpException">HttpException</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Exception thrown for all HTTP Error codes where the Api's doesn't themselves provide an error
+message.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Identity.html"><abbr title="Stampie\Identity">Identity</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Mailer.html"><abbr title="Stampie\Mailer">Mailer</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Minimal implementation of a MailerInterface
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Stampie/MailerInterface.html"><abbr title="Stampie\MailerInterface">MailerInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Takes a MailerInterface and sends to an AdapterInterface.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Mailer/MailGun.html"><abbr title="Stampie\Mailer\MailGun">MailGun</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Mailer/Mandrill.html"><abbr title="Stampie\Mailer\Mandrill">Mandrill</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Sends emails to Mandrill server
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Mailer/Postmark.html"><abbr title="Stampie\Mailer\Postmark">Postmark</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Sends emails to Postmark server
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Mailer/SendGrid.html"><abbr title="Stampie\Mailer\SendGrid">SendGrid</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Mailer to be used with SendGrid Web API
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Message.html"><abbr title="Stampie\Message">Message</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Implementation of MessageInterface where only getFrom() and getSubject()
+is required to be implemented.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Stampie/MessageInterface.html"><abbr title="Stampie\MessageInterface">MessageInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Represents a simple Message. A Message is a storage of a message that
+will be converted into an API call
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Stampie/Message/AttachmentsAwareInterface.html"><abbr title="Stampie\Message\AttachmentsAwareInterface">AttachmentsAwareInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Represents a Message that contains Attachments
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Stampie/Message/MetadataAwareInterface.html"><abbr title="Stampie\Message\MetadataAwareInterface">MetadataAwareInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Stampie/Message/TaggableInterface.html"><abbr title="Stampie\Message\TaggableInterface">TaggableInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Util/AttachmentUtils.html"><abbr title="Stampie\Util\AttachmentUtils">AttachmentUtils</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Stampie Attachment utility functions
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Stampie/Util/IdentityUtils.html"><abbr title="Stampie\Util\IdentityUtils">IdentityUtils</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Stampie Identity utility functions
+                </div>
+            </div>
+            </div>
+            </div>
+                <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+    </div>
+
+        </div>
     </div>
     </body>
+
 </html>
