@@ -42,10 +42,6 @@ A `Message` or `MessageInterface` is a simple storage class that holds informati
 
 Last their is an Interface for every type of class or abstract implementation that should be used when adding new Mailer's or Adapter's.
 
-## Documentation
-
-There is generated API documentation for all tags and released versions. Those can be found at [flint.github.com/Stampie/api/master](http://flint.github.com/Stampie/api/master).
-
 ## Extensions
 
 * [StampieExtra](https://github.com/stof/StampieExtra) provides extensions
