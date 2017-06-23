@@ -243,7 +243,7 @@ abstract class Mailer implements MailerInterface
             }
 
             $content = $builder->build();
-            $headers['Content-Type'] = 'multipart/form-data; boundary='.$builder->getBoundary();
+            $headers['Content-Type'] = 'multipart/form-data; boundary="'.$builder->getBoundary().'"';
         }
 
         $request = $this->getMessageFactory()->createRequest('POST', $this->getEndpoint(), $headers, $content);
