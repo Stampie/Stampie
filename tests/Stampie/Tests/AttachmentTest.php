@@ -17,13 +17,12 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
     {
         $file = 'filenotfound.txt';
 
-        $attachment = $this->getAttachmentMock(array('isValidFile'));
+        $attachment = $this->getAttachmentMock(['isValidFile']);
         $attachment
             ->expects($this->once())
             ->method('isValidFile')
             ->with($file)
-            ->will($this->returnValue(false))
-        ;
+            ->will($this->returnValue(false));
 
         $attachment->__construct($file);
     }
@@ -36,20 +35,18 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
     {
         $file = 'unknownfiletype.txt';
 
-        $attachment = $this->getAttachmentMock(array('isValidFile', 'determineFileType'));
+        $attachment = $this->getAttachmentMock(['isValidFile', 'determineFileType']);
         $attachment
             ->expects($this->once())
             ->method('isValidFile')
             ->with($file)
-            ->will($this->returnValue(true))
-        ;
+            ->will($this->returnValue(true));
 
         $attachment
             ->expects($this->once())
             ->method('determineFileType')
             ->with($file)
-            ->will($this->returnValue(null))
-        ;
+            ->will($this->returnValue(null));
 
         $attachment->__construct($file);
     }
@@ -62,20 +59,18 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
         $file = 'unknownfiletype.txt';
         $type = 'text/plain';
 
-        $attachment = $this->getAttachmentMock(array('isValidFile', 'determineFileType'));
+        $attachment = $this->getAttachmentMock(['isValidFile', 'determineFileType']);
         $attachment
             ->expects($this->once())
             ->method('isValidFile')
             ->with($file)
-            ->will($this->returnValue(true))
-        ;
+            ->will($this->returnValue(true));
 
         $attachment
             ->expects($this->once())
             ->method('determineFileType')
             ->with($file)
-            ->will($this->returnValue($type))
-        ;
+            ->will($this->returnValue($type));
 
         $attachment->__construct($file);
 
@@ -96,13 +91,12 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
         $type = 'image/jpeg';
         $id = md5(time());
 
-        $attachment = $this->getAttachmentMock(array('isValidFile'));
+        $attachment = $this->getAttachmentMock(['isValidFile']);
         $attachment
             ->expects($this->once())
             ->method('isValidFile')
             ->with($file)
-            ->will($this->returnValue(true))
-        ;
+            ->will($this->returnValue(true));
 
         $attachment->__construct($file, $name, $type, $id);
 
@@ -114,7 +108,7 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param array|null $mockMethods
-     * a@return \PHPUnit_Framework_MockObject_MockObject|Attachment
+     *                                a@return \PHPUnit_Framework_MockObject_MockObject|Attachment
      */
     protected function getAttachmentMock(array $mockMethods = null)
     {

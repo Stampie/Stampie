@@ -5,7 +5,7 @@ namespace Stampie\Message;
 use Stampie\Attachment;
 
 /**
- * Represents a Message that contains Attachments
+ * Represents a Message that contains Attachments.
  *
  * @author Adam Averay <adam@averay.com>
  */

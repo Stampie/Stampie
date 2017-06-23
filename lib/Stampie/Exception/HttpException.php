@@ -11,10 +11,10 @@ namespace Stampie\Exception;
 class HttpException extends \RuntimeException
 {
     /**
-     * @param integer    $statusCode
+     * @param int        $statusCode
      * @param string     $message
      * @param \Exception $previous
-     * @param integer    $code
+     * @param int        $code
      */
     public function __construct($statusCode, $message = null, \Exception $previous = null, $code = 0)
     {
@@ -24,7 +24,7 @@ class HttpException extends \RuntimeException
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getStatusCode()
     {

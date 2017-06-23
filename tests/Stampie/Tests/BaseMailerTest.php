@@ -22,19 +22,17 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
         $response
             ->expects($this->any())
             ->method('getStatusCode')
-            ->will($this->returnValue($statusCode))
-        ;
+            ->will($this->returnValue($statusCode));
 
         $response
             ->expects($this->any())
             ->method('getContent')
-            ->will($this->returnValue(json_encode($content)))
-        ;
+            ->will($this->returnValue(json_encode($content)));
 
         return $response;
     }
 
-    protected function getMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = array())
+    protected function getMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [])
     {
         $message = $this->getMock('Stampie\MessageInterface');
 
@@ -43,7 +41,7 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
         return $message;
     }
 
-    protected function getTaggableMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = array(), $tags = array())
+    protected function getTaggableMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $tags = [])
     {
         $message = $this->getMock('Stampie\Tests\Mailer\TaggableMessage');
 
@@ -52,13 +50,12 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
         $message
             ->expects($this->any())
             ->method('getTag')
-            ->will($this->returnValue($tags))
-        ;
+            ->will($this->returnValue($tags));
 
         return $message;
     }
 
-    protected function getMetadataAwareMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = array(), array $metadata = array())
+    protected function getMetadataAwareMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], array $metadata = [])
     {
         $message = $this->getMock('Stampie\Tests\Mailer\MetadataAwareMessage');
 
@@ -67,13 +64,12 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
         $message
             ->expects($this->any())
             ->method('getMetadata')
-            ->will($this->returnValue($metadata))
-        ;
+            ->will($this->returnValue($metadata));
 
         return $message;
     }
 
-    protected function getCarbonCopyMock($from, $to, $subject, $html = null, $text = null, array $headers = array(), $cc = null)
+    protected function getCarbonCopyMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $cc = null)
     {
         $message = $this->getMock('Stampie\MessageInterface');
 
@@ -87,7 +83,7 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
         return $message;
     }
 
-    protected function getBlindCarbonCopyMock($from, $to, $subject, $html = null, $text = null, array $headers = array(), $bcc = null)
+    protected function getBlindCarbonCopyMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $bcc = null)
     {
         $message = $this->getMock('Stampie\MessageInterface');
 
@@ -101,7 +97,7 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
         return $message;
     }
 
-    public function getAttachmentsMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = array(), array $attachments = array())
+    public function getAttachmentsMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], array $attachments = [])
     {
         $message = $this->getMock('Stampie\\Tests\\Mailer\\AttachmentMessage');
 
@@ -110,77 +106,66 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
         $message
             ->expects($this->any())
             ->method('getAttachments')
-            ->will($this->returnValue($attachments))
-        ;
+            ->will($this->returnValue($attachments));
 
         return $message;
     }
 
     protected function getAttachmentMock($path, $name, $type, $id = null)
     {
-        $attachment = $this->getMock('\\Stampie\\Attachment', array(), array(), '', false);
+        $attachment = $this->getMock('\\Stampie\\Attachment', [], [], '', false);
 
         $attachment
             ->expects($this->any())
             ->method('getPath')
-            ->will($this->returnValue($path))
-        ;
+            ->will($this->returnValue($path));
         $attachment
             ->expects($this->any())
             ->method('getName')
-            ->will($this->returnValue($name))
-        ;
+            ->will($this->returnValue($name));
         $attachment
             ->expects($this->any())
             ->method('getType')
-            ->will($this->returnValue($type))
-        ;
+            ->will($this->returnValue($type));
         $attachment
             ->expects($this->any())
             ->method('getId')
-            ->will($this->returnValue($id))
-        ;
+            ->will($this->returnValue($id));
 
-        /** @var \Stampie\Attachment $attachment */
+        /* @var \Stampie\Attachment $attachment */
         return $attachment;
     }
 
-    private function configureMessageMock(\PHPUnit_Framework_MockObject_MockObject $message, $from, $to, $subject, $html = null, $text = null, array $headers = array())
+    private function configureMessageMock(\PHPUnit_Framework_MockObject_MockObject $message, $from, $to, $subject, $html = null, $text = null, array $headers = [])
     {
         $message
             ->expects($this->any())
             ->method('getFrom')
-            ->will($this->returnValue($from))
-        ;
+            ->will($this->returnValue($from));
 
         $message
             ->expects($this->any())
             ->method('getTo')
-            ->will($this->returnValue($to))
-        ;
+            ->will($this->returnValue($to));
 
         $message
             ->expects($this->any())
             ->method('getSubject')
-            ->will($this->returnValue($subject))
-        ;
+            ->will($this->returnValue($subject));
 
         $message
             ->expects($this->any())
             ->method('getHtml')
-            ->will($this->returnValue($html))
-        ;
+            ->will($this->returnValue($html));
 
         $message
             ->expects($this->any())
             ->method('getText')
-            ->will($this->returnValue($text))
-        ;
+            ->will($this->returnValue($text));
 
         $message
             ->expects($this->any())
             ->method('getHeaders')
-            ->will($this->returnValue($headers))
-        ;
+            ->will($this->returnValue($headers));
     }
 }

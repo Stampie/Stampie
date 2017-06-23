@@ -2,10 +2,10 @@
 
 namespace Stampie\Tests\Mailer;
 
-use Stampie\Identity;
-use Stampie\Mailer\Mandrill;
 use Stampie\Adapter\Response;
 use Stampie\Adapter\ResponseInterface;
+use Stampie\Identity;
+use Stampie\Mailer\Mandrill;
 use Stampie\MessageInterface;
 
 class MandrillTest extends \Stampie\Tests\BaseMailerTest
@@ -29,9 +29,9 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
 
     public function testHeaders()
     {
-        $this->assertEquals(array(
+        $this->assertEquals([
             'Content-Type' => 'application/json',
-        ), $this->mailer->getHeaders());
+        ], $this->mailer->getHeaders());
     }
 
     public function testFormat()
@@ -43,15 +43,15 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
             $html = 'So what do you thing'
         );
 
-        $this->assertEquals(json_encode(array(
-            'key' => self::SERVER_TOKEN,
-            'message' => array(
+        $this->assertEquals(json_encode([
+            'key'     => self::SERVER_TOKEN,
+            'message' => [
                 'from_email' => $from,
-                'to' => array(array('email' => $to, 'name' => null, 'type' => 'to')),
-                'subject' => $subject,
-                'html' => $html,
-            ),
-        )), $this->mailer->format($message));
+                'to'         => [['email' => $to, 'name' => null, 'type' => 'to']],
+                'subject'    => $subject,
+                'html'       => $html,
+            ],
+        ]), $this->mailer->format($message));
     }
 
     public function testFormatTaggable()
@@ -62,22 +62,22 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
             $subject = 'Stampie is awesome',
             $html = 'So what do you thing',
             $text = 'text',
-            $headers = array('X-Stampie-To' => 'henrik+to@bjrnskov.dk'),
+            $headers = ['X-Stampie-To' => 'henrik+to@bjrnskov.dk'],
             $tag = 'tag'
         );
 
-        $this->assertEquals(json_encode(array(
-            'key' => self::SERVER_TOKEN,
-            'message' => array(
+        $this->assertEquals(json_encode([
+            'key'     => self::SERVER_TOKEN,
+            'message' => [
                 'from_email' => $from,
-                'to' => array(array('email' => $to, 'name' => null, 'type' => 'to')),
-                'subject' => $subject,
-                'headers' => $headers,
-                'text' => $text,
-                'html' => $html,
-                'tags' => array($tag)
-            ),
-        )), $this->mailer->format($message));
+                'to'         => [['email' => $to, 'name' => null, 'type' => 'to']],
+                'subject'    => $subject,
+                'headers'    => $headers,
+                'text'       => $text,
+                'html'       => $html,
+                'tags'       => [$tag],
+            ],
+        ]), $this->mailer->format($message));
     }
 
     public function testFormatMetadataAware()
@@ -88,41 +88,40 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
             $subject = 'Stampie is awesome',
             $html = 'So what do you thing',
             $text = 'text',
-            $headers = array('X-Stampie-To' => 'henrik+to@bjrnskov.dk'),
-            $metadata = array('client_name' => 'Stampie')
+            $headers = ['X-Stampie-To' => 'henrik+to@bjrnskov.dk'],
+            $metadata = ['client_name' => 'Stampie']
         );
 
-        $this->assertEquals(json_encode(array(
-            'key' => self::SERVER_TOKEN,
-            'message' => array(
+        $this->assertEquals(json_encode([
+            'key'     => self::SERVER_TOKEN,
+            'message' => [
                 'from_email' => $from,
-                'to' => array(array('email' => $to, 'name' => null, 'type' => 'to')),
-                'subject' => $subject,
-                'headers' => $headers,
-                'text' => $text,
-                'html' => $html,
-                'metadata' => $metadata
-            ),
-        )), $this->mailer->format($message));
+                'to'         => [['email' => $to, 'name' => null, 'type' => 'to']],
+                'subject'    => $subject,
+                'headers'    => $headers,
+                'text'       => $text,
+                'html'       => $html,
+                'metadata'   => $metadata,
+            ],
+        ]), $this->mailer->format($message));
     }
 
     public function testFormatAttachments()
     {
         $this->mailer = $this
                             ->getMockBuilder(__NAMESPACE__.'\\TestMandrill')
-                            ->setConstructorArgs(array($this->adapter, self::SERVER_TOKEN))
-                            ->setMethods(array('getAttachmentContent'))
+                            ->setConstructorArgs([$this->adapter, self::SERVER_TOKEN])
+                            ->setMethods(['getAttachmentContent'])
                             ->getMock();
 
-        $contentCallback = function($attachment){
+        $contentCallback = function ($attachment) {
             return 'content:'.$attachment->getPath();
         };
 
         $this->mailer
             ->expects($this->atLeastOnce())
             ->method('getAttachmentContent')
-            ->will($this->returnCallback($contentCallback))
-        ;
+            ->will($this->returnCallback($contentCallback));
 
         $message = $this->getAttachmentsMessageMock(
             $from = 'hb@peytz.dk',
@@ -130,84 +129,85 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
             $subject = 'Stampie is awesome',
             $html = 'So what do you thing',
             $text = 'text',
-            $headers = array('X-Stampie-To' => 'henrik+to@bjrnskov.dk'),
+            $headers = ['X-Stampie-To' => 'henrik+to@bjrnskov.dk'],
             array_merge(
-                $attachments = array(
+                $attachments = [
                     $this->getAttachmentMock('files/image-1.jpg', 'file1.jpg', 'image/jpeg', null),
                     $this->getAttachmentMock('files/image-2.jpg', 'file2.jpg', 'image/jpeg', null),
-                ),
-                $images = array(
+                ],
+                $images = [
                     $this->getAttachmentMock('files/image-3.jpg', 'file3.jpg', 'image/jpeg', 'contentid1'),
-                )
+                ]
             )
         );
 
-        $processedAttachments = array();
+        $processedAttachments = [];
         foreach ($attachments as $attachment) {
-            $processedAttachments[] = array(
+            $processedAttachments[] = [
                 'type'    => $attachment->getType(),
                 'name'    => $attachment->getName(),
                 'content' => base64_encode($contentCallback($attachment)),
-            );
+            ];
         }
 
-        $processedImages = array();
+        $processedImages = [];
         foreach ($images as $attachment) {
-            $processedImages[] = array(
+            $processedImages[] = [
                 'type'    => $attachment->getType(),
                 'name'    => $attachment->getId(),
                 'content' => base64_encode($contentCallback($attachment)),
-            );
+            ];
         }
 
-        $this->assertEquals(json_encode(array(
-            'key' => self::SERVER_TOKEN,
-            'message' => array(
-                'from_email' => $from,
-                'to' => array(array('email' => $to, 'name' => null, 'type' => 'to')),
-                'subject' => $subject,
-                'headers' => $headers,
-                'text' => $text,
-                'html' => $html,
+        $this->assertEquals(json_encode([
+            'key'     => self::SERVER_TOKEN,
+            'message' => [
+                'from_email'  => $from,
+                'to'          => [['email' => $to, 'name' => null, 'type' => 'to']],
+                'subject'     => $subject,
+                'headers'     => $headers,
+                'text'        => $text,
+                'html'        => $html,
                 'attachments' => $processedAttachments,
-                'images' => $processedImages,
-            ),
-        )), $this->mailer->format($message));
+                'images'      => $processedImages,
+            ],
+        ]), $this->mailer->format($message));
     }
 
     public function testGetFiles()
     {
-        $self  = $this; // PHP5.3 compatibility
+        $self = $this; // PHP5.3 compatibility
         $adapter = $this->adapter;
-        $token   = self::SERVER_TOKEN;
-        $buildMocks = function($attachments, &$invoke) use($self, $adapter, $token){
-            $mailer = $self->getMock('\\Stampie\\Mailer\\Mandrill', null, array($adapter, $token));
+        $token = self::SERVER_TOKEN;
+        $buildMocks = function ($attachments, &$invoke) use ($self, $adapter, $token) {
+            $mailer = $self->getMock('\\Stampie\\Mailer\\Mandrill', null, [$adapter, $token]);
 
             // Wrap protected method with accessor
             $mirror = new \ReflectionClass($mailer);
             $method = $mirror->getMethod('getFiles');
             $method->setAccessible(true);
 
-            $invoke = function() use($mailer, $method){
+            $invoke = function () use ($mailer, $method) {
                 $args = func_get_args();
                 array_unshift($args, $mailer);
-                return call_user_func_array(array($method, 'invoke'), $args);
+
+                return call_user_func_array([$method, 'invoke'], $args);
             };
 
-            $message = $self->getAttachmentsMessageMock('test@example.com', 'other@example.com', 'Subject', null, null, array(), $attachments);
+            $message = $self->getAttachmentsMessageMock('test@example.com', 'other@example.com', 'Subject', null, null, [], $attachments);
 
-            return array($mailer, $message);
+            return [$mailer, $message];
         };
 
         // Actual tests
 
-        $attachments = array(
+        $attachments = [
             $this->getAttachmentMock('path-1.txt', 'path1.txt', 'text/plain', null),
-        );
+        ];
 
         list($mailer, $message) = $buildMocks($attachments, $invoke);
 
-        $this->assertEquals(array(), $invoke($message), 'Attachments should never be returned separately from body');
+        $this->assertEquals([], $invoke($message), 'Attachments should never be returned separately from body');
     }
 
     /**
@@ -221,21 +221,21 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
             $subject = 'Stampie is awesome, right?',
             $html = 'So what do you think',
             $text = 'text',
-            $headers = array('X-Stampie-To' => 'henrik+to@bjrnskov.dk'),
+            $headers = ['X-Stampie-To' => 'henrik+to@bjrnskov.dk'],
             $cc = $ccs
         );
 
-        $this->assertEquals(json_encode(array(
-            'key' => self::SERVER_TOKEN,
-            'message' => array(
+        $this->assertEquals(json_encode([
+            'key'     => self::SERVER_TOKEN,
+            'message' => [
                 'from_email' => $from,
-                'to' => $expectedTos,
-                'subject' => $subject,
-                'headers' => $headers,
-                'text' => $text,
-                'html' => $html,
-            ),
-        )), $this->mailer->format($message));
+                'to'         => $expectedTos,
+                'subject'    => $subject,
+                'headers'    => $headers,
+                'text'       => $text,
+                'html'       => $html,
+            ],
+        ]), $this->mailer->format($message));
     }
 
     /**
@@ -249,21 +249,21 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
             $subject = 'Stampie is awesome, right?',
             $html = 'So what do you think',
             $text = 'text',
-            $headers = array('X-Stampie-To' => 'henrik+to@bjrnskov.dk'),
+            $headers = ['X-Stampie-To' => 'henrik+to@bjrnskov.dk'],
             $bcc = $bccs
         );
 
-        $this->assertEquals(json_encode(array(
-            'key' => self::SERVER_TOKEN,
-            'message' => array(
+        $this->assertEquals(json_encode([
+            'key'     => self::SERVER_TOKEN,
+            'message' => [
                 'from_email' => $from,
-                'to' => $expectedTos,
-                'subject' => $subject,
-                'headers' => $headers,
-                'text' => $text,
-                'html' => $html,
-            ),
-        )), $this->mailer->format($message));
+                'to'         => $expectedTos,
+                'subject'    => $subject,
+                'headers'    => $headers,
+                'text'       => $text,
+                'html'       => $html,
+            ],
+        ]), $this->mailer->format($message));
     }
 
     /**
@@ -271,7 +271,7 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
      */
     public function testHandle($statusCode, $content)
     {
-        $response = new Response($statusCode, json_encode(array('message' => $content, 'code' => -1)));
+        $response = new Response($statusCode, json_encode(['message' => $content, 'code' => -1]));
 
         try {
             $this->mailer->handle($response);
@@ -279,6 +279,7 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
             $this->assertInstanceOf('Stampie\Exception\HttpException', $e->getPrevious());
             $this->assertEquals($e->getPrevious()->getMessage(), $content);
             $this->assertEquals($e->getMessage(), $content);
+
             return;
         }
 
@@ -287,79 +288,79 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
 
     public function handleDataProvider()
     {
-        return array(
-            array(400, 'Bad Request'),
-            array(401, 'Unauthorized'),
-            array(504, 'Gateway Timeout'),
-        );
+        return [
+            [400, 'Bad Request'],
+            [401, 'Unauthorized'],
+            [504, 'Gateway Timeout'],
+        ];
     }
 
     public function blindCarbonCopyProvider()
     {
-        return array(
-            array('henrik@bjrnskov.dk', 'gauthier.wallet@gmail.com', array(
-                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
-                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc')
-            )),
-            array(array(new Identity('henrik@bjrnskov.dk')), 'gauthier.wallet@gmail.com', array(
-                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
-                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc')
-            )),
-            array(array(new Identity('henrik@bjrnskov.dk'), new Identity('henrik2@bjrnskov.dk')), 'gauthier.wallet@gmail.com', array(
-                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
-                array('email' => 'henrik2@bjrnskov.dk', 'name' => null, 'type' => 'to'),
-                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc')
-            )),
-            array(array(new Identity('henrik@bjrnskov.dk')), array(new Identity('gauthier.wallet@gmail.com')), array(
-                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
-                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc')
-            )),
-            array(array(new Identity('henrik@bjrnskov.dk'), new Identity('henrik2@bjrnskov.dk')), array(new Identity('gauthier.wallet@gmail.com'), new Identity('gauthier.wallet2@gmail.com')), array(
-                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
-                array('email' => 'henrik2@bjrnskov.dk', 'name' => null, 'type' => 'to'),
-                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc'),
-                array('email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'bcc')
-            )),
-            array('henrik@bjrnskov.dk', array(new Identity('gauthier.wallet@gmail.com'), new Identity('gauthier.wallet2@gmail.com')), array(
-                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
-                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc'),
-                array('email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'bcc')
-            )),
-        );
+        return [
+            ['henrik@bjrnskov.dk', 'gauthier.wallet@gmail.com', [
+                ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
+                ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc'],
+            ]],
+            [[new Identity('henrik@bjrnskov.dk')], 'gauthier.wallet@gmail.com', [
+                ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
+                ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc'],
+            ]],
+            [[new Identity('henrik@bjrnskov.dk'), new Identity('henrik2@bjrnskov.dk')], 'gauthier.wallet@gmail.com', [
+                ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
+                ['email' => 'henrik2@bjrnskov.dk', 'name' => null, 'type' => 'to'],
+                ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc'],
+            ]],
+            [[new Identity('henrik@bjrnskov.dk')], [new Identity('gauthier.wallet@gmail.com')], [
+                ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
+                ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc'],
+            ]],
+            [[new Identity('henrik@bjrnskov.dk'), new Identity('henrik2@bjrnskov.dk')], [new Identity('gauthier.wallet@gmail.com'), new Identity('gauthier.wallet2@gmail.com')], [
+                ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
+                ['email' => 'henrik2@bjrnskov.dk', 'name' => null, 'type' => 'to'],
+                ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc'],
+                ['email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'bcc'],
+            ]],
+            ['henrik@bjrnskov.dk', [new Identity('gauthier.wallet@gmail.com'), new Identity('gauthier.wallet2@gmail.com')], [
+                ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
+                ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc'],
+                ['email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'bcc'],
+            ]],
+        ];
     }
 
     public function carbonCopyProvider()
     {
-        return array(
-            array('henrik@bjrnskov.dk', 'gauthier.wallet@gmail.com', array(
-                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
-                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc')
-            )),
-            array(array(new Identity('henrik@bjrnskov.dk')), 'gauthier.wallet@gmail.com', array(
-                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
-                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc')
-            )),
-            array(array(new Identity('henrik@bjrnskov.dk'), new Identity('henrik2@bjrnskov.dk')), 'gauthier.wallet@gmail.com', array(
-                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
-                array('email' => 'henrik2@bjrnskov.dk', 'name' => null, 'type' => 'to'),
-                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc')
-            )),
-            array(array(new Identity('henrik@bjrnskov.dk')), array(new Identity('gauthier.wallet@gmail.com')), array(
-                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
-                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc')
-            )),
-            array(array(new Identity('henrik@bjrnskov.dk'), new Identity('henrik2@bjrnskov.dk')), array(new Identity('gauthier.wallet@gmail.com'), new Identity('gauthier.wallet2@gmail.com')), array(
-                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
-                array('email' => 'henrik2@bjrnskov.dk', 'name' => null, 'type' => 'to'),
-                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc'),
-                array('email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'cc')
-            )),
-            array('henrik@bjrnskov.dk', array(new Identity('gauthier.wallet@gmail.com'), new Identity('gauthier.wallet2@gmail.com')), array(
-                array('email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'),
-                array('email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc'),
-                array('email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'cc')
-            )),
-        );
+        return [
+            ['henrik@bjrnskov.dk', 'gauthier.wallet@gmail.com', [
+                ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
+                ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc'],
+            ]],
+            [[new Identity('henrik@bjrnskov.dk')], 'gauthier.wallet@gmail.com', [
+                ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
+                ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc'],
+            ]],
+            [[new Identity('henrik@bjrnskov.dk'), new Identity('henrik2@bjrnskov.dk')], 'gauthier.wallet@gmail.com', [
+                ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
+                ['email' => 'henrik2@bjrnskov.dk', 'name' => null, 'type' => 'to'],
+                ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc'],
+            ]],
+            [[new Identity('henrik@bjrnskov.dk')], [new Identity('gauthier.wallet@gmail.com')], [
+                ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
+                ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc'],
+            ]],
+            [[new Identity('henrik@bjrnskov.dk'), new Identity('henrik2@bjrnskov.dk')], [new Identity('gauthier.wallet@gmail.com'), new Identity('gauthier.wallet2@gmail.com')], [
+                ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
+                ['email' => 'henrik2@bjrnskov.dk', 'name' => null, 'type' => 'to'],
+                ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc'],
+                ['email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'cc'],
+            ]],
+            ['henrik@bjrnskov.dk', [new Identity('gauthier.wallet@gmail.com'), new Identity('gauthier.wallet2@gmail.com')], [
+                ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
+                ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc'],
+                ['email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'cc'],
+            ]],
+        ];
     }
 }
 

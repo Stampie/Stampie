@@ -16,10 +16,10 @@ class MailerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->mailer = $this->getMailerMock(array(
+        $this->mailer = $this->getMailerMock([
             $this->httpClient = $this->getHttpClientMock(),
             'Token',
-        ));
+        ]);
     }
 
     public function testSettersAndGetters()
@@ -44,21 +44,18 @@ class MailerTest extends \PHPUnit_Framework_TestCase
 
         $mailer
             ->expects($this->once())
-            ->method('format')
-        ;
+            ->method('format');
 
         $mailer
             ->expects($this->never())
-            ->method('handle')
-        ;
+            ->method('handle');
 
         $adapter
             ->expects($this->once())
             ->method('sendRequest')
             ->will($this->returnValue(
                 $this->getResponseMock(true)
-            ))
-        ;
+            ));
 
         $this->assertTrue($this->mailer->send($this->getMock('Stampie\MessageInterface')));
     }
@@ -69,14 +66,12 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->httpClient
             ->expects($this->once())
             ->method('sendRequest')
-            ->will($this->returnValue($this->getResponseMock(false)))
-        ;
+            ->will($this->returnValue($this->getResponseMock(false)));
 
         $this
             ->mailer
             ->expects($this->once())
-            ->method('handle')
-        ;
+            ->method('handle');
 
         $this->mailer->send($this->getMock('Stampie\MessageInterface'));
     }
@@ -96,7 +91,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $response->method('getBody')->willReturn($stream);
 
         return $response;
-
     }
 
     protected function getHttpClientMock()
@@ -104,7 +98,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         return $this->getMock('Http\Client\HttpClient');
     }
 
-    protected function getMailerMock(array $args = array())
+    protected function getMailerMock(array $args = [])
     {
         return $this->getMockForAbstractClass('Stampie\Mailer', $args);
     }

@@ -2,9 +2,9 @@
 
 namespace Stampie\Tests\Mailer;
 
-use Stampie\Mailer\SendGrid;
 use Stampie\Adapter\Response;
 use Stampie\Adapter\ResponseInterface;
+use Stampie\Mailer\SendGrid;
 use Stampie\MessageInterface;
 
 class SendGridTest extends \Stampie\Tests\BaseMailerTest
@@ -31,7 +31,7 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
     {
         $this->mailer->setServerToken('rudolph:rednose:reindeer');
 
-        $message =  $this->getMessageMock(
+        $message = $this->getMessageMock(
             $from = 'john@example.com',
             $to = 'jane@example.com',
             $subject = 'Testing password that contains :',
@@ -62,24 +62,23 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
         $api_user = 'rudolph';
         $api_key = 'rednose';
 
-        $message =  $this->getMessageMock(
+        $message = $this->getMessageMock(
             $from = 'henrik@bjrnskov.dk',
             $to = 'hb@peytz.dk',
             $subject = 'Trying out Stampie',
             $html = 'Stampie is Awesome',
             $text = '',
-            $headers = array(
+            $headers = [
                 'X-Custom-Header' => 'My Custom Header Value',
-            )
+            ]
         );
 
         $headers = json_encode($headers);
-        $to = array($to);
+        $to = [$to];
 
         $query = compact(
             'api_user', 'api_key', 'to', 'from', 'subject', 'html', 'headers'
         );
-
 
         $this->assertEquals(http_build_query(
             $query
@@ -91,26 +90,25 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
         $api_user = 'rudolph';
         $api_key = 'rednose';
 
-        $message =  $this->getTaggableMessageMock(
+        $message = $this->getTaggableMessageMock(
             $from = 'henrik@bjrnskov.dk',
             $to = 'hb@peytz.dk',
             $subject = 'Trying out Stampie',
             $html = 'Stampie is Awesome',
             $text = '',
-            $headers = array(
+            $headers = [
                 'X-Custom-Header' => 'My Custom Header Value',
-            ),
+            ],
             $tag = 'tag'
         );
 
         $headers = json_encode($headers);
-        $to = array($to);
+        $to = [$to];
 
         $query = compact(
             'api_user', 'api_key', 'to', 'from', 'subject', 'html', 'headers'
         );
-        $query['x-smtpapi'] = json_encode(array('category' => array($tag)));
-
+        $query['x-smtpapi'] = json_encode(['category' => [$tag]]);
 
         $this->assertEquals(http_build_query(
             $query
@@ -122,26 +120,25 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
         $api_user = 'rudolph';
         $api_key = 'rednose';
 
-        $message =  $this->getMetadataAwareMessageMock(
+        $message = $this->getMetadataAwareMessageMock(
             $from = 'henrik@bjrnskov.dk',
             $to = 'hb@peytz.dk',
             $subject = 'Trying out Stampie',
             $html = 'Stampie is Awesome',
             $text = '',
-            $headers = array(
+            $headers = [
                 'X-Custom-Header' => 'My Custom Header Value',
-            ),
-            $metadata = array('client_name' => 'Stampie')
+            ],
+            $metadata = ['client_name' => 'Stampie']
         );
 
         $headers = json_encode($headers);
-        $to = array($to);
+        $to = [$to];
 
         $query = compact(
             'api_user', 'api_key', 'to', 'from', 'subject', 'html', 'headers'
         );
-        $query['x-smtpapi'] = json_encode(array('unique_args' => $metadata));
-
+        $query['x-smtpapi'] = json_encode(['unique_args' => $metadata]);
 
         $this->assertEquals(http_build_query(
             $query
@@ -153,32 +150,31 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
         $api_user = 'rudolph';
         $api_key = 'rednose';
 
-        $message =  $this->getAttachmentsMessageMock(
-            $from    = 'henrik@bjrnskov.dk',
-            $to      = 'hb@peytz.dk',
+        $message = $this->getAttachmentsMessageMock(
+            $from = 'henrik@bjrnskov.dk',
+            $to = 'hb@peytz.dk',
             $subject = 'Trying out Stampie',
-            $html    = 'Stampie is Awesome',
-            $text    = '',
-            $headers = array(
+            $html = 'Stampie is Awesome',
+            $text = '',
+            $headers = [
                 'X-Custom-Header' => 'My Custom Header Value',
-            ),
+            ],
             array_merge(
-                $attachments = array(
+                $attachments = [
                     $this->getAttachmentMock('files/image-1.jpg', 'file1.jpg', 'image/jpeg', null),
                     $this->getAttachmentMock('files/image-2.jpg', 'file2.jpg', 'image/jpeg', null),
-                ),
-                $inline = array(
+                ],
+                $inline = [
                     $this->getAttachmentMock('files/image-3.jpg', 'file3.jpg', 'image/jpeg', 'contentid1'),
-                )
+                ]
             )
         );
 
         $headers = json_encode($headers);
-        $to = array($to);
+        $to = [$to];
 
-
-        $processedInline = array();
-        foreach ($inline as $attachment){
+        $processedInline = [];
+        foreach ($inline as $attachment) {
             $processedInline[$attachment->getId()] = $attachment->getName();
         }
         $content = $processedInline;
@@ -194,37 +190,38 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
 
     public function testGetFiles()
     {
-        $self  = $this; // PHP5.3 compatibility
+        $self = $this; // PHP5.3 compatibility
         $adapter = $this->adapter;
-        $token   = self::SERVER_TOKEN;
-        $buildMocks = function($attachments, &$invoke) use($self, $adapter, $token){
-            $mailer = $self->getMock('\\Stampie\\Mailer\\SendGrid', null, array($adapter, $token));
+        $token = self::SERVER_TOKEN;
+        $buildMocks = function ($attachments, &$invoke) use ($self, $adapter, $token) {
+            $mailer = $self->getMock('\\Stampie\\Mailer\\SendGrid', null, [$adapter, $token]);
 
             // Wrap protected method with accessor
             $mirror = new \ReflectionClass($mailer);
             $method = $mirror->getMethod('getFiles');
             $method->setAccessible(true);
 
-            $invoke = function() use($mailer, $method){
+            $invoke = function () use ($mailer, $method) {
                 $args = func_get_args();
                 array_unshift($args, $mailer);
-                return call_user_func_array(array($method, 'invoke'), $args);
+
+                return call_user_func_array([$method, 'invoke'], $args);
             };
 
-            $message = $self->getAttachmentsMessageMock('test@example.com', 'other@example.com', 'Subject', null, null, array(), $attachments);
+            $message = $self->getAttachmentsMessageMock('test@example.com', 'other@example.com', 'Subject', null, null, [], $attachments);
 
-            return array($mailer, $message);
+            return [$mailer, $message];
         };
 
         // Actual tests
 
-        $attachments = array(
+        $attachments = [
             $this->getAttachmentMock('path-1.txt', 'path1.txt', 'text/plain', null),
             $this->getAttachmentMock('path-2.txt', 'path2.txt', 'text/plain', 'id1'),
             $this->getAttachmentMock('path-3.txt', 'path3.txt', 'text/plain', null),
             $this->getAttachmentMock('path-4.txt', 'path4.txt', 'text/plain', 'id2'),
             $this->getAttachmentMock('path-5.txt', 'path5.txt', 'text/plain', null),
-        );
+        ];
 
         list($mailer, $message) = $buildMocks($attachments, $invoke);
         $result = $invoke($message);
@@ -241,10 +238,10 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
 
     public function handleDataProvider()
     {
-        return array(
-            array(400, '{ "errors" : ["Error In an Array"] }', 'Stampie\Exception\ApiException'),
-            array(500, '', 'Stampie\Exception\HttpException')
-        );
+        return [
+            [400, '{ "errors" : ["Error In an Array"] }', 'Stampie\Exception\ApiException'],
+            [500, '', 'Stampie\Exception\HttpException'],
+        ];
     }
 }
 

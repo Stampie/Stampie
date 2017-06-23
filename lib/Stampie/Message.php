@@ -56,6 +56,7 @@ abstract class Message implements MessageInterface
 
     /**
      * @param string $text
+     *
      * @throws \InvalidArgumentException
      */
     public function setText($text)
@@ -88,7 +89,7 @@ abstract class Message implements MessageInterface
      */
     public function getHeaders()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -110,7 +111,6 @@ abstract class Message implements MessageInterface
      */
     public function getCc()
     {
-        return null;
     }
 
     /**
@@ -118,6 +118,5 @@ abstract class Message implements MessageInterface
      */
     public function getBcc()
     {
-        return null;
     }
 }

@@ -10,8 +10,7 @@ $iterator = Finder::create()
     ->name('*.php')
     ->exclude('Resources')
     ->exclude('Tests')
-    ->in($dir = __DIR__ . '/lib')
-;
+    ->in($dir = __DIR__.'/lib');
 
 // generate documentation for all v2.0.* tags, the 2.0 branch, and the master one
 $versions = GitVersionCollection::create($dir)
@@ -19,11 +18,11 @@ $versions = GitVersionCollection::create($dir)
     ->add('master', 'master branch')
 ;
 
-return new Sami($iterator, array(
+return new Sami($iterator, [
     'versions'             => $versions,
     'title'                => 'Stampie API',
     'build_dir'            => __DIR__.'/api/%version%',
     'cache_dir'            => __DIR__.'/cache/%version%',
     'remote_repository'    => new GitHubRemoteRepository('Stampie/Stampie', dirname($dir)),
     'default_opened_level' => 2,
-));
+]);
