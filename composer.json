@@ -38,6 +38,9 @@
         "guzzlehttp/psr7" : "^1.3",
         "php-http/mock-client" : "^0.3"
     },
+    "replace": {
+        "henrikbjorn/stampie": "self.version"
+    },
     "suggest" : {
         "stof/stampie-extra" : "Extensions for Stampie"
     },
