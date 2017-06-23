@@ -44,7 +44,7 @@ Last their is an Interface for every type of class or abstract implementation th
 
 ## Documentation
 
-There is generated API documentation for all tags and released versions. Those can be found at [flint.github.com/Stampie/api/master](http://flint.github.com/Stampie/api/master).
+There is generated API documentation for all tags and released versions. Those can be found at [stampie.github.io/Stampie/api/master/](http://stampie.github.io/Stampie/api/master/).
 
 ## Extensions
 
