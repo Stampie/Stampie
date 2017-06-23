@@ -2,8 +2,10 @@
 
 namespace Stampie\Tests;
 
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use Stampie\Mailer\MailGun;
 
 class MailerTest extends \PHPUnit_Framework_TestCase
 {
@@ -74,6 +76,38 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->method('handle');
 
         $this->mailer->send($this->getMock('Stampie\MessageInterface'));
+    }
+
+
+    public function testSendWithFiles()
+    {
+        $adapter = $this->httpClient;
+        $mailer = $this->getMockBuilder(MailGun::class)
+            ->setConstructorArgs([$adapter, 'Token:bar'])
+            ->setMethods(['format', 'getFiles'])
+            ->getMock();
+
+        $mailer
+            ->expects($this->once())
+            ->method('format');
+
+        $mailer
+            ->expects($this->once())
+            ->method('getFiles')
+            ->willReturn(['files' => ['foo'=> __DIR__ . '/../../Fixtures/logo.png']]);
+
+        $adapter
+            ->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function(RequestInterface $request) {
+                return preg_match('|multipart/form-data; boundary="[a-zA-Z0-9\._]+"|sim', $request->getHeaderLine('Content-Type'));
+            }))
+            ->will($this->returnValue(
+                $this->getResponseMock(true)
+            ))
+        ;
+
+        $this->assertTrue($mailer->send($this->getMock('Stampie\MessageInterface')));
     }
 
     /**

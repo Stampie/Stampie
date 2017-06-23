@@ -134,7 +134,7 @@ abstract class Mailer implements MailerInterface
      * Return an key -> value array of files.
      *
      * example:
-     *     array('attachmentname.jpg' => '/path/to/file.jpg')
+     *     ['foo_files' => array('attachmentname.jpg' => '/path/to/file.jpg')]
      *
      * @param MessageInterface $message
      *
@@ -244,7 +244,7 @@ abstract class Mailer implements MailerInterface
             }
 
             $content = $builder->build();
-            $headers['Content-Type'] = 'multipart/form-data; boundary='.$builder->getBoundary();
+            $headers['Content-Type'] = 'multipart/form-data; boundary="'.$builder->getBoundary().'"';
         }
 
         $request = $this->getMessageFactory()->createRequest('POST', $this->getEndpoint(), $headers, $content);
