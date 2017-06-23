@@ -57,7 +57,9 @@ class SendGrid extends Mailer
         // Format params
         $files = [];
         if ($attachments) {
-            $files['files'] = $attachments;
+            foreach ($attachments as $key => $value) {
+                $files['files['.$key.']'][] = $value;
+            }
         }
 
         return $files;
