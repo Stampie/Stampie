@@ -3,6 +3,7 @@
 use Sami\Sami;
 use Sami\Version\GitVersionCollection;
 use Symfony\Component\Finder\Finder;
+use Sami\RemoteRepository\GitHubRemoteRepository;
 
 $iterator = Finder::create()
     ->files()
@@ -23,5 +24,6 @@ return new Sami($iterator, array(
     'title'                => 'Stampie API',
     'build_dir'            => __DIR__.'/api/%version%',
     'cache_dir'            => __DIR__.'/cache/%version%',
+    'remote_repository'    => new GitHubRemoteRepository('Stampie/Stampie', dirname($dir)),
     'default_opened_level' => 2,
 ));
