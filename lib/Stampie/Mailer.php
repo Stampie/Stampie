@@ -134,7 +134,7 @@ abstract class Mailer implements MailerInterface
      * Return an key -> value array of files
      *
      * example:
-     *     array('attachmentname.jpg' => '/path/to/file.jpg')
+     *     ['foo_files' => array('attachmentname.jpg' => '/path/to/file.jpg')]
      *
      * @param MessageInterface $message
      * @return string[]
