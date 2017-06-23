@@ -1,6 +1,6 @@
 # Stampie
 
-[![Build Status](https://secure.travis-ci.org/henrikbjorn/Stampie.png)](https://travis-ci.org/Stampie/Stampie)
+[![Build Status](https://travis-ci.org/Stampie/Stampie.svg?branch=master)](https://travis-ci.org/Stampie/Stampie)
 
 Stampie is a simple API Wrapper for different email providers such as [Postmark](https://postmarkapp.com) and [SendGrid](https://sendgrid.com).
 
@@ -57,7 +57,7 @@ Stampie is itself completly decoupled and does not depend on any framework.
 
 ### Integrations
 
-* [HBStampieBundle](https://github.com/henrikbjorn/HBStampieBundle) it is also [on packagist](https://packagist.org/packages/henrikbjorn/stampie-bundle)
+* [HBStampieBundle](https://github.com/Stampie/HBStampieBundle) it is also [on packagist](https://packagist.org/packages/henrikbjorn/stampie-bundle)
 
 ## Testing
 
