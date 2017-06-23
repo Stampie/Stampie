@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>Stampie\Message\TaggableInterface | Stampie API</title>
+    <title>Stampie\Message\AttachmentsAwareInterface | Stampie API</title>
 
             <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../css/bootstrap-theme.min.css">
@@ -19,7 +19,7 @@
     
     </head>
 
-    <body id="class" data-name="class:Stampie_Message_TaggableInterface" data-root-path="../../">
+    <body id="class" data-name="class:Stampie_Message_AttachmentsAwareInterface" data-root-path="../../">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -66,25 +66,27 @@
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
                 <li><span class="label label-default">interface</span></li>
-                        <li><a href="../../Stampie.html">Stampie</a></li><li class="backslash">\</li><li><a href="../../Stampie/Message.html">Message</a></li><li class="backslash">\</li><li>TaggableInterface</li>
+                        <li><a href="../../Stampie.html">Stampie</a></li><li class="backslash">\</li><li><a href="../../Stampie/Message.html">Message</a></li><li class="backslash">\</li><li>AttachmentsAwareInterface</li>
             </ol>
         </div>
                 <div id="page-content">
                 
     <div class="page-header">
         <h1>
-            TaggableInterface
+            AttachmentsAwareInterface
                 
         </h1>
     </div>
 
     <p>    interface
-    <strong>TaggableInterface</strong>
+    <strong>AttachmentsAwareInterface</strong>
 </p>
 
         
     
 
+            <div class="description">
+            <p>Represents a Message that contains Attachments</p>                                </div>
     
     
     
@@ -94,12 +96,13 @@
             <div class="container-fluid underlined">
                     <div class="row">
                 <div class="col-md-2 type">
-                    string|array
+                    <a href="../../Stampie/Attachment.html"><abbr title="Stampie\Attachment">Attachment</abbr></a>[]
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_getTag">getTag</a>()
+                    <a href="#method_getAttachments">getAttachments</a>()
         
-                                            <p>The tag(s) attached to the message.</p>                </div>
+                                            <p class="no-description">No description</p>
+                                    </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -109,29 +112,23 @@
 
             <div id="method-details">
                     <div class="method-item">
-                    <h3 id="method_getTag">
-        <div class="location">at         line 21</div>
-        <code>                    string|array
-    <strong>getTag</strong>()
+                    <h3 id="method_getAttachments">
+        <div class="location">at         line 17</div>
+        <code>                    <a href="../../Stampie/Attachment.html"><abbr title="Stampie\Attachment">Attachment</abbr></a>[]
+    <strong>getAttachments</strong>()
         </code>
     </h3>
     <div class="details">
             
     
 
-                    <div class="method-description">
-                                    <p>The tag(s) attached to the message.</p>                    <p>Tags should typically be used to distinguish the different categories of messages
-sent by your application (invitation, password recovery, notification...).</p>
-
-<p>Most providers supporting this feature only allow to use a limited number of tags
-in the application.</p>                            </div>
                 <div class="tags">
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
-            <td>string|array</td>
+            <td><a href="../../Stampie/Attachment.html"><abbr title="Stampie\Attachment">Attachment</abbr></a>[]</td>
             <td></td>
         </tr>
     </table>

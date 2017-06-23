@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>Stampie\Message\TaggableInterface | Stampie API</title>
+    <title>Stampie\Util\AttachmentUtils | Stampie API</title>
 
             <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../css/bootstrap-theme.min.css">
@@ -19,7 +19,7 @@
     
     </head>
 
-    <body id="class" data-name="class:Stampie_Message_TaggableInterface" data-root-path="../../">
+    <body id="class" data-name="class:Stampie_Util_AttachmentUtils" data-root-path="../../">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -65,26 +65,28 @@
 
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
-                <li><span class="label label-default">interface</span></li>
-                        <li><a href="../../Stampie.html">Stampie</a></li><li class="backslash">\</li><li><a href="../../Stampie/Message.html">Message</a></li><li class="backslash">\</li><li>TaggableInterface</li>
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../Stampie.html">Stampie</a></li><li class="backslash">\</li><li><a href="../../Stampie/Util.html">Util</a></li><li class="backslash">\</li><li>AttachmentUtils</li>
             </ol>
         </div>
                 <div id="page-content">
                 
     <div class="page-header">
         <h1>
-            TaggableInterface
+            AttachmentUtils
                 
         </h1>
     </div>
 
-    <p>    interface
-    <strong>TaggableInterface</strong>
+    <p>    class
+    <strong>AttachmentUtils</strong>
 </p>
 
         
     
 
+            <div class="description">
+            <p>Stampie Attachment utility functions</p>                                </div>
     
     
     
@@ -94,12 +96,23 @@
             <div class="container-fluid underlined">
                     <div class="row">
                 <div class="col-md-2 type">
-                    string|array
+                    static&nbsp;array
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_getTag">getTag</a>()
+                    <a href="#method_processAttachments">processAttachments</a>(array $attachments)
         
-                                            <p>The tag(s) attached to the message.</p>                </div>
+                                            <p>Applies a function to each attachment, and finds a unique name for any conflicting names</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_findUniqueName">findUniqueName</a>(string $name, array $claimed)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -109,10 +122,10 @@
 
             <div id="method-details">
                     <div class="method-item">
-                    <h3 id="method_getTag">
-        <div class="location">at         line 21</div>
-        <code>                    string|array
-    <strong>getTag</strong>()
+                    <h3 id="method_processAttachments">
+        <div class="location">at         line 27</div>
+        <code>        static            array
+    <strong>processAttachments</strong>(array $attachments)
         </code>
     </h3>
     <div class="details">
@@ -120,19 +133,77 @@
     
 
                     <div class="method-description">
-                                    <p>The tag(s) attached to the message.</p>                    <p>Tags should typically be used to distinguish the different categories of messages
-sent by your application (invitation, password recovery, notification...).</p>
-
-<p>Most providers supporting this feature only allow to use a limited number of tags
-in the application.</p>                            </div>
+                                    <p>Applies a function to each attachment, and finds a unique name for any conflicting names</p>                                                </div>
                 <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$attachments</td>
+                <td></td>
+            </tr>
+            </table>
+
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
-            <td>string|array</td>
+            <td>array</td>
             <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" href="http://php.net/InvalidArgumentException">InvalidArgumentException</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_findUniqueName">
+        <div class="location">at         line 54</div>
+        <code>        static            string
+    <strong>findUniqueName</strong>(string $name, array $claimed)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td>The name to make unique</td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$claimed</td>
+                <td>Names already in use to avoid</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>A unique name</td>
         </tr>
     </table>
 

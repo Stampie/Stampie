@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>Stampie\Message\TaggableInterface | Stampie API</title>
+    <title>Stampie\Message\MetadataAwareInterface | Stampie API</title>
 
             <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../css/bootstrap-theme.min.css">
@@ -19,7 +19,7 @@
     
     </head>
 
-    <body id="class" data-name="class:Stampie_Message_TaggableInterface" data-root-path="../../">
+    <body id="class" data-name="class:Stampie_Message_MetadataAwareInterface" data-root-path="../../">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -66,20 +66,20 @@
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
                 <li><span class="label label-default">interface</span></li>
-                        <li><a href="../../Stampie.html">Stampie</a></li><li class="backslash">\</li><li><a href="../../Stampie/Message.html">Message</a></li><li class="backslash">\</li><li>TaggableInterface</li>
+                        <li><a href="../../Stampie.html">Stampie</a></li><li class="backslash">\</li><li><a href="../../Stampie/Message.html">Message</a></li><li class="backslash">\</li><li>MetadataAwareInterface</li>
             </ol>
         </div>
                 <div id="page-content">
                 
     <div class="page-header">
         <h1>
-            TaggableInterface
+            MetadataAwareInterface
                 
         </h1>
     </div>
 
     <p>    interface
-    <strong>TaggableInterface</strong>
+    <strong>MetadataAwareInterface</strong>
 </p>
 
         
@@ -94,12 +94,12 @@
             <div class="container-fluid underlined">
                     <div class="row">
                 <div class="col-md-2 type">
-                    string|array
+                    array
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_getTag">getTag</a>()
+                    <a href="#method_getMetadata">getMetadata</a>()
         
-                                            <p>The tag(s) attached to the message.</p>                </div>
+                                            <p>Gets the metadata attached to the message.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -109,10 +109,10 @@
 
             <div id="method-details">
                     <div class="method-item">
-                    <h3 id="method_getTag">
+                    <h3 id="method_getMetadata">
         <div class="location">at         line 21</div>
-        <code>                    string|array
-    <strong>getTag</strong>()
+        <code>                    array
+    <strong>getMetadata</strong>()
         </code>
     </h3>
     <div class="details">
@@ -120,19 +120,19 @@
     
 
                     <div class="method-description">
-                                    <p>The tag(s) attached to the message.</p>                    <p>Tags should typically be used to distinguish the different categories of messages
-sent by your application (invitation, password recovery, notification...).</p>
+                                    <p>Gets the metadata attached to the message.</p>                    <p>Message metadata allow to attach some additional information to the message.
+This can typically be used to attach a customer id to the sent messages.</p>
 
-<p>Most providers supporting this feature only allow to use a limited number of tags
-in the application.</p>                            </div>
+<p>Providers supporting this feature will then give some filtering or tracking
+capabilities.</p>                            </div>
                 <div class="tags">
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
-            <td>string|array</td>
-            <td></td>
+            <td>array</td>
+            <td>An associative array of metadata</td>
         </tr>
     </table>
 

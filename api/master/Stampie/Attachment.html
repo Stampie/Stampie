@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>Stampie\MessageInterface | Stampie API</title>
+    <title>Stampie\Attachment | Stampie API</title>
 
             <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../css/bootstrap-theme.min.css">
@@ -19,7 +19,7 @@
     
     </head>
 
-    <body id="class" data-name="class:Stampie_MessageInterface" data-root-path="../">
+    <body id="class" data-name="class:Stampie_Attachment" data-root-path="../">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -65,42 +65,78 @@
 
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
-                <li><span class="label label-default">interface</span></li>
-                        <li><a href="../Stampie.html">Stampie</a></li><li class="backslash">\</li><li>MessageInterface</li>
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../Stampie.html">Stampie</a></li><li class="backslash">\</li><li>Attachment</li>
             </ol>
         </div>
                 <div id="page-content">
                 
     <div class="page-header">
         <h1>
-            MessageInterface
+            Attachment
                 
         </h1>
     </div>
 
-    <p>    interface
-    <strong>MessageInterface</strong>
+    <p>    class
+    <strong>Attachment</strong>
 </p>
 
         
     
 
             <div class="description">
-            <p>Represents a simple Message. A Message is a storage of a message that
-will be converted into an API call</p>                                </div>
+            <p>An Attachment is a container for a file that will be included with a Message.</p>                                </div>
     
     
     
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_path">
+                                        protected                                        string
+                </td>
+                <td>$path</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_name">
+                                        protected                                        string
+                </td>
+                <td>$name</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_type">
+                                        protected                                        string
+                </td>
+                <td>$type</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_id">
+                                        protected                                        string|null
+                </td>
+                <td>$id</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+            </table>
+
     
             <h2>Methods</h2>
 
             <div class="container-fluid underlined">
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a>|string
+                    
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_getFrom">getFrom</a>()
+                    <a href="#method___construct">__construct</a>(string $path, string|null $name = null, string|null $type = null, string|null $id = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -108,32 +144,10 @@ will be converted into an API call</p>                                </div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a>[]|string
+                    bool
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_getTo">getTo</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a>[]|string
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_getCc">getCc</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a>[]|<abbr title="Stampie\$string">$string</abbr>
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_getBcc">getBcc</a>()
+                    <a href="#method_isValidFile">isValidFile</a>(string $path)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -144,7 +158,7 @@ will be converted into an API call</p>                                </div>
                     string
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_getSubject">getSubject</a>()
+                    <a href="#method_determineFileType">determineFileType</a>(string $path)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -155,18 +169,7 @@ will be converted into an API call</p>                                </div>
                     string
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_getReplyTo">getReplyTo</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    array
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_getHeaders">getHeaders</a>()
+                    <a href="#method_getPath">getPath</a>()
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -177,7 +180,7 @@ will be converted into an API call</p>                                </div>
                     string
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_getHtml">getHtml</a>()
+                    <a href="#method_getName">getName</a>()
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -188,7 +191,18 @@ will be converted into an API call</p>                                </div>
                     string
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_getText">getText</a>()
+                    <a href="#method_getType">getType</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|null
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getId">getId</a>()
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -201,10 +215,10 @@ will be converted into an API call</p>                                </div>
 
             <div id="method-details">
                     <div class="method-item">
-                    <h3 id="method_getFrom">
-        <div class="location">at         line 16</div>
-        <code>                    <a href="../Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a>|string
-    <strong>getFrom</strong>()
+                    <h3 id="method___construct">
+        <div class="location">at         line 40</div>
+        <code>                    
+    <strong>__construct</strong>(string $path, string|null $name = null, string|null $type = null, string|null $id = null)
         </code>
     </h3>
     <div class="details">
@@ -212,12 +226,79 @@ will be converted into an API call</p>                                </div>
     
 
                 <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$path</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$name</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$type</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$id</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" href="http://php.net/InvalidArgumentException">InvalidArgumentException</a></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a target="_blank" href="http://php.net/RuntimeException">RuntimeException</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isValidFile">
+        <div class="location">at         line 64</div>
+        <code>            protected        bool
+    <strong>isValidFile</strong>(string $path)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$path</td>
+                <td></td>
+            </tr>
+            </table>
+
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a>|string</td>
+            <td>bool</td>
             <td></td>
         </tr>
     </table>
@@ -229,10 +310,10 @@ will be converted into an API call</p>                                </div>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getTo">
-        <div class="location">at         line 21</div>
-        <code>                    <a href="../Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a>[]|string
-    <strong>getTo</strong>()
+                    <h3 id="method_determineFileType">
+        <div class="location">at         line 74</div>
+        <code>            protected        string
+    <strong>determineFileType</strong>(string $path)
         </code>
     </h3>
     <div class="details">
@@ -240,83 +321,46 @@ will be converted into an API call</p>                                </div>
     
 
                 <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$path</td>
+                <td></td>
+            </tr>
+            </table>
+
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a>[]|string</td>
+            <td>string</td>
             <td></td>
         </tr>
     </table>
 
             
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" href="http://php.net/RuntimeException">RuntimeException</a></td>
+                <td></td>
+            </tr>
+            </table>
+
             
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getCc">
-        <div class="location">at         line 26</div>
-        <code>                    <a href="../Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a>[]|string
-    <strong>getCc</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a>[]|string</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_getBcc">
-        <div class="location">at         line 31</div>
-        <code>                    <a href="../Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a>[]|<abbr title="Stampie\$string">$string</abbr>
-    <strong>getBcc</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a>[]|<abbr title="Stampie\$string">$string</abbr></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_getSubject">
-        <div class="location">at         line 36</div>
+                    <h3 id="method_getPath">
+        <div class="location">at         line 99</div>
         <code>                    string
-    <strong>getSubject</strong>()
+    <strong>getPath</strong>()
         </code>
     </h3>
     <div class="details">
@@ -341,10 +385,10 @@ will be converted into an API call</p>                                </div>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getReplyTo">
-        <div class="location">at         line 41</div>
+                    <h3 id="method_getName">
+        <div class="location">at         line 107</div>
         <code>                    string
-    <strong>getReplyTo</strong>()
+    <strong>getName</strong>()
         </code>
     </h3>
     <div class="details">
@@ -369,38 +413,10 @@ will be converted into an API call</p>                                </div>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getHeaders">
-        <div class="location">at         line 46</div>
-        <code>                    array
-    <strong>getHeaders</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>array</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_getHtml">
-        <div class="location">at         line 51</div>
+                    <h3 id="method_getType">
+        <div class="location">at         line 115</div>
         <code>                    string
-    <strong>getHtml</strong>()
+    <strong>getType</strong>()
         </code>
     </h3>
     <div class="details">
@@ -425,10 +441,10 @@ will be converted into an API call</p>                                </div>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getText">
-        <div class="location">at         line 56</div>
-        <code>                    string
-    <strong>getText</strong>()
+                    <h3 id="method_getId">
+        <div class="location">at         line 123</div>
+        <code>                    string|null
+    <strong>getId</strong>()
         </code>
     </h3>
     <div class="details">
@@ -441,7 +457,7 @@ will be converted into an API call</p>                                </div>
 
                     <table class="table table-condensed">
         <tr>
-            <td>string</td>
+            <td>string|null</td>
             <td></td>
         </tr>
     </table>
