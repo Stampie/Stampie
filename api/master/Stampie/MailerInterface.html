@@ -23,6 +23,15 @@
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
+                    <form action="#" method="GET">
+                <select id="version-switcher" name="version">
+                                            <option value="../../0.8.0/index.html" data-version="0.8.0">0.8.0</option>
+                                            <option value="../../0.9.0/index.html" data-version="0.9.0">0.9.0</option>
+                                            <option value="../../0.10.0/index.html" data-version="0.10.0">0.10.0</option>
+                                            <option value="../../0.11.0/index.html" data-version="0.11.0">0.11.0</option>
+                                            <option value="../../master/index.html" data-version="master">master branch</option>
+                                    </select>
+            </form>
                 <script>
             $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
         </script>
@@ -79,7 +88,7 @@
     </div>
 
     <p>    interface
-    <strong>MailerInterface</strong>
+    <strong>MailerInterface</strong>        (<a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/MailerInterface.php">View source</a>)
 </p>
 
         
@@ -146,7 +155,7 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_setHttpClient">
-        <div class="location">at         line 17</div>
+        <div class="location">at         <a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/MailerInterface.php#L17">line 17</a></div>
         <code>                    
     <strong>setHttpClient</strong>(<abbr title="Http\Client\HttpClient">HttpClient</abbr> $adapter)
         </code>
@@ -175,7 +184,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_setServerToken">
-        <div class="location">at         line 22</div>
+        <div class="location">at         <a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/MailerInterface.php#L22">line 22</a></div>
         <code>                    
     <strong>setServerToken</strong>(string $token)
         </code>
@@ -204,7 +213,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getServerToken">
-        <div class="location">at         line 27</div>
+        <div class="location">at         <a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/MailerInterface.php#L27">line 27</a></div>
         <code>                    string
     <strong>getServerToken</strong>()
         </code>
@@ -232,7 +241,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_send">
-        <div class="location">at         line 34</div>
+        <div class="location">at         <a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/MailerInterface.php#L34">line 34</a></div>
         <code>                    Boolean
     <strong>send</strong>(<a href="../Stampie/MessageInterface.html"><abbr title="Stampie\MessageInterface">MessageInterface</abbr></a> $message)
         </code>

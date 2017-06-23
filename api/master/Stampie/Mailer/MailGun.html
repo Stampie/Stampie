@@ -23,6 +23,15 @@
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
+                    <form action="#" method="GET">
+                <select id="version-switcher" name="version">
+                                            <option value="../../../0.8.0/index.html" data-version="0.8.0">0.8.0</option>
+                                            <option value="../../../0.9.0/index.html" data-version="0.9.0">0.9.0</option>
+                                            <option value="../../../0.10.0/index.html" data-version="0.10.0">0.10.0</option>
+                                            <option value="../../../0.11.0/index.html" data-version="0.11.0">0.11.0</option>
+                                            <option value="../../../master/index.html" data-version="master">master branch</option>
+                                    </select>
+            </form>
                 <script>
             $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
         </script>
@@ -79,7 +88,7 @@
     </div>
 
     <p>    class
-    <strong>MailGun</strong>        extends <a href="../../Stampie/Mailer.html"><abbr title="Stampie\Mailer">Mailer</abbr></a>
+    <strong>MailGun</strong>        extends <a href="../../Stampie/Mailer.html"><abbr title="Stampie\Mailer">Mailer</abbr></a>        (<a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/Mailer/MailGun.php">View source</a>)
 </p>
 
         
@@ -284,7 +293,7 @@ ApiException to help identify the problem.</p>                </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location">in <a href="../../Stampie/Mailer.html#method___construct"><abbr title="Stampie\Mailer">Mailer</abbr></a> at         line 40</div>
+        <div class="location">in <a href="../../Stampie/Mailer.html#method___construct"><abbr title="Stampie\Mailer">Mailer</abbr></a> at         <a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/Mailer.php#L40">line 40</a></div>
         <code>                    
     <strong>__construct</strong>(<abbr title="Http\Client\HttpClient">HttpClient</abbr> $httpClient, string $serverToken)
         </code>
@@ -318,7 +327,7 @@ ApiException to help identify the problem.</p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_setHttpClient">
-        <div class="location">in <a href="../../Stampie/Mailer.html#method_setHttpClient"><abbr title="Stampie\Mailer">Mailer</abbr></a> at         line 49</div>
+        <div class="location">in <a href="../../Stampie/Mailer.html#method_setHttpClient"><abbr title="Stampie\Mailer">Mailer</abbr></a> at         <a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/Mailer.php#L49">line 49</a></div>
         <code>                    
     <strong>setHttpClient</strong>(<abbr title="Http\Client\HttpClient">HttpClient</abbr> $httpClient)
         </code>
@@ -347,7 +356,7 @@ ApiException to help identify the problem.</p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_setMessageFactory">
-        <div class="location">in <a href="../../Stampie/Mailer.html#method_setMessageFactory"><abbr title="Stampie\Mailer">Mailer</abbr></a> at         line 75</div>
+        <div class="location">in <a href="../../Stampie/Mailer.html#method_setMessageFactory"><abbr title="Stampie\Mailer">Mailer</abbr></a> at         <a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/Mailer.php#L75">line 75</a></div>
         <code>                    <a href="../../Stampie/Mailer.html"><abbr title="Stampie\Mailer">Mailer</abbr></a>
     <strong>setMessageFactory</strong>(<abbr title="Http\Message\MessageFactory">MessageFactory</abbr> $messageFactory)
         </code>
@@ -385,7 +394,7 @@ ApiException to help identify the problem.</p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_setServerToken">
-        <div class="location">at         line 33</div>
+        <div class="location">at         <a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/Mailer/MailGun.php#L33">line 33</a></div>
         <code>                    
     <strong>setServerToken</strong>($serverToken)
         </code>
@@ -414,7 +423,7 @@ ApiException to help identify the problem.</p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getServerToken">
-        <div class="location">in <a href="../../Stampie/Mailer.html#method_getServerToken"><abbr title="Stampie\Mailer">Mailer</abbr></a> at         line 98</div>
+        <div class="location">in <a href="../../Stampie/Mailer.html#method_getServerToken"><abbr title="Stampie\Mailer">Mailer</abbr></a> at         <a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/Mailer.php#L98">line 98</a></div>
         <code>                    string
     <strong>getServerToken</strong>()
         </code>
@@ -442,7 +451,7 @@ ApiException to help identify the problem.</p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_send">
-        <div class="location">in <a href="../../Stampie/Mailer.html#method_send"><abbr title="Stampie\Mailer">Mailer</abbr></a> at         line 106</div>
+        <div class="location">in <a href="../../Stampie/Mailer.html#method_send"><abbr title="Stampie\Mailer">Mailer</abbr></a> at         <a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/Mailer.php#L106">line 106</a></div>
         <code>                    Boolean
     <strong>send</strong>(<a href="../../Stampie/MessageInterface.html"><abbr title="Stampie\MessageInterface">MessageInterface</abbr></a> $message)
         </code>
@@ -480,7 +489,7 @@ ApiException to help identify the problem.</p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getHeaders">
-        <div class="location">at         line 45</div>
+        <div class="location">at         <a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/Mailer/MailGun.php#L45">line 45</a></div>
         <code>            protected        array
     <strong>getHeaders</strong>()
         </code>
@@ -511,7 +520,7 @@ ApiException to help identify the problem.</p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getFiles">
-        <div class="location">at         line 58</div>
+        <div class="location">at         <a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/Mailer/MailGun.php#L58">line 58</a></div>
         <code>            protected        string[]
     <strong>getFiles</strong>(<a href="../../Stampie/MessageInterface.html"><abbr title="Stampie\MessageInterface">MessageInterface</abbr></a> $message)
         </code>
@@ -552,7 +561,7 @@ ApiException to help identify the problem.</p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getEndpoint">
-        <div class="location">at         line 22</div>
+        <div class="location">at         <a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/Mailer/MailGun.php#L22">line 22</a></div>
         <code>            protected        string
     <strong>getEndpoint</strong>()
         </code>
@@ -580,7 +589,7 @@ ApiException to help identify the problem.</p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_format">
-        <div class="location">at         line 81</div>
+        <div class="location">at         <a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/Mailer/MailGun.php#L81">line 81</a></div>
         <code>            protected        string
     <strong>format</strong>(<a href="../../Stampie/MessageInterface.html"><abbr title="Stampie\MessageInterface">MessageInterface</abbr></a> $message)
         </code>
@@ -620,7 +629,7 @@ ApiException to help identify the problem.</p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_handle">
-        <div class="location">at         line 121</div>
+        <div class="location">at         <a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/Mailer/MailGun.php#L121">line 121</a></div>
         <code>            protected        
     <strong>handle</strong>(<a href="../../Stampie/Adapter/ResponseInterface.html"><abbr title="Stampie\Adapter\ResponseInterface">ResponseInterface</abbr></a> $response)
         </code>
@@ -666,7 +675,7 @@ ApiException to help identify the problem.</p>                                  
             </div>
                     <div class="method-item">
                     <h3 id="method_normalizeIdentity">
-        <div class="location">in <a href="../../Stampie/Mailer.html#method_normalizeIdentity"><abbr title="Stampie\Mailer">Mailer</abbr></a> at         line 179</div>
+        <div class="location">in <a href="../../Stampie/Mailer.html#method_normalizeIdentity"><abbr title="Stampie\Mailer">Mailer</abbr></a> at         <a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/Mailer.php#L179">line 179</a></div>
         <code>            protected        <a href="../../Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a>
     <strong>normalizeIdentity</strong>(<a href="../../Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a>|string $identity)
         </code>
@@ -704,7 +713,7 @@ ApiException to help identify the problem.</p>                                  
             </div>
                     <div class="method-item">
                     <h3 id="method_normalizeIdentities">
-        <div class="location">in <a href="../../Stampie/Mailer.html#method_normalizeIdentities"><abbr title="Stampie\Mailer">Mailer</abbr></a> at         line 189</div>
+        <div class="location">in <a href="../../Stampie/Mailer.html#method_normalizeIdentities"><abbr title="Stampie\Mailer">Mailer</abbr></a> at         <a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/Mailer.php#L189">line 189</a></div>
         <code>            protected        <a href="../../Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a>[]
     <strong>normalizeIdentities</strong>(<a href="../../Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a>[]|string $identities)
         </code>
@@ -742,7 +751,7 @@ ApiException to help identify the problem.</p>                                  
             </div>
                     <div class="method-item">
                     <h3 id="method_buildIdentityString">
-        <div class="location">in <a href="../../Stampie/Mailer.html#method_buildIdentityString"><abbr title="Stampie\Mailer">Mailer</abbr></a> at         line 199</div>
+        <div class="location">in <a href="../../Stampie/Mailer.html#method_buildIdentityString"><abbr title="Stampie\Mailer">Mailer</abbr></a> at         <a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/Mailer.php#L199">line 199</a></div>
         <code>            protected        string
     <strong>buildIdentityString</strong>(<a href="../../Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a>[]|<a href="../../Stampie/IdentityInterface.html"><abbr title="Stampie\IdentityInterface">IdentityInterface</abbr></a>|string $identities)
         </code>
@@ -780,7 +789,7 @@ ApiException to help identify the problem.</p>                                  
             </div>
                     <div class="method-item">
                     <h3 id="method_processAttachments">
-        <div class="location">at         line 130</div>
+        <div class="location">at         <a href="https://github.com/Stampie/Stampie/blob/master/lib/Stampie/Mailer/MailGun.php#L130">line 130</a></div>
         <code>            protected        array
     <strong>processAttachments</strong>(array $attachments)
         </code>
