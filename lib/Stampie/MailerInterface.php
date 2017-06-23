@@ -14,22 +14,22 @@ interface MailerInterface
     /**
      * @param HttpClient $adapter
      */
-    function setHttpClient(HttpClient $adapter);
+    public function setHttpClient(HttpClient $adapter);
 
     /**
      * @param string $token
      */
-    function setServerToken($token);
+    public function setServerToken($token);
 
     /**
      * @return string
      */
-    function getServerToken();
+    public function getServerToken();
 
     /**
      * @param MessageInterface $message
      *
-     * @return Boolean
+     * @return bool
      */
-    function send(MessageInterface $message);
+    public function send(MessageInterface $message);
 }

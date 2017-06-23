@@ -2,18 +2,18 @@
 
 namespace Stampie\Mailer;
 
-use Stampie\Mailer;
-use Stampie\Message\TaggableInterface;
-use Stampie\Message\AttachmentsAwareInterface;
-use Stampie\MessageInterface;
 use Stampie\Adapter\ResponseInterface;
 use Stampie\Attachment;
-use Stampie\Exception\HttpException;
 use Stampie\Exception\ApiException;
+use Stampie\Exception\HttpException;
+use Stampie\Mailer;
+use Stampie\Message\AttachmentsAwareInterface;
+use Stampie\Message\TaggableInterface;
+use Stampie\MessageInterface;
 use Stampie\Util\AttachmentUtils;
 
 /**
- * Sends emails to Postmark server
+ * Sends emails to Postmark server.
  *
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  */
@@ -48,11 +48,11 @@ class Postmark extends Mailer
      */
     protected function getHeaders()
     {
-        return array(
-            'Content-Type' => 'application/json',
+        return [
+            'Content-Type'            => 'application/json',
             'X-Postmark-Server-Token' => $this->getServerToken(),
-            'Accept' => 'application/json',
-        );
+            'Accept'                  => 'application/json',
+        ];
     }
 
     /**
@@ -60,12 +60,12 @@ class Postmark extends Mailer
      */
     protected function format(MessageInterface $message)
     {
-        $headers = array();
+        $headers = [];
         foreach ($message->getHeaders() as $name => $value) {
-            $headers[] = array('Name' => $name, 'Value' => $value);
+            $headers[] = ['Name' => $name, 'Value' => $value];
         }
 
-        $parameters = array(
+        $parameters = [
             'From'     => $this->buildIdentityString($message->getFrom()),
             'To'       => $this->buildIdentityString($message->getTo()),
             'Subject'  => $message->getSubject(),
@@ -73,7 +73,7 @@ class Postmark extends Mailer
             'HtmlBody' => $message->getHtml(),
             'TextBody' => $message->getText(),
             'ReplyTo'  => $message->getReplyTo(),
-        );
+        ];
 
         if ($message instanceof TaggableInterface) {
             $tag = $message->getTag();
@@ -82,7 +82,7 @@ class Postmark extends Mailer
                 $tag = reset($tag);
             }
 
-            $parameters['Tag'] = $tag ;
+            $parameters['Tag'] = $tag;
         }
 
         if ($message instanceof AttachmentsAwareInterface) {
@@ -98,6 +98,7 @@ class Postmark extends Mailer
 
     /**
      * @param Attachment $attachment
+     *
      * @return string
      */
     protected function getAttachmentContent(Attachment $attachment)
@@ -107,25 +108,26 @@ class Postmark extends Mailer
 
     /**
      * @param Attachment[] $attachments
+     *
      * @return array An array containing arrays of the following format:
-     *     array(
-     *         'Name'                 => name,
-     *         'Content'              => base64-encoded content,
-     *         'ContentType'          => type,
-     *         (optional) 'ContentID' => id,
-     *     )
+     *               array(
+     *               'Name'                 => name,
+     *               'Content'              => base64-encoded content,
+     *               'ContentType'          => type,
+     *               (optional) 'ContentID' => id,
+     *               )
      */
     protected function processAttachments(array $attachments)
     {
         $attachments = AttachmentUtils::processAttachments($attachments);
 
-        $processedAttachments = array();
+        $processedAttachments = [];
         foreach ($attachments as $name => $attachment) {
-            $item = array(
+            $item = [
                 'Name'        => $name,
                 'Content'     => base64_encode($this->getAttachmentContent($attachment)),
                 'ContentType' => $attachment->getType(),
-            );
+            ];
 
             $id = $attachment->getId();
             if (isset($id)) {

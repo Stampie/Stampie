@@ -2,19 +2,19 @@
 
 namespace Stampie\Mailer;
 
-use Stampie\Mailer;
-use Stampie\Message\MetadataAwareInterface;
-use Stampie\MessageInterface;
-use Stampie\Message\TaggableInterface;
-use Stampie\Message\AttachmentsAwareInterface;
 use Stampie\Adapter\ResponseInterface;
 use Stampie\Attachment;
-use Stampie\Exception\HttpException;
 use Stampie\Exception\ApiException;
+use Stampie\Exception\HttpException;
+use Stampie\Mailer;
+use Stampie\Message\AttachmentsAwareInterface;
+use Stampie\Message\MetadataAwareInterface;
+use Stampie\Message\TaggableInterface;
+use Stampie\MessageInterface;
 use Stampie\Util\AttachmentUtils;
 
 /**
- * Sends emails to Mandrill server
+ * Sends emails to Mandrill server.
  *
  * @author Christophe Coevoet <stof@notk.org>
  */
@@ -33,9 +33,9 @@ class Mandrill extends Mailer
      */
     protected function getHeaders()
     {
-        return array(
+        return [
             'Content-Type' => 'application/json',
-        );
+        ];
     }
 
     /**
@@ -45,43 +45,43 @@ class Mandrill extends Mailer
     {
         $headers = array_filter(array_merge(
             $message->getHeaders(),
-            array('Reply-To' => $message->getReplyTo())
+            ['Reply-To' => $message->getReplyTo()]
         ));
 
         $from = $this->normalizeIdentity($message->getFrom());
 
-        $to = array();
+        $to = [];
         foreach ($this->normalizeIdentities($message->getTo()) as $recipient) {
-            $to[] = array('email' => $recipient->getEmail(), 'name' => $recipient->getName(), 'type' => 'to');
+            $to[] = ['email' => $recipient->getEmail(), 'name' => $recipient->getName(), 'type' => 'to'];
         }
 
         foreach ($this->normalizeIdentities($message->getCc()) as $recipient) {
-            $to[] = array('email' => $recipient->getEmail(), 'name' => $recipient->getName(), 'type' => 'cc');
+            $to[] = ['email' => $recipient->getEmail(), 'name' => $recipient->getName(), 'type' => 'cc'];
         }
 
         foreach ($this->normalizeIdentities($message->getBcc()) as $recipient) {
-            $to[] = array('email' => $recipient->getEmail(), 'name' => $recipient->getName(), 'type' => 'bcc');
+            $to[] = ['email' => $recipient->getEmail(), 'name' => $recipient->getName(), 'type' => 'bcc'];
         }
 
-        $tags = array();
+        $tags = [];
         if ($message instanceof TaggableInterface) {
             $tags = (array) $message->getTag();
         }
 
-        $metadata = array();
+        $metadata = [];
         if ($message instanceof MetadataAwareInterface) {
             $metadata = array_filter($message->getMetadata());
         }
 
-        $images      = array();
-        $attachments = array();
+        $images = [];
+        $attachments = [];
         if ($message instanceof AttachmentsAwareInterface) {
             list($attachments, $images) = $this->processAttachments($message->getAttachments());
         }
 
-        $parameters = array(
+        $parameters = [
             'key'     => $this->getServerToken(),
-            'message' => array_filter(array(
+            'message' => array_filter([
                 'from_email'  => $from->getEmail(),
                 'from_name'   => $from->getName(),
                 'to'          => $to,
@@ -93,8 +93,8 @@ class Mandrill extends Mailer
                 'metadata'    => $metadata,
                 'attachments' => $attachments,
                 'images'      => $images,
-            )),
-        );
+            ]),
+        ];
 
         return json_encode($parameters);
     }
@@ -107,20 +107,21 @@ class Mandrill extends Mailer
     protected function handle(ResponseInterface $response)
     {
         $httpException = new HttpException($response->getStatusCode(), $response->getStatusText());
-        $error         = json_decode($response->getContent());
+        $error = json_decode($response->getContent());
 
         throw new ApiException($error->message, $httpException, $error->code);
     }
 
     /**
      * @param Attachment[] $attachments
+     *
      * @return array
-     *     First element: Attachments – an array containing arrays of the following format
-     *         array(
-     *             'type'    => type,
-     *             'name'    => name,
-     *             'content' => base64-encoded content,
-     *         )
+     *               First element: Attachments – an array containing arrays of the following format
+     *               array(
+     *               'type'    => type,
+     *               'name'    => name,
+     *               'content' => base64-encoded content,
+     *               )
      *
      *     Second element: Inline images – an array containing arrays of the following format
      *         array(
@@ -133,15 +134,15 @@ class Mandrill extends Mailer
     {
         $attachments = AttachmentUtils::processAttachments($attachments);
 
-        $processedAttachments = array();
-        $images = array();
+        $processedAttachments = [];
+        $images = [];
         foreach ($attachments as $name => $attachment) {
             $type = $attachment->getType();
-            $item = array(
+            $item = [
                 'type'    => $type,
                 'name'    => $name,
                 'content' => base64_encode($this->getAttachmentContent($attachment)),
-            );
+            ];
 
             $id = $attachment->getId();
             if (strpos($type, 'image/') === 0 && isset($id)) {
@@ -154,11 +155,12 @@ class Mandrill extends Mailer
             }
         }
 
-        return array($processedAttachments, $images);
+        return [$processedAttachments, $images];
     }
 
     /**
      * @param Attachment $attachment
+     *
      * @return string
      */
     protected function getAttachmentContent(Attachment $attachment)

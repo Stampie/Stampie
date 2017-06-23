@@ -3,7 +3,7 @@
 namespace Stampie\Adapter;
 
 /**
- * Immutable implementation of ResponseInterface
+ * Immutable implementation of ResponseInterface.
  *
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  */
@@ -12,7 +12,7 @@ class Response implements ResponseInterface
     /**
      * @var array Array of reason phrases and their corresponding status codes
      */
-    static private $statusTexts = array(
+    private static $statusTexts = [
         100 => 'Continue',
         101 => 'Switching Protocols',
         200 => 'OK',
@@ -54,10 +54,10 @@ class Response implements ResponseInterface
         503 => 'Service Unavailable',
         504 => 'Gateway Timeout',
         505 => 'HTTP Version Not Supported',
-    );
+    ];
 
     /**
-     * @var integer
+     * @var int
      */
     protected $statusCode;
 
@@ -67,7 +67,7 @@ class Response implements ResponseInterface
     protected $content;
 
     /**
-     * @param integer $statusCode
+     * @param int    $statusCode
      * @param string $content
      */
     public function __construct($statusCode, $content)
@@ -81,11 +81,11 @@ class Response implements ResponseInterface
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getStatusCode()
     {
-        return (integer) $this->statusCode;
+        return (int) $this->statusCode;
     }
 
     /**
@@ -97,11 +97,11 @@ class Response implements ResponseInterface
     }
 
     /**
-     * @return Boolean
+     * @return bool
      */
     public function isSuccessful()
     {
-        return (Boolean) in_array($this->getStatusCode(), range(200, 206), true);
+        return (bool) in_array($this->getStatusCode(), range(200, 206), true);
     }
 
     /**

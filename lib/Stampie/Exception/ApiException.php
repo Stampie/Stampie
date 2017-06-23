@@ -3,16 +3,16 @@
 namespace Stampie\Exception;
 
 /**
- * SubException
+ * SubException.
  *
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  */
 class ApiException extends \RuntimeException
 {
     /**
-     * @param string $message
+     * @param string     $message
      * @param \Exception $previous
-     * @param integer $code
+     * @param int        $code
      */
     public function __construct($message, \Exception $previous = null, $code = 0)
     {

@@ -30,10 +30,11 @@ class Attachment
     protected $id;
 
     /**
-     * @param string $path
+     * @param string      $path
      * @param string|null $name
      * @param string|null $type
      * @param string|null $id
+     *
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
@@ -45,7 +46,7 @@ class Attachment
 
         $this->path = $path;
         $this->name = (isset($name) ? $name : basename($path));
-        $this->id   = $id;
+        $this->id = $id;
 
         if ($type === null) {
             $type = $this->determineFileType($path);
@@ -59,35 +60,37 @@ class Attachment
 
     /**
      * @param string $path
+     *
      * @return bool
      */
     protected function isValidFile($path)
     {
-        return (file_exists($path) && is_readable($path));
+        return file_exists($path) && is_readable($path);
     }
 
     /**
      * @param string $path
-     * @return string
+     *
      * @throws \RuntimeException
+     *
+     * @return string
      */
     protected function determineFileType($path)
     {
         if (!function_exists('finfo_open')) {
             // File info functions not available
-            return null;
+            return;
         }
 
         // Determine file type
         $finfo = finfo_open(\FILEINFO_MIME_TYPE);
-        $type  = finfo_file($finfo, $path);
-
+        $type = finfo_file($finfo, $path);
 
         finfo_close($finfo);
 
         if ($type === false) {
             // Could not determine file type
-            return null;
+            return;
         }
 
         return $type;

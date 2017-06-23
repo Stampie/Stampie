@@ -2,8 +2,8 @@
 
 namespace Stampie\Tests\Mailer;
 
-use Stampie\MessageInterface;
 use Stampie\Message\MetadataAwareInterface;
+use Stampie\MessageInterface;
 
 abstract class MetadataAwareMessage implements MessageInterface, MetadataAwareInterface
 {

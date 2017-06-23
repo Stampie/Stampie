@@ -2,14 +2,14 @@
 
 namespace Stampie\Mailer;
 
-use Stampie\Mailer;
-use Stampie\Message\MetadataAwareInterface;
-use Stampie\MessageInterface;
-use Stampie\Message\TaggableInterface;
-use Stampie\Message\AttachmentsAwareInterface;
 use Stampie\Adapter\ResponseInterface;
 use Stampie\Attachment;
 use Stampie\Exception\HttpException;
+use Stampie\Mailer;
+use Stampie\Message\AttachmentsAwareInterface;
+use Stampie\Message\MetadataAwareInterface;
+use Stampie\Message\TaggableInterface;
+use Stampie\MessageInterface;
 
 /**
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
@@ -21,13 +21,14 @@ class MailGun extends Mailer
      */
     protected function getEndpoint()
     {
-        list($domain,) = explode(':', $this->getServerToken());
+        list($domain) = explode(':', $this->getServerToken());
 
-        return 'https://api.mailgun.net/v2/' . $domain . '/messages';
+        return 'https://api.mailgun.net/v2/'.$domain.'/messages';
     }
 
     /**
      * {@inheritdoc}
+     *
      * @throws \InvalidArgumentException
      */
     public function setServerToken($serverToken)
@@ -46,10 +47,10 @@ class MailGun extends Mailer
     {
         list(, $serverToken) = explode(':', $this->getServerToken());
 
-        return array(
-            'Authorization' => 'Basic ' . base64_encode('api:' . $serverToken),
-            'Content-Type' => 'application/x-www-form-urlencoded',
-        );
+        return [
+            'Authorization' => 'Basic '.base64_encode('api:'.$serverToken),
+            'Content-Type'  => 'application/x-www-form-urlencoded',
+        ];
     }
 
     /**
@@ -58,20 +59,21 @@ class MailGun extends Mailer
     protected function getFiles(MessageInterface $message)
     {
         if (!($message instanceof AttachmentsAwareInterface)) {
-            return array();
+            return [];
         }
 
         // Process files
         list($attachments, $inline) = $this->processAttachments($message->getAttachments());
 
         // Format params
-        $files = array();
+        $files = [];
         if ($attachments) {
             $files['attachment'] = $attachments;
         }
         if ($inline) {
             $files['inline'] = $inline;
         }
+
         return $files;
     }
 
@@ -83,13 +85,13 @@ class MailGun extends Mailer
         // Custom headers should be prefixed with h:X-My-Header
         $headers = array_merge(
             $message->getHeaders(),
-            array('Reply-To' => $message->getReplyTo())
+            ['Reply-To' => $message->getReplyTo()]
         );
         array_walk($headers, function (&$value, &$key) {
-            $key = 'h:' . $key;
+            $key = 'h:'.$key;
         });
 
-        $parameters = array(
+        $parameters = [
             'from'    => $this->buildIdentityString($message->getFrom()),
             'to'      => $this->buildIdentityString($message->getTo()),
             'subject' => $message->getSubject(),
@@ -97,18 +99,18 @@ class MailGun extends Mailer
             'html'    => $message->getHtml(),
             'cc'      => $this->buildIdentityString($message->getCc()),
             'bcc'     => $this->buildIdentityString($message->getBcc()),
-        );
+        ];
 
         if ($message instanceof TaggableInterface) {
             $parameters['o:tag'] = (array) $message->getTag();
         }
 
-        $metadata = array();
+        $metadata = [];
         if ($message instanceof MetadataAwareInterface) {
             $metadata = array_filter($message->getMetadata());
             // Custom variables should be prefixed with v:my_var
             array_walk($metadata, function (&$value, &$key) {
-                $key = 'v:' . $key;
+                $key = 'v:'.$key;
             });
         }
 
@@ -125,15 +127,16 @@ class MailGun extends Mailer
 
     /**
      * @param Attachment[] $attachments
-     * @return array    First element: An array of attachment paths. Second element: An array of inline paths
+     *
+     * @return array First element: An array of attachment paths. Second element: An array of inline paths
      */
     protected function processAttachments(array $attachments)
     {
-        $processedAttachments = array();
-        $inline = array();
+        $processedAttachments = [];
+        $inline = [];
         foreach ($attachments as $attachment) {
             $path = $attachment->getPath();
-            $id   = $attachment->getId();
+            $id = $attachment->getId();
             if (isset($id)) {
                 // Inline
                 $inline[] = $path;
@@ -143,6 +146,6 @@ class MailGun extends Mailer
             }
         }
 
-        return array($processedAttachments, $inline);
+        return [$processedAttachments, $inline];
     }
 }

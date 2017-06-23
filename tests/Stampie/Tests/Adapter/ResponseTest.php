@@ -34,8 +34,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
     public function isSuccessfullDataProvider()
     {
-        return array(
-            range(200, 206)
-        );
+        return [
+            range(200, 206),
+        ];
     }
 }

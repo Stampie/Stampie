@@ -2,8 +2,8 @@
 
 namespace Stampie\Tests\Mailer;
 
-use Stampie\Mailer\Postmark;
 use Stampie\Adapter\ResponseInterface;
+use Stampie\Mailer\Postmark;
 use Stampie\MessageInterface;
 
 class TestPostmark extends Postmark

@@ -6,16 +6,18 @@ use Stampie\Identity;
 use Stampie\IdentityInterface;
 
 /**
- * Stampie Identity utility functions
+ * Stampie Identity utility functions.
  *
  * @author Christophe Coevoet <stof@notk.org>
  */
 class IdentityUtils
 {
     /**
-     * This class should not be instantiated
+     * This class should not be instantiated.
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * @param IdentityInterface|string $identity
@@ -39,15 +41,15 @@ class IdentityUtils
     public static function normalizeIdentities($identities)
     {
         if (null === $identities) {
-            return array();
+            return [];
         }
 
         if (is_string($identities)) {
-            $identities = array(self::normalizeIdentity($identities));
+            $identities = [self::normalizeIdentity($identities)];
         }
 
         if (!is_array($identities) && $identities instanceof IdentityInterface) {
-            $identities = array($identities);
+            $identities = [$identities];
         }
 
         return $identities;
@@ -69,10 +71,10 @@ class IdentityUtils
         }
 
         if ($identities instanceof IdentityInterface) {
-            $identities = array($identities);
+            $identities = [$identities];
         }
 
-        $stringIdentities = array();
+        $stringIdentities = [];
 
         foreach ($identities as $identity) {
             if (null === $identity->getName()) {

@@ -3,29 +3,29 @@
 namespace Stampie\Adapter;
 
 /**
- * Interface for returned content by adapters
+ * Interface for returned content by adapters.
  *
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  */
 interface ResponseInterface
 {
     /**
-     * @return integer
+     * @return int
      */
-    function getStatusCode();
+    public function getStatusCode();
 
     /**
      * @return string
      */
-    function getContent();
+    public function getContent();
 
     /**
      * @return string
      */
-    function getStatusText();
+    public function getStatusText();
 
     /**
-     * @return Boolean
+     * @return bool
      */
-    function isSuccessful();
+    public function isSuccessful();
 }

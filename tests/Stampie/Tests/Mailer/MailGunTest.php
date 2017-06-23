@@ -3,7 +3,6 @@
 namespace Stampie\Tests\Mailer;
 
 use Stampie\Mailer\MailGun;
-use Stampie\Message;
 
 /**
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
@@ -41,42 +40,43 @@ class MailGunTest extends \Stampie\Tests\BaseMailerTest
         $headers = $this->mailer->getHeaders();
 
         $this->assertTrue(isset($headers['Authorization']));
-        $this->assertEquals('Basic ' . base64_encode('api:myCustomKey'), $headers['Authorization']);
+        $this->assertEquals('Basic '.base64_encode('api:myCustomKey'), $headers['Authorization']);
     }
 
     public function testGetFiles()
     {
-        $self  = $this; // PHP5.3 compatibility
+        $self = $this; // PHP5.3 compatibility
         $adapter = $this->adapter;
-        $token   = self::SERVER_TOKEN;
-        $buildMocks = function($attachments, &$invoke) use($self, $adapter, $token){
-            $mailer = $self->getMock('\\Stampie\\Mailer\\MailGun', null, array($adapter, $token));
+        $token = self::SERVER_TOKEN;
+        $buildMocks = function ($attachments, &$invoke) use ($self, $adapter, $token) {
+            $mailer = $self->getMock('\\Stampie\\Mailer\\MailGun', null, [$adapter, $token]);
 
             // Wrap protected method with accessor
             $mirror = new \ReflectionClass($mailer);
             $method = $mirror->getMethod('getFiles');
             $method->setAccessible(true);
 
-            $invoke = function() use($mailer, $method){
+            $invoke = function () use ($mailer, $method) {
                 $args = func_get_args();
                 array_unshift($args, $mailer);
-                return call_user_func_array(array($method, 'invoke'), $args);
+
+                return call_user_func_array([$method, 'invoke'], $args);
             };
 
-            $message = $self->getAttachmentsMessageMock('test@example.com', 'other@example.com', 'Subject', null, null, array(), $attachments);
+            $message = $self->getAttachmentsMessageMock('test@example.com', 'other@example.com', 'Subject', null, null, [], $attachments);
 
-            return array($mailer, $message);
+            return [$mailer, $message];
         };
 
         // Actual tests
 
-        $attachments = array(
+        $attachments = [
             $this->getAttachmentMock('path-1.txt', 'path1.txt', 'text/plain', null),
             $this->getAttachmentMock('path-2.txt', 'path2.txt', 'text/plain', 'id1'),
             $this->getAttachmentMock('path-3.txt', 'path3.txt', 'text/plain', null),
             $this->getAttachmentMock('path-4.txt', 'path4.txt', 'text/plain', 'id2'),
             $this->getAttachmentMock('path-5.txt', 'path5.txt', 'text/plain', null),
-        );
+        ];
 
         list($mailer, $message) = $buildMocks($attachments, $invoke);
         $result = $invoke($message);

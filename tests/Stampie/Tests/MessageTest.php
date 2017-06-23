@@ -9,7 +9,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
      */
     public function testTextWithHtmlFails()
     {
-        $message = $this->getMessageMock(array('hb@peytz.dk'));
+        $message = $this->getMessageMock(['hb@peytz.dk']);
         $message->setText('<b>something</b>');
     }
 
@@ -18,17 +18,16 @@ class MessageTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvaildEmailFails()
     {
-        $message = $this->getMessageMock(array('invalid email'));
+        $message = $this->getMessageMock(['invalid email']);
     }
 
     public function testDefaults()
     {
-        $message = $this->getMessageMock(array('hb@peytz.dk'));
+        $message = $this->getMessageMock(['hb@peytz.dk']);
         $message
             ->expects($this->once())
             ->method('getFrom')
-            ->will($this->returnValue('henrik@bjrnskov.dk'))
-        ;
+            ->will($this->returnValue('henrik@bjrnskov.dk'));
 
         $this->assertEquals('henrik@bjrnskov.dk', $message->getReplyTo());
         $this->assertEquals('hb@peytz.dk', $message->getTo());
@@ -38,12 +37,12 @@ class MessageTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('<br />html', $message->getHtml());
         $this->assertEquals('text', $message->getText());
-        $this->assertEquals(array(), $message->getHeaders());
+        $this->assertEquals([], $message->getHeaders());
         $this->assertEquals(null, $message->getCc());
         $this->assertEquals(null, $message->getBcc());
     }
 
-    protected function getMessageMock(array $arguments = array())
+    protected function getMessageMock(array $arguments = [])
     {
         return $this->getMockForAbstractClass('Stampie\Message', $arguments);
     }

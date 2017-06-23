@@ -3,7 +3,6 @@
 namespace Stampie;
 
 use Http\Client\HttpClient;
-use Http\Discovery\HttpClientDiscovery;
 use Http\Discovery\MessageFactoryDiscovery;
 use Http\Message\MessageFactory;
 use Http\Message\MultipartStream\MultipartStreamBuilder;
@@ -12,14 +11,14 @@ use Stampie\Adapter\ResponseInterface;
 use Stampie\Util\IdentityUtils;
 
 /**
- * Minimal implementation of a MailerInterface
+ * Minimal implementation of a MailerInterface.
  *
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  */
 abstract class Mailer implements MailerInterface
 {
     /**
-     * @var HttpClient $httpClient
+     * @var HttpClient
      */
     protected $httpClient;
 
@@ -81,6 +80,7 @@ abstract class Mailer implements MailerInterface
 
     /**
      * {@inheritdoc}
+     *
      * @throws \InvalidArgumentException
      */
     public function setServerToken($serverToken)
@@ -116,7 +116,7 @@ abstract class Mailer implements MailerInterface
     }
 
     /**
-     * Return a key -> value array of headers
+     * Return a key -> value array of headers.
      *
      * example:
      *     array('X-Header-Name' => 'value')
@@ -125,23 +125,24 @@ abstract class Mailer implements MailerInterface
      */
     protected function getHeaders()
     {
-        return array(
+        return [
             'Content-Type' => 'application/x-www-form-urlencoded',
-        );
+        ];
     }
 
     /**
-     * Return an key -> value array of files
+     * Return an key -> value array of files.
      *
      * example:
      *     array('attachmentname.jpg' => '/path/to/file.jpg')
      *
      * @param MessageInterface $message
+     *
      * @return string[]
      */
     protected function getFiles(MessageInterface $message)
     {
-        return array();
+        return [];
     }
 
     /**
@@ -151,7 +152,7 @@ abstract class Mailer implements MailerInterface
 
     /**
      * Return a a string formatted for the correct Mailer endpoint.
-     * Postmark this is Json, SendGrid it is a urlencoded parameter list
+     * Postmark this is Json, SendGrid it is a urlencoded parameter list.
      *
      * @param MessageInterface $message
      *
@@ -202,7 +203,7 @@ abstract class Mailer implements MailerInterface
     }
 
     /**
-     * Take a Message and return a Stampie Response
+     * Take a Message and return a Stampie Response.
      *
      * @param MessageInterface $message
      *
