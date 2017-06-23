@@ -61,7 +61,7 @@ Stampie is itself completly decoupled and does not depend on any framework.
 
 ## Testing
 
-Stampie is [Continuous Integration](httsp://en.wikipedia.org/wiki/Continuous_integration) tested with [Travis](https://travis-ci.org) and aims for a high coverage percentage.
+Stampie is [Continuous Integration](https://en.wikipedia.org/wiki/Continuous_integration) tested with [Travis](https://travis-ci.org) and aims for a high coverage percentage.
 
 ## Developing
 
