@@ -5,7 +5,7 @@ namespace Stampie;
 /**
  * @author Christophe Coevoet <stof@notk.org>
  */
-interface IdentityInterface
+interface RecipientInterface
 {
     /**
      * @return string
