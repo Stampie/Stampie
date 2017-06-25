@@ -66,8 +66,8 @@ class Postmark extends Mailer
         }
 
         $parameters = [
-            'From'     => $this->buildIdentityString($message->getFrom()),
-            'To'       => $this->buildIdentityString($message->getTo()),
+            'From'     => $this->buildRecipientString($message->getFrom()),
+            'To'       => $this->buildRecipientString($message->getTo()),
             'Subject'  => $message->getSubject(),
             'Headers'  => $headers,
             'HtmlBody' => $message->getHtml(),

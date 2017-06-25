@@ -4,7 +4,7 @@ namespace Stampie\Tests\Mailer;
 
 use Stampie\Adapter\Response;
 use Stampie\Adapter\ResponseInterface;
-use Stampie\Identity;
+use Stampie\Recipient;
 use Stampie\Mailer\Mandrill;
 use Stampie\MessageInterface;
 
@@ -302,26 +302,26 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
                 ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
                 ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc'],
             ]],
-            [[new Identity('henrik@bjrnskov.dk')], 'gauthier.wallet@gmail.com', [
+            [[new Recipient('henrik@bjrnskov.dk')], 'gauthier.wallet@gmail.com', [
                 ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
                 ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc'],
             ]],
-            [[new Identity('henrik@bjrnskov.dk'), new Identity('henrik2@bjrnskov.dk')], 'gauthier.wallet@gmail.com', [
+            [[new Recipient('henrik@bjrnskov.dk'), new Recipient('henrik2@bjrnskov.dk')], 'gauthier.wallet@gmail.com', [
                 ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
                 ['email' => 'henrik2@bjrnskov.dk', 'name' => null, 'type' => 'to'],
                 ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc'],
             ]],
-            [[new Identity('henrik@bjrnskov.dk')], [new Identity('gauthier.wallet@gmail.com')], [
+            [[new Recipient('henrik@bjrnskov.dk')], [new Recipient('gauthier.wallet@gmail.com')], [
                 ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
                 ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc'],
             ]],
-            [[new Identity('henrik@bjrnskov.dk'), new Identity('henrik2@bjrnskov.dk')], [new Identity('gauthier.wallet@gmail.com'), new Identity('gauthier.wallet2@gmail.com')], [
+            [[new Recipient('henrik@bjrnskov.dk'), new Recipient('henrik2@bjrnskov.dk')], [new Recipient('gauthier.wallet@gmail.com'), new Recipient('gauthier.wallet2@gmail.com')], [
                 ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
                 ['email' => 'henrik2@bjrnskov.dk', 'name' => null, 'type' => 'to'],
                 ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc'],
                 ['email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'bcc'],
             ]],
-            ['henrik@bjrnskov.dk', [new Identity('gauthier.wallet@gmail.com'), new Identity('gauthier.wallet2@gmail.com')], [
+            ['henrik@bjrnskov.dk', [new Recipient('gauthier.wallet@gmail.com'), new Recipient('gauthier.wallet2@gmail.com')], [
                 ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
                 ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'bcc'],
                 ['email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'bcc'],
@@ -336,26 +336,26 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
                 ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
                 ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc'],
             ]],
-            [[new Identity('henrik@bjrnskov.dk')], 'gauthier.wallet@gmail.com', [
+            [[new Recipient('henrik@bjrnskov.dk')], 'gauthier.wallet@gmail.com', [
                 ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
                 ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc'],
             ]],
-            [[new Identity('henrik@bjrnskov.dk'), new Identity('henrik2@bjrnskov.dk')], 'gauthier.wallet@gmail.com', [
+            [[new Recipient('henrik@bjrnskov.dk'), new Recipient('henrik2@bjrnskov.dk')], 'gauthier.wallet@gmail.com', [
                 ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
                 ['email' => 'henrik2@bjrnskov.dk', 'name' => null, 'type' => 'to'],
                 ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc'],
             ]],
-            [[new Identity('henrik@bjrnskov.dk')], [new Identity('gauthier.wallet@gmail.com')], [
+            [[new Recipient('henrik@bjrnskov.dk')], [new Recipient('gauthier.wallet@gmail.com')], [
                 ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
                 ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc'],
             ]],
-            [[new Identity('henrik@bjrnskov.dk'), new Identity('henrik2@bjrnskov.dk')], [new Identity('gauthier.wallet@gmail.com'), new Identity('gauthier.wallet2@gmail.com')], [
+            [[new Recipient('henrik@bjrnskov.dk'), new Recipient('henrik2@bjrnskov.dk')], [new Recipient('gauthier.wallet@gmail.com'), new Recipient('gauthier.wallet2@gmail.com')], [
                 ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
                 ['email' => 'henrik2@bjrnskov.dk', 'name' => null, 'type' => 'to'],
                 ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc'],
                 ['email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'cc'],
             ]],
-            ['henrik@bjrnskov.dk', [new Identity('gauthier.wallet@gmail.com'), new Identity('gauthier.wallet2@gmail.com')], [
+            ['henrik@bjrnskov.dk', [new Recipient('gauthier.wallet@gmail.com'), new Recipient('gauthier.wallet2@gmail.com')], [
                 ['email' => 'henrik@bjrnskov.dk', 'name' => null, 'type' => 'to'],
                 ['email' => 'gauthier.wallet@gmail.com', 'name' => null, 'type' => 'cc'],
                 ['email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'cc'],

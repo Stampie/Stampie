@@ -5,7 +5,7 @@ namespace Stampie;
 /**
  * @author Christophe Coevoet <stof@notk.org>
  */
-class Identity implements IdentityInterface
+class Recipient implements RecipientInterface
 {
     private $email;
     private $name;
