@@ -1,7 +1,7 @@
 {
-    "name" : "henrikbjorn/stampie",
+    "name" : "stampie/stampie",
     "description" : "Stampie is a simple API Wrapper for different email providers such as Postmark, SendGrid, Mailgun, Mandrill.",
-    "homepage" : "https://github.com/henrikbjorn/Stampie",
+    "homepage" : "https://github.com/Stampie/Stampie",
     "type" : "library",
     "license" : "MIT",
     "keywords": [
@@ -37,6 +37,9 @@
         "php-http/message" : "^1.0",
         "guzzlehttp/psr7" : "^1.3",
         "php-http/mock-client" : "^1.0"
+    },
+    "replace": {
+        "henrikbjorn/stampie": "self.version"
     },
     "suggest" : {
         "stof/stampie-extra" : "Extensions for Stampie"
