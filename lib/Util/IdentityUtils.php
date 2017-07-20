@@ -40,6 +40,10 @@ class IdentityUtils
      */
     public static function normalizeIdentities($identities)
     {
+        if (is_array($identities)) {
+            $identities = array_map([__CLASS__, 'normalizeIdentity'], $identities);
+        }
+
         if (null === $identities) {
             return [];
         }
