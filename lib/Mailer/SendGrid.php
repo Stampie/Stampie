@@ -110,7 +110,11 @@ class SendGrid extends Mailer
         }
 
         if ($message instanceof MetadataAwareInterface) {
-            $smtpApi['unique_args'] = array_filter($message->getMetadata());
+            $metadata = array_filter($message->getMetadata());
+            // Do not set an empty array on unique_args. json_encode turns it into []; SendGrid expects {}.
+            if (count($metadata)) {
+                $smtpApi['unique_args'] = $metadata;
+            }
         }
 
         $inline = [];
