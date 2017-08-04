@@ -145,6 +145,21 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
         ), $this->mailer->format($message));
     }
 
+    public function testFormatEmptyMetadata()
+    {
+        $message = $this->getMetadataAwareMessageMock(
+            $from = 'henrik@bjrnskov.dk',
+            $to = 'hb@peytz.dk',
+            $subject = 'Trying out Stampie',
+            $html = 'Stampie is Awesome',
+            $text = '',
+            $headers = [],
+            $metadata = []
+        );
+
+        $this->assertNotContains('x-smtpapi', $this->mailer->format($message));
+    }
+
     public function testFormatAttachments()
     {
         $api_user = 'rudolph';
