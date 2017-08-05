@@ -34,13 +34,41 @@ $mailer = new Stampie\Mailer\SendGrid($adapter, 'username:password');
 $mailer->send(new Message('reciever@domain.tld'));
 ```
 
-This simple example shows a few different things about how Stampie works under the hood and is developed. Because others are **so much** better than us to do Http communication, Stampie uses the [HTTPlug](http://httplug.io/) abstraction so you are free to choose between any library like [Buzz](http://github.com/kriswallsmith/Buzz) or [Guzzle](http://guzzlephp.org). See the full list here: https://packagist.org/providers/php-http/client-implementation
+This simple example shows a few different things about how Stampie works under the hood and is developed. Because others
+are **so much** better than us to do Http communication, Stampie uses the [HTTPlug](http://httplug.io/) abstraction so 
+you are free to choose between any library like [Buzz](http://github.com/kriswallsmith/Buzz) or [Guzzle](http://guzzlephp.org). 
+See the full list here: https://packagist.org/providers/php-http/client-implementation
 
-Every mailer takes a `$serverToken` as the second argument in their constructor. This is what is used for authentication. In the Postmark mailer this is a hash but in SendGrid it is a `username:password` pattern that is split into two pieces and send as arguments. A Mailer is responsible for formatting the request needed for a given API.
+Every mailer takes a `$serverToken` as the second argument in their constructor. This is what is used for authentication. 
+In the Postmark mailer this is a hash but in SendGrid it is a `username:password` pattern that is split into two pieces 
+and send as arguments. A Mailer is responsible for formatting the request needed for a given API.
 
-A `Message` or `MessageInterface` is a simple storage class that holds information about the message sent to an API such as the email address this is from and who should recieve it together with html and text bodies.
+A `Message` or `MessageInterface` is a simple storage class that holds information about the message sent to an API such 
+as the email address this is from and who should recieve it together with html and text bodies.
 
-Last their is an Interface for every type of class or abstract implementation that should be used when adding new Mailer's or Adapter's.
+Last their is an Interface for every type of class or abstract implementation that should be used when adding new Mailer's 
+or Adapter's.
+
+## Installation
+
+Stampie is not hard coupled to Guzzle or any other library that sends HTTP messages. It uses an abstraction 
+called HTTPlug. This will give you the flexibility to choose what PSR-7 implementation and HTTP client to use. 
+
+If you just want to get started quickly you should run the following command: 
+
+```bash
+php composer.phar require stampie/stampie php-http/curl-client php-http/message guzzlehttp/psr7
+```
+
+### Why requiring so many packages?
+
+Stampie has a dependency on the virtual package [php-http/client-implementation](https://packagist.org/providers/php-http/client-implementation) 
+which requires to you install **an** adapter, but we do not care which one. That is an implementation detail in your application. 
+We also need **a** PSR-7 implementation and **a** message factory. 
+
+You do not have to use the `php-http/curl-client` if you do not want to. You may use the `php-http/guzzle6-adapter` or any
+other library in [this list](https://packagist.org/providers/php-http/client-implementation). 
+Read more about the virtual packages, why this is a good idea and about the flexibility it brings at the [HTTPlug docs](http://docs.php-http.org/en/latest/httplug/users.html).
 
 ## Documentation
 
