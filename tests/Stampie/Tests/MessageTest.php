@@ -2,7 +2,9 @@
 
 namespace Stampie\Tests;
 
-class MessageTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class MessageTest extends TestCase
 {
     /**
      * @expectedException InvalidArgumentException

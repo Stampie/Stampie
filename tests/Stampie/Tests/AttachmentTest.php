@@ -2,12 +2,13 @@
 
 namespace Stampie\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Stampie\Attachment;
 
 /**
  * @coversDefaultClass \Stampie\Attachment
  */
-class AttachmentTest extends \PHPUnit_Framework_TestCase
+class AttachmentTest extends TestCase
 {
     /**
      * @expectedException \InvalidArgumentException

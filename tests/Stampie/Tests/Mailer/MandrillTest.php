@@ -180,7 +180,10 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
         $adapter = $this->adapter;
         $token = self::SERVER_TOKEN;
         $buildMocks = function ($attachments, &$invoke) use ($self, $adapter, $token) {
-            $mailer = $self->getMock('\\Stampie\\Mailer\\Mandrill', null, [$adapter, $token]);
+            $mailer = $self->getMockBuilder('\\Stampie\\Mailer\\Mandrill')
+                ->setConstructorArgs([$adapter, $token])
+                ->getMock()
+            ;
 
             // Wrap protected method with accessor
             $mirror = new \ReflectionClass($mailer);

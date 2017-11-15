@@ -2,9 +2,10 @@
 
 namespace Stampie\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use Stampie\Exception\HttpException;
 
-class HttpExceptionTest extends \PHPUnit_Framework_TestCase
+class HttpExceptionTest extends TestCase
 {
     public function testImmutable()
     {

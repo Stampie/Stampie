@@ -2,6 +2,7 @@
 
 namespace Stampie\Tests\Util;
 
+use PHPUnit\Framework\TestCase;
 use Stampie\Identity;
 use Stampie\IdentityInterface;
 use Stampie\Util\IdentityUtils;
@@ -9,7 +10,7 @@ use Stampie\Util\IdentityUtils;
 /**
  * @coversDefaultClass \Stampie\Util\IdentityUtils
  */
-class IdentityUtilsTest extends \PHPUnit_Framework_TestCase
+class IdentityUtilsTest extends TestCase
 {
     public function normalizeIdentityScenarios()
     {

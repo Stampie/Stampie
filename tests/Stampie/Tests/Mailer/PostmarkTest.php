@@ -3,7 +3,6 @@
 namespace Stampie\Tests\Mailer;
 
 use Stampie\Adapter\Response;
-use Stampie\Mailer\Postmark;
 
 class PostmarkTest extends \Stampie\Tests\BaseMailerTest
 {
@@ -152,7 +151,10 @@ class PostmarkTest extends \Stampie\Tests\BaseMailerTest
         $adapter = $this->adapter;
         $token = self::SERVER_TOKEN;
         $buildMocks = function ($attachments, &$invoke) use ($self, $adapter, $token) {
-            $mailer = $self->getMock('\\Stampie\\Mailer\\Postmark', null, [$adapter, $token]);
+            $mailer = $self->getMockBuilder('\\Stampie\\Mailer\\Postmark')
+                ->setConstructorArgs([$adapter, $token])
+                ->getMock()
+            ;
 
             // Wrap protected method with accessor
             $mirror = new \ReflectionClass($mailer);
@@ -183,23 +185,29 @@ class PostmarkTest extends \Stampie\Tests\BaseMailerTest
     }
 
     /**
-     * @dataProvider handleDataProvider
+     * @expectedException \Stampie\Exception\HttpException
+     * @expectedExceptionMessage Internal Server Error
      */
-    public function testHandle($statusCode, $content, $exceptionType, $exceptionMessage)
+    public function testHandleInternalServerError()
     {
-        $response = new Response($statusCode, $content);
-
-        $this->setExpectedException($exceptionType, $exceptionMessage);
-
-        $this->mailer->handle($response);
+        $this->mailer->handle(new Response(500, ''));
     }
 
-    public function handleDataProvider()
+    /**
+     * @expectedException \Stampie\Exception\HttpException
+     * @expectedExceptionMessage Bad Request
+     */
+    public function testHandlerBadRequest()
     {
-        return [
-            [500, '', 'Stampie\Exception\HttpException', 'Internal Server Error'],
-            [400, '', 'Stampie\Exception\HttpException', 'Bad Request'],
-            [422, '{ "Message" : "Bad Credentials" }', 'Stampie\Exception\ApiException', 'Bad Credentials'],
-        ];
+        $this->mailer->handle(new Response(400, ''));
+    }
+
+    /**
+     * @expectedException \Stampie\Exception\ApiException
+     * @expectedExceptionMessage Bad Credentials
+     */
+    public function testHandleBadCredentials()
+    {
+        $this->mailer->handle(new Response(422, '{ "Message" : "Bad Credentials" }'));
     }
 }
