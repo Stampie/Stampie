@@ -21,9 +21,11 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
         );
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testInValidServerToken()
     {
-        $this->setExpectedException('InvalidArgumentException');
         $this->mailer->setServerToken('invalid');
     }
 
@@ -47,14 +49,19 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
     }
 
     /**
-     * @dataProvider handleDataProvider
+     * @expectedException \Stampie\Exception\ApiException
      */
-    public function testHandle($statusCode, $content, $exceptionType)
+    public function testHandleBadRequest()
     {
-        $response = new Response($statusCode, $content);
-        $this->setExpectedException($exceptionType);
+        $this->mailer->handle(new Response(400, '{ "errors" : ["Error In an Array"] }'));
+    }
 
-        $this->mailer->handle($response);
+    /**
+     * @expectedException \Stampie\Exception\HttpException
+     */
+    public function testHandleInternalServerError()
+    {
+        $this->mailer->handle(new Response(500, ''));
     }
 
     public function testFormat()
@@ -209,7 +216,10 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
         $adapter = $this->adapter;
         $token = self::SERVER_TOKEN;
         $buildMocks = function ($attachments, &$invoke) use ($self, $adapter, $token) {
-            $mailer = $self->getMock('\\Stampie\\Mailer\\SendGrid', null, [$adapter, $token]);
+            $mailer = $self->getMockBuilder('\\Stampie\\Mailer\\SendGrid')
+                ->setConstructorArgs([$adapter, $token])
+                ->getMock()
+            ;
 
             // Wrap protected method with accessor
             $mirror = new \ReflectionClass($mailer);
@@ -249,14 +259,6 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
             $this->assertEquals($attachments[$i]->getPath(), $path, 'Attachments should be formatted correctly');
             $i++;
         }
-    }
-
-    public function handleDataProvider()
-    {
-        return [
-            [400, '{ "errors" : ["Error In an Array"] }', 'Stampie\Exception\ApiException'],
-            [500, '', 'Stampie\Exception\HttpException'],
-        ];
     }
 }
 

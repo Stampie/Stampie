@@ -2,7 +2,9 @@
 
 namespace Stampie\Tests;
 
-abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+abstract class BaseMailerTest extends TestCase
 {
     protected $adapter;
 
@@ -13,12 +15,12 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->adapter = $this->getMock('Http\Client\HttpClient');
+        $this->adapter = $this->getMockBuilder('Http\Client\HttpClient')->getMock();
     }
 
     protected function getResponseMock($statusCode, array $content)
     {
-        $response = $this->getMock('Stampie\Adapter\ResponseInterface');
+        $response = $this->getMockBuilder('Stampie\Adapter\ResponseInterface')->getMock();
         $response
             ->expects($this->any())
             ->method('getStatusCode')
@@ -34,7 +36,7 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
 
     protected function getMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [])
     {
-        $message = $this->getMock('Stampie\MessageInterface');
+        $message = $this->getMockBuilder('Stampie\MessageInterface')->getMock();
 
         $this->configureMessageMock($message, $from, $to, $subject, $html, $text, $headers);
 
@@ -43,7 +45,7 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
 
     protected function getTaggableMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $tags = [])
     {
-        $message = $this->getMock('Stampie\Tests\Mailer\TaggableMessage');
+        $message = $this->getMockBuilder('Stampie\Tests\Mailer\TaggableMessage')->getMock();
 
         $this->configureMessageMock($message, $from, $to, $subject, $html, $text, $headers);
 
@@ -57,7 +59,7 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
 
     protected function getMetadataAwareMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], array $metadata = [])
     {
-        $message = $this->getMock('Stampie\Tests\Mailer\MetadataAwareMessage');
+        $message = $this->getMockBuilder('Stampie\Tests\Mailer\MetadataAwareMessage')->getMock();
 
         $this->configureMessageMock($message, $from, $to, $subject, $html, $text, $headers);
 
@@ -71,7 +73,7 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
 
     protected function getCarbonCopyMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $cc = null)
     {
-        $message = $this->getMock('Stampie\MessageInterface');
+        $message = $this->getMockBuilder('Stampie\MessageInterface')->getMock();
 
         $this->configureMessageMock($message, $from, $to, $subject, $html, $text, $headers);
 
@@ -85,7 +87,7 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
 
     protected function getBlindCarbonCopyMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $bcc = null)
     {
-        $message = $this->getMock('Stampie\MessageInterface');
+        $message = $this->getMockBuilder('Stampie\MessageInterface')->getMock();
 
         $this->configureMessageMock($message, $from, $to, $subject, $html, $text, $headers);
 
@@ -99,7 +101,7 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
 
     public function getAttachmentsMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], array $attachments = [])
     {
-        $message = $this->getMock('Stampie\\Tests\\Mailer\\AttachmentMessage');
+        $message = $this->getMockBuilder('Stampie\\Tests\\Mailer\\AttachmentMessage')->getMock();
 
         $this->configureMessageMock($message, $from, $to, $subject, $html, $text, $headers);
 
@@ -113,7 +115,10 @@ abstract class BaseMailerTest extends \PHPUnit_Framework_TestCase
 
     protected function getAttachmentMock($path, $name, $type, $id = null)
     {
-        $attachment = $this->getMock('\\Stampie\\Attachment', [], [], '', false);
+        $attachment = $this->getMockBuilder('\\Stampie\\Attachment')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $attachment
             ->expects($this->any())

@@ -2,12 +2,13 @@
 
 namespace Stampie\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Stampie\Mailer\MailGun;
 
-class MailerTest extends \PHPUnit_Framework_TestCase
+class MailerTest extends TestCase
 {
     protected $httpClient;
 
@@ -33,9 +34,12 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->httpClient, $reflectionProperty->getValue($this->mailer));
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage ServerToken cannot be empty
+     */
     public function testServerTokenCannotBeEmpty()
     {
-        $this->setExpectedException('InvalidArgumentException', 'ServerToken cannot be empty');
         $this->mailer->setServerToken('');
     }
 
@@ -59,7 +63,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
                 $this->getResponseMock(true)
             ));
 
-        $this->assertTrue($this->mailer->send($this->getMock('Stampie\MessageInterface')));
+        $this->assertTrue($this->mailer->send($this->getMockBuilder('Stampie\MessageInterface')->getMock()));
     }
 
     public function testUnsuccessfulSendCallsHandle()
@@ -75,7 +79,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('handle');
 
-        $this->mailer->send($this->getMock('Stampie\MessageInterface'));
+        $this->mailer->send($this->getMockBuilder('Stampie\MessageInterface')->getMock());
     }
 
 
@@ -107,7 +111,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ))
         ;
 
-        $this->assertTrue($mailer->send($this->getMock('Stampie\MessageInterface')));
+        $this->assertTrue($mailer->send($this->getMockBuilder('Stampie\MessageInterface')->getMock()));
     }
 
     /**
@@ -117,8 +121,8 @@ class MailerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getResponseMock($isSuccessfull)
     {
-        $response = $this->getMock(ResponseInterface::class);
-        $stream = $this->getMock(StreamInterface::class);
+        $response = $this->getMockBuilder(ResponseInterface::class)->getMock();
+        $stream = $this->getMockBuilder(StreamInterface::class)->getMock();
         $stream->method('__toString')->willReturn('stream content');
 
         $response->method('getStatusCode')->willReturn($isSuccessfull ? 200 : 400);
@@ -129,7 +133,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
 
     protected function getHttpClientMock()
     {
-        return $this->getMock('Http\Client\HttpClient');
+        return $this->getMockBuilder('Http\Client\HttpClient')->getMock();
     }
 
     protected function getMailerMock(array $args = [])
