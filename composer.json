@@ -42,7 +42,7 @@
         "henrikbjorn/stampie": "self.version"
     },
     "suggest" : {
-        "stof/stampie-extra" : "Extensions for Stampie"
+        "stampie/extra" : "Extensions for Stampie"
     },
     "extra": {
         "branch-alias": {
