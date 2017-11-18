@@ -24,6 +24,11 @@
             "Stampie\\": "lib/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Stampie\\Tests\\": "tests/Stampie/Tests"
+        }
+    },
     "require" : {
         "php"                               : "^5.5 || ^7.0",
         "php-http/httplug"                  : "^1.0",
