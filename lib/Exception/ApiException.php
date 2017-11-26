@@ -2,12 +2,14 @@
 
 namespace Stampie\Exception;
 
+use Stampie\ExceptionInterface;
+
 /**
  * SubException.
  *
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  */
-class ApiException extends \RuntimeException
+class ApiException extends \RuntimeException implements ExceptionInterface
 {
     /**
      * @param string     $message
