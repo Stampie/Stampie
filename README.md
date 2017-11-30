@@ -57,7 +57,7 @@ called HTTPlug. This will give you the flexibility to choose what PSR-7 implemen
 If you just want to get started quickly you should run the following command: 
 
 ```bash
-php composer.phar require stampie/stampie php-http/curl-client php-http/message guzzlehttp/psr7
+composer require stampie/stampie php-http/curl-client php-http/message guzzlehttp/psr7
 ```
 
 ### Why requiring so many packages?
@@ -69,7 +69,6 @@ We also need **a** PSR-7 implementation and **a** message factory.
 You do not have to use the `php-http/curl-client` if you do not want to. You may use the `php-http/guzzle6-adapter` or any
 other library in [this list](https://packagist.org/providers/php-http/client-implementation). 
 Read more about the virtual packages, why this is a good idea and about the flexibility it brings at the [HTTPlug docs](http://docs.php-http.org/en/latest/httplug/users.html).
-=======
 
 ## Documentation
 
