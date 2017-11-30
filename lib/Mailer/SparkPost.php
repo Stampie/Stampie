@@ -117,14 +117,14 @@ class SparkPost extends Mailer
         $httpException = new HttpException($response->getStatusCode(), $response->getStatusText());
 
         // 4xx will contain error information in the body encoded as JSON
-        if (!in_array($response->getStatusCode(), range(400, 429), false)) {
+        if ($response->getStatusCode() < 400 || $response->getStatusCode() > 429) {
             throw $httpException;
         }
 
         throw new ApiException($response->getContent(), $httpException);
     }
 
-    protected function getAttachmentContent(Attachment $attachment)
+    private function getAttachmentContent(Attachment $attachment)
     {
         return file_get_contents($attachment->getPath());
     }

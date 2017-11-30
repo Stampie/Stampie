@@ -177,11 +177,7 @@ class SparkPostTest extends BaseMailerTest
 
     public function testFormatAttachments()
     {
-        $this->mailer = $this
-            ->getMockBuilder(__NAMESPACE__.'\\TestSparkPost')
-            ->setConstructorArgs([$this->adapter, self::SERVER_TOKEN])
-            ->setMethods(['getAttachmentContent'])
-            ->getMock();
+        $fixtureDir = __DIR__ . '/../../../Fixtures';
 
         $message = $this->getAttachmentsMessageMock(
             $from = null,
@@ -192,11 +188,11 @@ class SparkPostTest extends BaseMailerTest
             $headers = [],
             array_merge(
                 $attachments = [
-                    $this->getAttachmentMock('files/paper.txt', 'paper.txt', 'text/plain', null),
-                    $this->getAttachmentMock('files/apples.jpg', 'apples.jpg', 'image/jpeg', null),
+                    $this->getAttachmentMock($fixtureDir . '/paper.txt', 'paper.txt', 'text/plain', null),
+                    $this->getAttachmentMock($fixtureDir . '/apple.jpg', 'apple.jpg', 'image/jpeg', null),
                 ],
                 $images = [
-                    $this->getAttachmentMock('files/oranges.jpg', 'oranges.jpg', 'image/jpeg', 'oranges'),
+                    $this->getAttachmentMock($fixtureDir . '/orange.jpg', 'orange.jpg', 'image/jpeg', 'orange'),
                 ]
             )
         );
@@ -206,7 +202,7 @@ class SparkPostTest extends BaseMailerTest
                 'inline_images' => [
                     [
                         'type' => 'image/jpeg',
-                        'name' => 'oranges',
+                        'name' => 'orange',
                     ],
                 ],
                 'attachments' => [
@@ -216,7 +212,7 @@ class SparkPostTest extends BaseMailerTest
                     ],
                     [
                         'type' => 'image/jpeg',
-                        'name' => 'apples.jpg',
+                        'name' => 'apple.jpg',
                     ],
                 ],
             ],
