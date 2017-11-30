@@ -19,7 +19,7 @@ matrix:
       dist: trusty
 
 before_script:
-    - travis_retry composer install
+    - composer update
 
 script: 
   - ./vendor/bin/phpunit
