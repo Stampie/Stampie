@@ -49,7 +49,10 @@ class MailGunTest extends \Stampie\Tests\BaseMailerTest
         $adapter = $this->adapter;
         $token = self::SERVER_TOKEN;
         $buildMocks = function ($attachments, &$invoke) use ($self, $adapter, $token) {
-            $mailer = $self->getMock('\\Stampie\\Mailer\\MailGun', null, [$adapter, $token]);
+            $mailer = $self->getMockBuilder('\\Stampie\\Mailer\\MailGun')
+                ->setConstructorArgs([$adapter, $token])
+                ->getMock()
+            ;
 
             // Wrap protected method with accessor
             $mirror = new \ReflectionClass($mailer);
@@ -100,7 +103,7 @@ class MailGunTest extends \Stampie\Tests\BaseMailerTest
 
     protected function createMockAdapter()
     {
-        return $this->getMock('Http\Client\HttpClient');
+        return $this->getMockBuilder('Http\Client\HttpClient')->getMock();
     }
 }
 

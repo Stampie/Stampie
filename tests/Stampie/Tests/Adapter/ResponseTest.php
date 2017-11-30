@@ -2,9 +2,10 @@
 
 namespace Stampie\Tests\Adapter;
 
+use PHPUnit\Framework\TestCase;
 use Stampie\Adapter\Response;
 
-class ResponseTest extends \PHPUnit_Framework_TestCase
+class ResponseTest extends TestCase
 {
     public function testImmutable()
     {
