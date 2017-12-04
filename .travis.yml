@@ -13,11 +13,6 @@ cache:
   directories:
     - $HOME/.composer/cache
 
-matrix:
-  include:
-    - php: hhvm
-      dist: trusty
-
 before_script:
     - composer update
 
