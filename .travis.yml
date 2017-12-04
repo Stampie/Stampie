@@ -13,13 +13,8 @@ cache:
   directories:
     - $HOME/.composer/cache
 
-matrix:
-  include:
-    - php: hhvm
-      dist: trusty
-
 before_script:
-    - travis_retry composer install
+    - composer update
 
 script: 
   - ./vendor/bin/phpunit
