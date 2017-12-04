@@ -63,7 +63,7 @@ class MailerTest extends TestCase
                 $this->getResponseMock(true)
             ));
 
-        $this->assertTrue($this->mailer->send($this->getMockBuilder('Stampie\MessageInterface')->getMock()));
+        $this->mailer->send($this->getMockBuilder('Stampie\MessageInterface')->getMock());
     }
 
     public function testUnsuccessfulSendCallsHandle()
@@ -111,7 +111,7 @@ class MailerTest extends TestCase
             ))
         ;
 
-        $this->assertTrue($mailer->send($this->getMockBuilder('Stampie\MessageInterface')->getMock()));
+        $mailer->send($this->getMockBuilder('Stampie\MessageInterface')->getMock());
     }
 
     /**
