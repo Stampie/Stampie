@@ -109,10 +109,10 @@ abstract class Mailer implements MailerInterface
 
         // We are all clear if status is HTTP 2xx OK
         if ($response->isSuccessful()) {
-            return true;
+            return;
         }
 
-        return $this->handle($response);
+        $this->handle($response);
     }
 
     /**

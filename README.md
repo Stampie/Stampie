@@ -29,7 +29,7 @@ class Message extends \Stampie\Message
 $adapter = new Http\Adapter\Guzzle6\Client();
 $mailer = new Stampie\Mailer\SendGrid($adapter, 'username:password');
 
-// Returns Boolean true on success or throws an HttpException for error
+// Throws an HttpException for error
 // messages not recognized by SendGrid api or ApiException for known errors.
 $mailer->send(new Message('reciever@domain.tld'));
 ```

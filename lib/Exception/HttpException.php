@@ -2,13 +2,15 @@
 
 namespace Stampie\Exception;
 
+use Stampie\ExceptionInterface;
+
 /**
  * Exception thrown for all HTTP Error codes where the Api's doesn't themselves provide an error
  * message.
  *
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  */
-class HttpException extends \RuntimeException
+class HttpException extends \RuntimeException implements ExceptionInterface
 {
     /**
      * @param int        $statusCode
