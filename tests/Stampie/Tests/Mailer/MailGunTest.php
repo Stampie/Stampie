@@ -11,6 +11,11 @@ class MailGunTest extends \Stampie\Tests\BaseMailerTest
 {
     const SERVER_TOKEN = 'henrik.bjrnskov.dk:myCustomKey';
 
+    /**
+     * @var MailGun
+     */
+    private $mailer;
+
     public function setUp()
     {
         $this->adapter = $this->createMockAdapter();

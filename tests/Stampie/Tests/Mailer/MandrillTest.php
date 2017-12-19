@@ -12,6 +12,11 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
 {
     const SERVER_TOKEN = '5daa75d9-8fad-4211-9b18-49124642732e';
 
+    /**
+     * @var Mandrill
+     */
+    private $mailer;
+
     public function setUp()
     {
         parent::setUp();

@@ -11,6 +11,11 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
 {
     const SERVER_TOKEN = 'rudolph:rednose';
 
+    /**
+     * @var SendGrid
+     */
+    private $mailer;
+
     public function setUp()
     {
         parent::setUp();

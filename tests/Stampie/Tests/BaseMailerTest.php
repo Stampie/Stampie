@@ -8,11 +8,6 @@ abstract class BaseMailerTest extends TestCase
 {
     protected $adapter;
 
-    /**
-     * @var \Stampie\MailerInterface
-     */
-    protected $mailer;
-
     public function setUp()
     {
         $this->adapter = $this->getMockBuilder('Http\Client\HttpClient')->getMock();
