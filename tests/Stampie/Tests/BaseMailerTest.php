@@ -2,10 +2,15 @@
 
 namespace Stampie\Tests;
 
+use Http\Client\HttpClient;
 use PHPUnit\Framework\TestCase;
+use Stampie\MessageInterface;
 
 abstract class BaseMailerTest extends TestCase
 {
+    /**
+     * @var HttpClient|\PHPUnit_Framework_MockObject_MockObject
+     */
     protected $adapter;
 
     public function setUp()
@@ -29,6 +34,9 @@ abstract class BaseMailerTest extends TestCase
         return $response;
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|MessageInterface
+     */
     protected function getMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [])
     {
         $message = $this->getMockBuilder('Stampie\MessageInterface')->getMock();
@@ -94,6 +102,9 @@ abstract class BaseMailerTest extends TestCase
         return $message;
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|MessageInterface
+     */
     public function getAttachmentsMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], array $attachments = [])
     {
         $message = $this->getMockBuilder('Stampie\\Tests\\Mailer\\AttachmentMessage')->getMock();
@@ -118,7 +129,7 @@ abstract class BaseMailerTest extends TestCase
         $attachment
             ->expects($this->any())
             ->method('getPath')
-            ->will($this->returnValue($path));
+            ->will($this->returnValue(__DIR__.'/../../Fixtures/'.$path));
         $attachment
             ->expects($this->any())
             ->method('getName')
