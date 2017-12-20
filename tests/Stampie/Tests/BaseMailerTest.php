@@ -46,6 +46,9 @@ abstract class BaseMailerTest extends TestCase
         return $message;
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|MessageInterface
+     */
     protected function getTaggableMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $tags = [])
     {
         $message = $this->getMockBuilder('Stampie\Tests\Mailer\TaggableMessage')->getMock();
