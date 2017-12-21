@@ -2,38 +2,11 @@
 
 namespace Stampie\Tests;
 
-use Http\Client\HttpClient;
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 use Stampie\MessageInterface;
 
-abstract class BaseMailerTest extends TestCase
+class TestCase extends BaseTestCase
 {
-    /**
-     * @var HttpClient|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $adapter;
-
-    public function setUp()
-    {
-        $this->adapter = $this->getMockBuilder('Http\Client\HttpClient')->getMock();
-    }
-
-    protected function getResponseMock($statusCode, array $content)
-    {
-        $response = $this->getMockBuilder('Stampie\Adapter\ResponseInterface')->getMock();
-        $response
-            ->expects($this->any())
-            ->method('getStatusCode')
-            ->will($this->returnValue($statusCode));
-
-        $response
-            ->expects($this->any())
-            ->method('getContent')
-            ->will($this->returnValue(json_encode($content)));
-
-        return $response;
-    }
-
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|MessageInterface
      */

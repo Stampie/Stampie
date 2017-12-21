@@ -6,12 +6,12 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Http\Client\HttpClient;
 use Stampie\Mailer\MailGun;
-use Stampie\Tests\BaseMailerTest;
+use Stampie\Tests\TestCase;
 
 /**
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  */
-class MailGunTest extends BaseMailerTest
+class MailGunTest extends TestCase
 {
     const SERVER_TOKEN = 'henrik.bjrnskov.dk:myCustomKey';
 

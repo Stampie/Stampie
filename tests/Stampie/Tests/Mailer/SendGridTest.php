@@ -2,12 +2,14 @@
 
 namespace Stampie\Tests\Mailer;
 
+use Http\Client\HttpClient;
 use Stampie\Adapter\Response;
 use Stampie\Adapter\ResponseInterface;
 use Stampie\Mailer\SendGrid;
 use Stampie\MessageInterface;
+use Stampie\Tests\TestCase;
 
-class SendGridTest extends \Stampie\Tests\BaseMailerTest
+class SendGridTest extends TestCase
 {
     const SERVER_TOKEN = 'rudolph:rednose';
 
@@ -16,12 +18,16 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
      */
     private $mailer;
 
+    /**
+     * @var HttpClient|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $httpClient;
+
     public function setUp()
     {
-        parent::setUp();
-
+        $this->httpClient = $this->getMockBuilder(HttpClient::class)->getMock();
         $this->mailer = new TestSendGrid(
-            $this->adapter,
+            $this->httpClient,
             self::SERVER_TOKEN
         );
     }
@@ -218,7 +224,7 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
     public function testGetFiles()
     {
         $self = $this; // PHP5.3 compatibility
-        $adapter = $this->adapter;
+        $adapter = $this->httpClient;
         $token = self::SERVER_TOKEN;
         $buildMocks = function ($attachments, &$invoke) use ($self, $adapter, $token) {
             $mailer = $self->getMockBuilder('\\Stampie\\Mailer\\SendGrid')

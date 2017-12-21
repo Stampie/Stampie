@@ -2,9 +2,9 @@
 
 namespace Stampie\Tests\GitHub;
 
-use PHPUnit\Framework\TestCase;
-use Stampie\Adapter\Response;
-use Stampie\Tests\Mailer\TestPostmark;
+use GuzzleHttp\Psr7\Response;
+use Stampie\Mailer\Postmark;
+use Stampie\Tests\TestCase;
 
 /**
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
@@ -17,9 +17,13 @@ class Issue4Test extends TestCase
      */
     public function testMissingErrorMessageInResponse()
     {
-        $response = new Response(422, '{}');
-        $mailer = new TestPostmark($this->getMockBuilder('Http\Client\HttpClient')->getMock(), 'ServerToken');
+        $httpClient = $this->getMockBuilder('Http\Client\HttpClient')->getMock();
+        $httpClient->method('sendRequest')->willReturn(new Response(422, [], '{}'));
 
-        $mailer->handle($response);
+        $mailer = new Postmark($httpClient, 'ServerToken');
+
+        $message = $this->getMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome');
+
+        $mailer->send($message);
     }
 }

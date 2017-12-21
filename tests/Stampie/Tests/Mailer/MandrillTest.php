@@ -2,13 +2,15 @@
 
 namespace Stampie\Tests\Mailer;
 
+use Http\Client\HttpClient;
 use Stampie\Adapter\Response;
 use Stampie\Adapter\ResponseInterface;
 use Stampie\Identity;
 use Stampie\Mailer\Mandrill;
 use Stampie\MessageInterface;
+use Stampie\Tests\TestCase;
 
-class MandrillTest extends \Stampie\Tests\BaseMailerTest
+class MandrillTest extends TestCase
 {
     const SERVER_TOKEN = '5daa75d9-8fad-4211-9b18-49124642732e';
 
@@ -17,12 +19,16 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
      */
     private $mailer;
 
+    /**
+     * @var HttpClient|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $httpClient;
+
     public function setUp()
     {
-        parent::setUp();
-
+        $this->httpClient = $this->getMockBuilder(HttpClient::class)->getMock();
         $this->mailer = new TestMandrill(
-            $this->adapter,
+            $this->httpClient,
             self::SERVER_TOKEN
         );
     }
@@ -115,7 +121,7 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
     {
         $this->mailer = $this
                             ->getMockBuilder(__NAMESPACE__.'\\TestMandrill')
-                            ->setConstructorArgs([$this->adapter, self::SERVER_TOKEN])
+                            ->setConstructorArgs([$this->httpClient, self::SERVER_TOKEN])
                             ->setMethods(['getAttachmentContent'])
                             ->getMock();
 
@@ -182,7 +188,7 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
     public function testGetFiles()
     {
         $self = $this; // PHP5.3 compatibility
-        $adapter = $this->adapter;
+        $adapter = $this->httpClient;
         $token = self::SERVER_TOKEN;
         $buildMocks = function ($attachments, &$invoke) use ($self, $adapter, $token) {
             $mailer = $self->getMockBuilder('\\Stampie\\Mailer\\Mandrill')

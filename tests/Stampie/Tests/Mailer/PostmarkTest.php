@@ -6,9 +6,9 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Http\Client\HttpClient;
 use Stampie\Mailer\Postmark;
-use Stampie\Tests\BaseMailerTest;
+use Stampie\Tests\TestCase;
 
-class PostmarkTest extends BaseMailerTest
+class PostmarkTest extends TestCase
 {
     const SERVER_TOKEN = '5daa75d9-8fad-4211-9b18-49124642732e';
 
