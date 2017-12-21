@@ -2,9 +2,6 @@
 
 namespace Stampie\Tests;
 
-use PHPUnit\Framework\TestCase;
-use Stampie\Attachment;
-
 /**
  * @coversDefaultClass \Stampie\Attachment
  */
@@ -18,7 +15,10 @@ class AttachmentTest extends TestCase
     {
         $file = 'filenotfound.txt';
 
-        $attachment = $this->getAttachmentMock(['isValidFile']);
+        $attachment = $this->getMockBuilder('\\Stampie\\Attachment')
+            ->setMethods(['isValidFile'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $attachment
             ->expects($this->once())
             ->method('isValidFile')
@@ -36,7 +36,10 @@ class AttachmentTest extends TestCase
     {
         $file = 'unknownfiletype.txt';
 
-        $attachment = $this->getAttachmentMock(['isValidFile', 'determineFileType']);
+        $attachment = $this->getMockBuilder('\\Stampie\\Attachment')
+            ->setMethods(['isValidFile', 'determineFileType'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $attachment
             ->expects($this->once())
             ->method('isValidFile')
@@ -60,7 +63,10 @@ class AttachmentTest extends TestCase
         $file = 'unknownfiletype.txt';
         $type = 'text/plain';
 
-        $attachment = $this->getAttachmentMock(['isValidFile', 'determineFileType']);
+        $attachment = $this->getMockBuilder('\\Stampie\\Attachment')
+            ->setMethods(['isValidFile', 'determineFileType'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $attachment
             ->expects($this->once())
             ->method('isValidFile')
@@ -92,7 +98,10 @@ class AttachmentTest extends TestCase
         $type = 'image/jpeg';
         $id = md5(time());
 
-        $attachment = $this->getAttachmentMock(['isValidFile']);
+        $attachment = $this->getMockBuilder('\\Stampie\\Attachment')
+            ->setMethods(['isValidFile'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $attachment
             ->expects($this->once())
             ->method('isValidFile')
@@ -105,17 +114,5 @@ class AttachmentTest extends TestCase
         $this->assertEquals($name, $attachment->getName(), 'The name should be stored correctly');
         $this->assertEquals($type, $attachment->getType(), 'The type should be stored correctly');
         $this->assertEquals($id, $attachment->getId(), 'The ID should be stored correctly');
-    }
-
-    /**
-     * @param array|null $mockMethods
-     *                                a@return \PHPUnit_Framework_MockObject_MockObject|Attachment
-     */
-    protected function getAttachmentMock(array $mockMethods = null)
-    {
-        return $this->getMockBuilder('\\Stampie\\Attachment')
-                    ->setMethods($mockMethods)
-                    ->disableOriginalConstructor()
-                    ->getMock();
     }
 }
