@@ -36,6 +36,9 @@ class TestCase extends BaseTestCase
         return $message;
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|MessageInterface
+     */
     protected function getMetadataAwareMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], array $metadata = [])
     {
         $message = $this->getMockBuilder('Stampie\Tests\Mailer\MetadataAwareMessage')->getMock();
