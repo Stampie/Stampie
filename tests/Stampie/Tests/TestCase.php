@@ -53,6 +53,9 @@ class TestCase extends BaseTestCase
         return $message;
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|MessageInterface
+     */
     protected function getCarbonCopyMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $cc = null)
     {
         $message = $this->getMockBuilder('Stampie\MessageInterface')->getMock();
@@ -67,6 +70,9 @@ class TestCase extends BaseTestCase
         return $message;
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|MessageInterface
+     */
     protected function getBlindCarbonCopyMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $bcc = null)
     {
         $message = $this->getMockBuilder('Stampie\MessageInterface')->getMock();
