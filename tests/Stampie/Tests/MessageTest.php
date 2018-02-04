@@ -2,8 +2,6 @@
 
 namespace Stampie\Tests;
 
-use PHPUnit\Framework\TestCase;
-
 class MessageTest extends TestCase
 {
     /**
@@ -11,7 +9,7 @@ class MessageTest extends TestCase
      */
     public function testTextWithHtmlFails()
     {
-        $message = $this->getMessageMock(['hb@peytz.dk']);
+        $message = $this->getMockForAbstractClass('Stampie\Message', ['hb@peytz.dk']);
         $message->setText('<b>something</b>');
     }
 
@@ -20,12 +18,12 @@ class MessageTest extends TestCase
      */
     public function testInvaildEmailFails()
     {
-        $message = $this->getMessageMock(['invalid email']);
+        $this->getMockForAbstractClass('Stampie\Message', ['invalid email']);
     }
 
     public function testDefaults()
     {
-        $message = $this->getMessageMock(['hb@peytz.dk']);
+        $message = $this->getMockForAbstractClass('Stampie\Message', ['hb@peytz.dk']);
         $message
             ->expects($this->once())
             ->method('getFrom')
@@ -42,10 +40,5 @@ class MessageTest extends TestCase
         $this->assertEquals([], $message->getHeaders());
         $this->assertEquals(null, $message->getCc());
         $this->assertEquals(null, $message->getBcc());
-    }
-
-    protected function getMessageMock(array $arguments = [])
-    {
-        return $this->getMockForAbstractClass('Stampie\Message', $arguments);
     }
 }

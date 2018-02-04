@@ -2,23 +2,30 @@
 
 namespace Stampie\Tests\Mailer;
 
-use Stampie\Adapter\Response;
-use Stampie\Adapter\ResponseInterface;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use Http\Client\HttpClient;
 use Stampie\Mailer\SendGrid;
-use Stampie\MessageInterface;
+use Stampie\Tests\TestCase;
 
-class SendGridTest extends \Stampie\Tests\BaseMailerTest
+class SendGridTest extends TestCase
 {
     const SERVER_TOKEN = 'rudolph:rednose';
 
+    /**
+     * @var SendGrid
+     */
+    private $mailer;
+
+    /**
+     * @var HttpClient|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $httpClient;
+
     public function setUp()
     {
-        parent::setUp();
-
-        $this->mailer = new TestSendGrid(
-            $this->adapter,
-            self::SERVER_TOKEN
-        );
+        $this->httpClient = $this->getMockBuilder(HttpClient::class)->getMock();
+        $this->mailer = new SendGrid($this->httpClient, self::SERVER_TOKEN);
     }
 
     /**
@@ -29,23 +36,165 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
         $this->mailer->setServerToken('invalid');
     }
 
-    public function testPasswordContainingTokenSeparator()
+    public function testSend()
+    {
+        $message = $this->getMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome!', 'Trying out Stampie', null, [
+            'X-Custom-Header' => 'My Custom Header Value',
+        ]);
+
+        $this->httpClient
+            ->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (Request $request) {
+                return
+                    $request->getMethod() === 'POST'
+                    && (string) $request->getUri() === 'https://sendgrid.com/api/mail.send.json'
+                    && $request->getHeaderLine('Content-Type') === 'application/x-www-form-urlencoded'
+                    && (string) $request->getBody() === http_build_query([
+                        'api_user' => 'rudolph',
+                        'api_key' => 'rednose',
+                        'to' => [
+                            'alice@example.com',
+                        ],
+                        'from' => 'bob@example.com',
+                        'subject' => 'Stampie is awesome!',
+                        'html' => 'Trying out Stampie',
+                        'headers' => json_encode([
+                            'X-Custom-Header' => 'My Custom Header Value',
+                        ]),
+                    ])
+                ;
+            }))
+            ->willReturn(new Response())
+        ;
+
+        $this->mailer->send($message);
+    }
+
+    public function testSendWithApiKeyContainingAColon()
     {
         $this->mailer->setServerToken('rudolph:rednose:reindeer');
 
-        $message = $this->getMessageMock(
-            $from = 'john@example.com',
-            $to = 'jane@example.com',
-            $subject = 'Testing password that contains :',
-            $html = 'Stampie is Awesome'
-        );
+        $message = $this->getMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome!');
 
-        $this->assertContains('api_key=rednose:reindeer', urldecode($this->mailer->format($message)));
+        $this->httpClient
+            ->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (Request $request) {
+                return (string) $request->getBody() === http_build_query([
+                    'api_user' => 'rudolph',
+                    'api_key' => 'rednose:reindeer',
+                    'to' => [
+                        'alice@example.com',
+                    ],
+                    'from' => 'bob@example.com',
+                    'subject' => 'Stampie is awesome!',
+                ]);
+            }))
+            ->willReturn(new Response())
+        ;
+
+        $this->mailer->send($message);
     }
 
-    public function testEndpoint()
+    public function testSendWithAttachments()
     {
-        $this->assertEquals('https://sendgrid.com/api/mail.send.json', $this->mailer->getEndpoint());
+        $message = $this->getAttachmentsMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome!', null, null, [], [
+            $this->getAttachmentMock('path-1.txt', 'path1.txt', 'text/plain', null),
+            $this->getAttachmentMock('path-2.txt', 'path2.txt', 'text/plain', 'id1'),
+            $this->getAttachmentMock('path-3.txt', 'path3.txt', 'text/plain', null),
+        ]);
+
+        $this->httpClient
+            ->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (Request $request) {
+                $body = (string) $request->getBody();
+                return
+                    preg_match('#^multipart/form-data; boundary="[^"]+"$#', $request->getHeaderLine('Content-Type'))
+                    && false !== strpos($body, 'Attachment #1')
+                    && false !== strpos($body, 'Attachment #2')
+                    && false !== strpos($body, 'Attachment #3')
+                ;
+            }))
+            ->willReturn(new Response())
+        ;
+
+        $this->mailer->send($message);
+    }
+
+    public function testSendTaggable()
+    {
+        $message = $this->getTaggableMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome!', null, null, [], ['tag']);
+
+        $this->httpClient
+            ->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (Request $request) {
+                return (string) $request->getBody() === http_build_query([
+                    'api_user' => 'rudolph',
+                    'api_key' => 'rednose',
+                    'to' => [
+                        'alice@example.com',
+                    ],
+                    'from' => 'bob@example.com',
+                    'subject' => 'Stampie is awesome!',
+                    'x-smtpapi' => json_encode(['category' => ['tag']])
+                ]);
+            }))
+            ->willReturn(new Response())
+        ;
+
+        $this->mailer->send($message);
+    }
+
+    public function testSendMetadataAware()
+    {
+        $message = $this->getMetadataAwareMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome!', null, null, [], ['client_name' => 'Stampie']);
+
+        $this->httpClient
+            ->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (Request $request) {
+                return (string) $request->getBody() === http_build_query([
+                        'api_user' => 'rudolph',
+                        'api_key' => 'rednose',
+                        'to' => [
+                            'alice@example.com',
+                        ],
+                        'from' => 'bob@example.com',
+                        'subject' => 'Stampie is awesome!',
+                        'x-smtpapi' => json_encode(['unique_args' => ['client_name' => 'Stampie']])
+                    ]);
+            }))
+            ->willReturn(new Response())
+        ;
+
+        $this->mailer->send($message);
+    }
+
+    public function testSendEmptyMetadata()
+    {
+        $message = $this->getMetadataAwareMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome!');
+
+        $this->httpClient
+            ->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (Request $request) {
+                return (string) $request->getBody() === http_build_query([
+                        'api_user' => 'rudolph',
+                        'api_key' => 'rednose',
+                        'to' => [
+                            'alice@example.com',
+                        ],
+                        'from' => 'bob@example.com',
+                        'subject' => 'Stampie is awesome!',
+                    ]);
+            }))
+            ->willReturn(new Response())
+        ;
+
+        $this->mailer->send($message);
     }
 
     /**
@@ -53,7 +202,16 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
      */
     public function testHandleBadRequest()
     {
-        $this->mailer->handle(new Response(400, '{ "errors" : ["Error In an Array"] }'));
+        $message = $this->getMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome!');
+
+        $response = new Response(400, [], '{ "errors" : ["Error In an Array"] }');
+
+        $this->httpClient
+            ->method('sendRequest')
+            ->willReturn($response)
+        ;
+
+        $this->mailer->send($message);
     }
 
     /**
@@ -61,221 +219,15 @@ class SendGridTest extends \Stampie\Tests\BaseMailerTest
      */
     public function testHandleInternalServerError()
     {
-        $this->mailer->handle(new Response(500, ''));
-    }
+        $message = $this->getMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome!');
 
-    public function testFormat()
-    {
-        $api_user = 'rudolph';
-        $api_key = 'rednose';
+        $response = new Response(500);
 
-        $message = $this->getMessageMock(
-            $from = 'henrik@bjrnskov.dk',
-            $to = 'hb@peytz.dk',
-            $subject = 'Trying out Stampie',
-            $html = 'Stampie is Awesome',
-            $text = '',
-            $headers = [
-                'X-Custom-Header' => 'My Custom Header Value',
-            ]
-        );
+        $this->httpClient
+            ->method('sendRequest')
+            ->willReturn($response)
+        ;
 
-        $headers = json_encode($headers);
-        $to = [$to];
-
-        $query = compact(
-            'api_user', 'api_key', 'to', 'from', 'subject', 'html', 'headers'
-        );
-
-        $this->assertEquals(http_build_query(
-            $query
-        ), $this->mailer->format($message));
-    }
-
-    public function testFormatTaggable()
-    {
-        $api_user = 'rudolph';
-        $api_key = 'rednose';
-
-        $message = $this->getTaggableMessageMock(
-            $from = 'henrik@bjrnskov.dk',
-            $to = 'hb@peytz.dk',
-            $subject = 'Trying out Stampie',
-            $html = 'Stampie is Awesome',
-            $text = '',
-            $headers = [
-                'X-Custom-Header' => 'My Custom Header Value',
-            ],
-            $tag = 'tag'
-        );
-
-        $headers = json_encode($headers);
-        $to = [$to];
-
-        $query = compact(
-            'api_user', 'api_key', 'to', 'from', 'subject', 'html', 'headers'
-        );
-        $query['x-smtpapi'] = json_encode(['category' => [$tag]]);
-
-        $this->assertEquals(http_build_query(
-            $query
-        ), $this->mailer->format($message));
-    }
-
-    public function testFormatMetadataAware()
-    {
-        $api_user = 'rudolph';
-        $api_key = 'rednose';
-
-        $message = $this->getMetadataAwareMessageMock(
-            $from = 'henrik@bjrnskov.dk',
-            $to = 'hb@peytz.dk',
-            $subject = 'Trying out Stampie',
-            $html = 'Stampie is Awesome',
-            $text = '',
-            $headers = [
-                'X-Custom-Header' => 'My Custom Header Value',
-            ],
-            $metadata = ['client_name' => 'Stampie']
-        );
-
-        $headers = json_encode($headers);
-        $to = [$to];
-
-        $query = compact(
-            'api_user', 'api_key', 'to', 'from', 'subject', 'html', 'headers'
-        );
-        $query['x-smtpapi'] = json_encode(['unique_args' => $metadata]);
-
-        $this->assertEquals(http_build_query(
-            $query
-        ), $this->mailer->format($message));
-    }
-
-    public function testFormatEmptyMetadata()
-    {
-        $message = $this->getMetadataAwareMessageMock(
-            $from = 'henrik@bjrnskov.dk',
-            $to = 'hb@peytz.dk',
-            $subject = 'Trying out Stampie',
-            $html = 'Stampie is Awesome',
-            $text = '',
-            $headers = [],
-            $metadata = []
-        );
-
-        $this->assertNotContains('x-smtpapi', $this->mailer->format($message));
-    }
-
-    public function testFormatAttachments()
-    {
-        $api_user = 'rudolph';
-        $api_key = 'rednose';
-
-        $message = $this->getAttachmentsMessageMock(
-            $from = 'henrik@bjrnskov.dk',
-            $to = 'hb@peytz.dk',
-            $subject = 'Trying out Stampie',
-            $html = 'Stampie is Awesome',
-            $text = '',
-            $headers = [
-                'X-Custom-Header' => 'My Custom Header Value',
-            ],
-            array_merge(
-                $attachments = [
-                    $this->getAttachmentMock('files/image-1.jpg', 'file1.jpg', 'image/jpeg', null),
-                    $this->getAttachmentMock('files/image-2.jpg', 'file2.jpg', 'image/jpeg', null),
-                ],
-                $inline = [
-                    $this->getAttachmentMock('files/image-3.jpg', 'file3.jpg', 'image/jpeg', 'contentid1'),
-                ]
-            )
-        );
-
-        $headers = json_encode($headers);
-        $to = [$to];
-
-        $processedInline = [];
-        foreach ($inline as $attachment) {
-            $processedInline[$attachment->getId()] = $attachment->getName();
-        }
-        $content = $processedInline;
-
-        $query = compact(
-            'api_user', 'api_key', 'to', 'from', 'subject', 'html', 'content', 'headers'
-        );
-
-        $this->assertEquals(http_build_query(
-            $query
-        ), $this->mailer->format($message));
-    }
-
-    public function testGetFiles()
-    {
-        $self = $this; // PHP5.3 compatibility
-        $adapter = $this->adapter;
-        $token = self::SERVER_TOKEN;
-        $buildMocks = function ($attachments, &$invoke) use ($self, $adapter, $token) {
-            $mailer = $self->getMockBuilder('\\Stampie\\Mailer\\SendGrid')
-                ->setConstructorArgs([$adapter, $token])
-                ->getMock()
-            ;
-
-            // Wrap protected method with accessor
-            $mirror = new \ReflectionClass($mailer);
-            $method = $mirror->getMethod('getFiles');
-            $method->setAccessible(true);
-
-            $invoke = function () use ($mailer, $method) {
-                $args = func_get_args();
-                array_unshift($args, $mailer);
-
-                return call_user_func_array([$method, 'invoke'], $args);
-            };
-
-            $message = $self->getAttachmentsMessageMock('test@example.com', 'other@example.com', 'Subject', null, null, [], $attachments);
-
-            return [$mailer, $message];
-        };
-
-        // Actual tests
-
-        $attachments = [
-            $this->getAttachmentMock('path-1.txt', 'path1.txt', 'text/plain', null),
-            $this->getAttachmentMock('path-2.txt', 'path2.txt', 'text/plain', 'id1'),
-            $this->getAttachmentMock('path-3.txt', 'path3.txt', 'text/plain', null),
-            $this->getAttachmentMock('path-4.txt', 'path4.txt', 'text/plain', 'id2'),
-            $this->getAttachmentMock('path-5.txt', 'path5.txt', 'text/plain', null),
-        ];
-
-        list($mailer, $message) = $buildMocks($attachments, $invoke);
-        $result = $invoke($message);
-
-        $this->assertEquals(count($attachments), count($result['files']), 'All attachments should be returned');
-
-        $i = 0;
-        foreach ($result['files'] as $name => $path) {
-            $this->assertEquals($attachments[$i]->getName(), $name, 'Attachments should be formatted correctly');
-            $this->assertEquals($attachments[$i]->getPath(), $path, 'Attachments should be formatted correctly');
-            $i++;
-        }
-    }
-}
-
-class TestSendGrid extends SendGrid
-{
-    public function getEndpoint()
-    {
-        return parent::getEndpoint();
-    }
-
-    public function handle(ResponseInterface $response)
-    {
-        parent::handle($response);
-    }
-
-    public function format(MessageInterface $message)
-    {
-        return parent::format($message);
+        $this->mailer->send($message);
     }
 }

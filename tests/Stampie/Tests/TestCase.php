@@ -2,38 +2,14 @@
 
 namespace Stampie\Tests;
 
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase as BaseTestCase;
+use Stampie\MessageInterface;
 
-abstract class BaseMailerTest extends TestCase
+class TestCase extends BaseTestCase
 {
-    protected $adapter;
-
     /**
-     * @var \Stampie\MailerInterface
+     * @return \PHPUnit_Framework_MockObject_MockObject|MessageInterface
      */
-    protected $mailer;
-
-    public function setUp()
-    {
-        $this->adapter = $this->getMockBuilder('Http\Client\HttpClient')->getMock();
-    }
-
-    protected function getResponseMock($statusCode, array $content)
-    {
-        $response = $this->getMockBuilder('Stampie\Adapter\ResponseInterface')->getMock();
-        $response
-            ->expects($this->any())
-            ->method('getStatusCode')
-            ->will($this->returnValue($statusCode));
-
-        $response
-            ->expects($this->any())
-            ->method('getContent')
-            ->will($this->returnValue(json_encode($content)));
-
-        return $response;
-    }
-
     protected function getMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [])
     {
         $message = $this->getMockBuilder('Stampie\MessageInterface')->getMock();
@@ -43,6 +19,9 @@ abstract class BaseMailerTest extends TestCase
         return $message;
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|MessageInterface
+     */
     protected function getTaggableMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $tags = [])
     {
         $message = $this->getMockBuilder('Stampie\Tests\Mailer\TaggableMessage')->getMock();
@@ -57,6 +36,9 @@ abstract class BaseMailerTest extends TestCase
         return $message;
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|MessageInterface
+     */
     protected function getMetadataAwareMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], array $metadata = [])
     {
         $message = $this->getMockBuilder('Stampie\Tests\Mailer\MetadataAwareMessage')->getMock();
@@ -71,6 +53,9 @@ abstract class BaseMailerTest extends TestCase
         return $message;
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|MessageInterface
+     */
     protected function getCarbonCopyMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $cc = null)
     {
         $message = $this->getMockBuilder('Stampie\MessageInterface')->getMock();
@@ -85,6 +70,9 @@ abstract class BaseMailerTest extends TestCase
         return $message;
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|MessageInterface
+     */
     protected function getBlindCarbonCopyMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $bcc = null)
     {
         $message = $this->getMockBuilder('Stampie\MessageInterface')->getMock();
@@ -99,6 +87,9 @@ abstract class BaseMailerTest extends TestCase
         return $message;
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|MessageInterface
+     */
     public function getAttachmentsMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], array $attachments = [])
     {
         $message = $this->getMockBuilder('Stampie\\Tests\\Mailer\\AttachmentMessage')->getMock();
@@ -123,7 +114,7 @@ abstract class BaseMailerTest extends TestCase
         $attachment
             ->expects($this->any())
             ->method('getPath')
-            ->will($this->returnValue($path));
+            ->will($this->returnValue(__DIR__.'/../../Fixtures/'.$path));
         $attachment
             ->expects($this->any())
             ->method('getName')

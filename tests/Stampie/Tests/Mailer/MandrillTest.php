@@ -2,300 +2,311 @@
 
 namespace Stampie\Tests\Mailer;
 
-use Stampie\Adapter\Response;
-use Stampie\Adapter\ResponseInterface;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use Http\Client\HttpClient;
 use Stampie\Identity;
 use Stampie\Mailer\Mandrill;
-use Stampie\MessageInterface;
+use Stampie\Tests\TestCase;
 
-class MandrillTest extends \Stampie\Tests\BaseMailerTest
+class MandrillTest extends TestCase
 {
     const SERVER_TOKEN = '5daa75d9-8fad-4211-9b18-49124642732e';
 
+    /**
+     * @var Mandrill
+     */
+    private $mailer;
+
+    /**
+     * @var HttpClient|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $httpClient;
+
     public function setUp()
     {
-        parent::setUp();
-
-        $this->mailer = new TestMandrill(
-            $this->adapter,
-            self::SERVER_TOKEN
-        );
+        $this->httpClient = $this->getMockBuilder(HttpClient::class)->getMock();
+        $this->mailer = new Mandrill($this->httpClient, self::SERVER_TOKEN );
     }
 
-    public function testEndpoint()
+    public function testSend()
     {
-        $this->assertEquals('https://mandrillapp.com/api/1.0/messages/send.json', $this->mailer->getEndpoint());
+        $message = $this->getMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome!', 'Trying out Stampie', null, [
+            'X-Custom-Header' => 'My Custom Header Value',
+        ]);
+
+        $this->httpClient
+            ->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (Request $request) {
+                $body = json_decode((string) $request->getBody(), true);
+                return
+                    $request->getMethod() === 'POST'
+                    && (string) $request->getUri() === 'https://mandrillapp.com/api/1.0/messages/send.json'
+                    && $request->getHeaderLine('Content-Type') === 'application/json'
+                    && $body == [
+                        'key' => self::SERVER_TOKEN,
+                        'message' => [
+                            'from_email' => 'bob@example.com',
+                            'to' => [
+                                [
+                                    'email' => 'alice@example.com',
+                                    'name' => null,
+                                    'type' => 'to'
+                                ]
+                            ],
+                            'subject' => 'Stampie is awesome!',
+                            'html' => 'Trying out Stampie',
+                            'headers' => [
+                                'X-Custom-Header' => 'My Custom Header Value',
+                            ],
+                        ],
+                    ]
+                ;
+            }))
+            ->willReturn(new Response())
+        ;
+
+        $this->mailer->send($message);
     }
 
-    public function testHeaders()
+    public function testSendTaggable()
     {
-        $this->assertEquals([
-            'Content-Type' => 'application/json',
-        ], $this->mailer->getHeaders());
+        $message = $this->getTaggableMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome', null, null, [],['tag']);
+
+        $this->httpClient
+            ->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (Request $request) {
+                $body = json_decode((string) $request->getBody(), true);
+
+                return $body == [
+                    'key' => self::SERVER_TOKEN,
+                    'message' => [
+                        'from_email' => 'bob@example.com',
+                        'to' => [
+                            [
+                                'email' => 'alice@example.com',
+                                'name' => null,
+                                'type' => 'to',
+                            ],
+                        ],
+                        'subject' => 'Stampie is awesome',
+                        'tags' => [
+                            'tag',
+                        ],
+                    ],
+                ];
+            }))
+            ->willReturn(new Response())
+        ;
+
+        $this->mailer->send($message);
     }
 
-    public function testFormat()
+    public function testSendMetadataAware()
     {
-        $message = $this->getMessageMock(
-            $from = 'hb@peytz.dk',
-            $to = 'henrik@bjrnskov.dk',
-            $subject = 'Stampie is awesome',
-            $html = 'So what do you thing'
-        );
+        $message = $this->getMetadataAwareMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome', null, null, [],[
+            'client_name' => 'Stampie',
+        ]);
 
-        $this->assertEquals(json_encode([
-            'key'     => self::SERVER_TOKEN,
-            'message' => [
-                'from_email' => $from,
-                'to'         => [['email' => $to, 'name' => null, 'type' => 'to']],
-                'subject'    => $subject,
-                'html'       => $html,
-            ],
-        ]), $this->mailer->format($message));
+        $this->httpClient
+            ->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (Request $request) {
+                $body = json_decode((string) $request->getBody(), true);
+
+                return $body == [
+                    'key' => self::SERVER_TOKEN,
+                    'message' => [
+                        'from_email' => 'bob@example.com',
+                        'to' => [
+                            [
+                                'email' => 'alice@example.com',
+                                'name' => null,
+                                'type' => 'to',
+                            ],
+                        ],
+                        'subject' => 'Stampie is awesome',
+                        'metadata' => [
+                            'client_name' => 'Stampie',
+                        ],
+                    ],
+                ];
+            }))
+            ->willReturn(new Response())
+        ;
+
+        $this->mailer->send($message);
     }
 
-    public function testFormatTaggable()
+    public function testSendWithAttachments()
     {
-        $message = $this->getTaggableMessageMock(
-            $from = 'hb@peytz.dk',
-            $to = 'henrik@bjrnskov.dk',
-            $subject = 'Stampie is awesome',
-            $html = 'So what do you thing',
-            $text = 'text',
-            $headers = ['X-Stampie-To' => 'henrik+to@bjrnskov.dk'],
-            $tag = 'tag'
-        );
-
-        $this->assertEquals(json_encode([
-            'key'     => self::SERVER_TOKEN,
-            'message' => [
-                'from_email' => $from,
-                'to'         => [['email' => $to, 'name' => null, 'type' => 'to']],
-                'subject'    => $subject,
-                'headers'    => $headers,
-                'text'       => $text,
-                'html'       => $html,
-                'tags'       => [$tag],
-            ],
-        ]), $this->mailer->format($message));
-    }
-
-    public function testFormatMetadataAware()
-    {
-        $message = $this->getMetadataAwareMessageMock(
-            $from = 'hb@peytz.dk',
-            $to = 'henrik@bjrnskov.dk',
-            $subject = 'Stampie is awesome',
-            $html = 'So what do you thing',
-            $text = 'text',
-            $headers = ['X-Stampie-To' => 'henrik+to@bjrnskov.dk'],
-            $metadata = ['client_name' => 'Stampie']
-        );
-
-        $this->assertEquals(json_encode([
-            'key'     => self::SERVER_TOKEN,
-            'message' => [
-                'from_email' => $from,
-                'to'         => [['email' => $to, 'name' => null, 'type' => 'to']],
-                'subject'    => $subject,
-                'headers'    => $headers,
-                'text'       => $text,
-                'html'       => $html,
-                'metadata'   => $metadata,
-            ],
-        ]), $this->mailer->format($message));
-    }
-
-    public function testFormatAttachments()
-    {
-        $this->mailer = $this
-                            ->getMockBuilder(__NAMESPACE__.'\\TestMandrill')
-                            ->setConstructorArgs([$this->adapter, self::SERVER_TOKEN])
-                            ->setMethods(['getAttachmentContent'])
-                            ->getMock();
-
-        $contentCallback = function ($attachment) {
-            return 'content:'.$attachment->getPath();
-        };
-
-        $this->mailer
-            ->expects($this->atLeastOnce())
-            ->method('getAttachmentContent')
-            ->will($this->returnCallback($contentCallback));
-
-        $message = $this->getAttachmentsMessageMock(
-            $from = 'hb@peytz.dk',
-            $to = 'henrik@bjrnskov.dk',
-            $subject = 'Stampie is awesome',
-            $html = 'So what do you thing',
-            $text = 'text',
-            $headers = ['X-Stampie-To' => 'henrik+to@bjrnskov.dk'],
-            array_merge(
-                $attachments = [
-                    $this->getAttachmentMock('files/image-1.jpg', 'file1.jpg', 'image/jpeg', null),
-                    $this->getAttachmentMock('files/image-2.jpg', 'file2.jpg', 'image/jpeg', null),
-                ],
-                $images = [
-                    $this->getAttachmentMock('files/image-3.jpg', 'file3.jpg', 'image/jpeg', 'contentid1'),
-                ]
-            )
-        );
-
-        $processedAttachments = [];
-        foreach ($attachments as $attachment) {
-            $processedAttachments[] = [
-                'type'    => $attachment->getType(),
-                'name'    => $attachment->getName(),
-                'content' => base64_encode($contentCallback($attachment)),
-            ];
-        }
-
-        $processedImages = [];
-        foreach ($images as $attachment) {
-            $processedImages[] = [
-                'type'    => $attachment->getType(),
-                'name'    => $attachment->getId(),
-                'content' => base64_encode($contentCallback($attachment)),
-            ];
-        }
-
-        $this->assertEquals(json_encode([
-            'key'     => self::SERVER_TOKEN,
-            'message' => [
-                'from_email'  => $from,
-                'to'          => [['email' => $to, 'name' => null, 'type' => 'to']],
-                'subject'     => $subject,
-                'headers'     => $headers,
-                'text'        => $text,
-                'html'        => $html,
-                'attachments' => $processedAttachments,
-                'images'      => $processedImages,
-            ],
-        ]), $this->mailer->format($message));
-    }
-
-    public function testGetFiles()
-    {
-        $self = $this; // PHP5.3 compatibility
-        $adapter = $this->adapter;
-        $token = self::SERVER_TOKEN;
-        $buildMocks = function ($attachments, &$invoke) use ($self, $adapter, $token) {
-            $mailer = $self->getMockBuilder('\\Stampie\\Mailer\\Mandrill')
-                ->setConstructorArgs([$adapter, $token])
-                ->getMock()
-            ;
-
-            // Wrap protected method with accessor
-            $mirror = new \ReflectionClass($mailer);
-            $method = $mirror->getMethod('getFiles');
-            $method->setAccessible(true);
-
-            $invoke = function () use ($mailer, $method) {
-                $args = func_get_args();
-                array_unshift($args, $mailer);
-
-                return call_user_func_array([$method, 'invoke'], $args);
-            };
-
-            $message = $self->getAttachmentsMessageMock('test@example.com', 'other@example.com', 'Subject', null, null, [], $attachments);
-
-            return [$mailer, $message];
-        };
-
-        // Actual tests
-
-        $attachments = [
+        $message = $this->getAttachmentsMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome', null, null, [], [
             $this->getAttachmentMock('path-1.txt', 'path1.txt', 'text/plain', null),
-        ];
+            $this->getAttachmentMock('path-2.txt', 'path2.txt', 'text/plain', null),
+            $this->getAttachmentMock('logo.png', 'logo.png', 'image/png', 'contentid1'),
+        ]);
 
-        list($mailer, $message) = $buildMocks($attachments, $invoke);
+        $this->httpClient
+            ->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (Request $request) {
+                $body = json_decode((string) $request->getBody(), true);
 
-        $this->assertEquals([], $invoke($message), 'Attachments should never be returned separately from body');
+                return $body == [
+                    'key' => self::SERVER_TOKEN,
+                    'message' => [
+                        'from_email' => 'bob@example.com',
+                        'to' => [
+                            [
+                                'email' => 'alice@example.com',
+                                'name' => null,
+                                'type' => 'to',
+                            ],
+                        ],
+                        'subject' => 'Stampie is awesome',
+                        'attachments' => [
+                            [
+                                'type' => 'text/plain',
+                                'name' => 'path1.txt',
+                                'content' => base64_encode(file_get_contents(__DIR__.'/../../../Fixtures/path-1.txt')),
+                            ],
+                            [
+                                'type' => 'text/plain',
+                                'name' => 'path2.txt',
+                                'content' => base64_encode(file_get_contents(__DIR__.'/../../../Fixtures/path-2.txt')),
+                            ],
+                        ],
+                        'images' => [
+                            [
+                                'type' => 'image/png',
+                                'name' => 'contentid1',
+                                'content' => base64_encode(file_get_contents(__DIR__.'/../../../Fixtures/logo.png')),
+                            ],
+                        ],
+                    ],
+                ];
+            }))
+            ->willReturn(new Response())
+        ;
+
+        $this->mailer->send($message);
     }
 
     /**
      * @dataProvider carbonCopyProvider
+     *
+     * @param string $recipient
+     * @param array $ccs
+     * @param array $expectedTos
      */
     public function testFormatCarbonCopy($recipient, $ccs, $expectedTos)
     {
-        $message = $this->getCarbonCopyMock(
-            $from = 'hb@peytz.dk',
-            $to = $recipient,
-            $subject = 'Stampie is awesome, right?',
-            $html = 'So what do you think',
-            $text = 'text',
-            $headers = ['X-Stampie-To' => 'henrik+to@bjrnskov.dk'],
-            $cc = $ccs
-        );
+        $message = $this->getCarbonCopyMock('bob@example.com', $recipient, 'Stampie is awesome', null, null, [], $ccs);
 
-        $this->assertEquals(json_encode([
-            'key'     => self::SERVER_TOKEN,
-            'message' => [
-                'from_email' => $from,
-                'to'         => $expectedTos,
-                'subject'    => $subject,
-                'headers'    => $headers,
-                'text'       => $text,
-                'html'       => $html,
-            ],
-        ]), $this->mailer->format($message));
+        $this->httpClient
+            ->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (Request $request) use ($expectedTos) {
+                $body = json_decode((string) $request->getBody(), true);
+
+                return $body == [
+                    'key' => self::SERVER_TOKEN,
+                    'message' => [
+                        'from_email' => 'bob@example.com',
+                        'to' => $expectedTos,
+                        'subject' => 'Stampie is awesome',
+                    ],
+                ];
+            }))
+            ->willReturn(new Response())
+        ;
+
+        $this->mailer->send($message);
     }
 
     /**
      * @dataProvider blindCarbonCopyProvider
+     *
+     * @param string $recipient
+     * @param array $bccs
+     * @param array $expectedTos
      */
     public function testFormatBlindCarbonCopy($recipient, $bccs, $expectedTos)
     {
-        $message = $this->getBlindCarbonCopyMock(
-            $from = 'hb@peytz.dk',
-            $to = $recipient,
-            $subject = 'Stampie is awesome, right?',
-            $html = 'So what do you think',
-            $text = 'text',
-            $headers = ['X-Stampie-To' => 'henrik+to@bjrnskov.dk'],
-            $bcc = $bccs
-        );
+        $message = $this->getBlindCarbonCopyMock('bob@example.com', $recipient, 'Stampie is awesome', null, null, [], $bccs);
 
-        $this->assertEquals(json_encode([
-            'key'     => self::SERVER_TOKEN,
-            'message' => [
-                'from_email' => $from,
-                'to'         => $expectedTos,
-                'subject'    => $subject,
-                'headers'    => $headers,
-                'text'       => $text,
-                'html'       => $html,
-            ],
-        ]), $this->mailer->format($message));
+        $this->httpClient
+            ->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (Request $request) use ($expectedTos) {
+                $body = json_decode((string) $request->getBody(), true);
+
+                return $body == [
+                        'key' => self::SERVER_TOKEN,
+                        'message' => [
+                            'from_email' => 'bob@example.com',
+                            'to' => $expectedTos,
+                            'subject' => 'Stampie is awesome',
+                        ],
+                    ];
+            }))
+            ->willReturn(new Response())
+        ;
+
+        $this->mailer->send($message);
     }
 
     /**
-     * @dataProvider handleDataProvider
+     * @expectedException \Stampie\Exception\ApiException
+     * @expectedExceptionMessage Bad Request
      */
-    public function testHandle($statusCode, $content)
+    public function testHandleBadRequest()
     {
-        $response = new Response($statusCode, json_encode(['message' => $content, 'code' => -1]));
+        $response = new Response(400, [], json_encode(['message' => 'Bad Request', 'code' => -1]));
 
-        try {
-            $this->mailer->handle($response);
-        } catch (\Stampie\Exception\ApiException $e) {
-            $this->assertInstanceOf('Stampie\Exception\HttpException', $e->getPrevious());
-            $this->assertEquals($e->getPrevious()->getMessage(), $content);
-            $this->assertEquals($e->getMessage(), $content);
+        $message = $this->getMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome!');
 
-            return;
-        }
+        $this->httpClient
+            ->method('sendRequest')
+            ->willReturn($response);
 
-        $this->fail('Expected Stampie\Exception\ApiException to be trown');
+        $this->mailer->send($message);
     }
 
-    public function handleDataProvider()
+    /**
+     * @expectedException \Stampie\Exception\ApiException
+     * @expectedExceptionMessage Unauthorized
+     */
+    public function testHandleUnauthorized()
     {
-        return [
-            [400, 'Bad Request'],
-            [401, 'Unauthorized'],
-            [504, 'Gateway Timeout'],
-        ];
+        $response = new Response(401, [], json_encode(['message' => 'Unauthorized', 'code' => -1]));
+
+        $message = $this->getMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome!');
+
+        $this->httpClient
+            ->method('sendRequest')
+            ->willReturn($response);
+
+        $this->mailer->send($message);
+    }
+
+    /**
+     * @expectedException \Stampie\Exception\ApiException
+     * @expectedExceptionMessage Gateway Timeout
+     */
+    public function testHandleGatewayTimeout()
+    {
+        $response = new Response(504, [], json_encode(['message' => 'Gateway Timeout', 'code' => -1]));
+
+        $message = $this->getMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome!');
+
+        $this->httpClient
+            ->method('sendRequest')
+            ->willReturn($response);
+
+        $this->mailer->send($message);
     }
 
     public function blindCarbonCopyProvider()
@@ -364,28 +375,5 @@ class MandrillTest extends \Stampie\Tests\BaseMailerTest
                 ['email' => 'gauthier.wallet2@gmail.com', 'name' => null, 'type' => 'cc'],
             ]],
         ];
-    }
-}
-
-class TestMandrill extends Mandrill
-{
-    public function getEndpoint()
-    {
-        return parent::getEndpoint();
-    }
-
-    public function getHeaders()
-    {
-        return parent::getHeaders();
-    }
-
-    public function format(MessageInterface $message)
-    {
-        return parent::format($message);
-    }
-
-    public function handle(ResponseInterface $response)
-    {
-        parent::handle($response);
     }
 }
