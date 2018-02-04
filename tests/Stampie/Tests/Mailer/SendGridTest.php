@@ -31,9 +31,9 @@ class SendGridTest extends TestCase
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testInValidServerToken()
+    public function testInvalidServerToken()
     {
-        $this->mailer->setServerToken('invalid');
+        $this->mailer->setServerToken('');
     }
 
     public function testSend()
@@ -48,48 +48,25 @@ class SendGridTest extends TestCase
             ->with($this->callback(function (Request $request) {
                 return
                     $request->getMethod() === 'POST'
-                    && (string) $request->getUri() === 'https://sendgrid.com/api/mail.send.json'
-                    && $request->getHeaderLine('Content-Type') === 'application/x-www-form-urlencoded'
-                    && (string) $request->getBody() === http_build_query([
-                        'api_user' => 'rudolph',
-                        'api_key' => 'rednose',
-                        'to' => [
-                            'alice@example.com',
-                        ],
-                        'from' => 'bob@example.com',
-                        'subject' => 'Stampie is awesome!',
-                        'html' => 'Trying out Stampie',
-                        'headers' => json_encode([
-                            'X-Custom-Header' => 'My Custom Header Value',
-                        ]),
+                    && (string) $request->getUri() === 'https://api.sendgrid.com/v3/mail/send'
+                    && $request->getHeaderLine('Content-Type') === 'application/json'
+                    && $request->getHeaderLine('Authorization') === 'Bearer '.self::SERVER_TOKEN
+                    && (string) $request->getBody() === json_encode([
+                        'personalizations' => [[
+                                'to' => [[
+                                        'email' => 'alice@example.com',
+                                    ]],
+                                'subject' => 'Stampie is awesome!',
+                                'headers' => ['X-Custom-Header' => 'My Custom Header Value'],
+                            ]],
+                        'from' => [
+                               'email' => 'bob@example.com',
+                           ],
+                        'content' => [
+                                ['type' => 'text/html', 'value' => 'Trying out Stampie',],
+                            ],
                     ])
                 ;
-            }))
-            ->willReturn(new Response())
-        ;
-
-        $this->mailer->send($message);
-    }
-
-    public function testSendWithApiKeyContainingAColon()
-    {
-        $this->mailer->setServerToken('rudolph:rednose:reindeer');
-
-        $message = $this->getMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome!');
-
-        $this->httpClient
-            ->expects($this->once())
-            ->method('sendRequest')
-            ->with($this->callback(function (Request $request) {
-                return (string) $request->getBody() === http_build_query([
-                    'api_user' => 'rudolph',
-                    'api_key' => 'rednose:reindeer',
-                    'to' => [
-                        'alice@example.com',
-                    ],
-                    'from' => 'bob@example.com',
-                    'subject' => 'Stampie is awesome!',
-                ]);
             }))
             ->willReturn(new Response())
         ;
@@ -111,10 +88,9 @@ class SendGridTest extends TestCase
             ->with($this->callback(function (Request $request) {
                 $body = (string) $request->getBody();
                 return
-                    preg_match('#^multipart/form-data; boundary="[^"]+"$#', $request->getHeaderLine('Content-Type'))
-                    && false !== strpos($body, 'Attachment #1')
-                    && false !== strpos($body, 'Attachment #2')
-                    && false !== strpos($body, 'Attachment #3')
+                    false !== strpos($body, base64_encode('Attachment #1'.PHP_EOL))
+                    && false !== strpos($body, base64_encode('Attachment #2'.PHP_EOL))
+                    && false !== strpos($body, base64_encode('Attachment #3'.PHP_EOL))
                 ;
             }))
             ->willReturn(new Response())
@@ -131,15 +107,18 @@ class SendGridTest extends TestCase
             ->expects($this->once())
             ->method('sendRequest')
             ->with($this->callback(function (Request $request) {
-                return (string) $request->getBody() === http_build_query([
-                    'api_user' => 'rudolph',
-                    'api_key' => 'rednose',
-                    'to' => [
-                        'alice@example.com',
-                    ],
-                    'from' => 'bob@example.com',
-                    'subject' => 'Stampie is awesome!',
-                    'x-smtpapi' => json_encode(['category' => ['tag']])
+                return (string) $request->getBody() === json_encode([
+                    'personalizations' => [[
+                            'to' => [[
+                                'email' => 'alice@example.com',
+                            ]],
+                            'subject' => 'Stampie is awesome!',
+                        ]],
+                        'from' => [
+                            'email' => 'bob@example.com',
+                        ],
+                        'content' => [],
+                    'categories' => ['tag'],
                 ]);
             }))
             ->willReturn(new Response())
@@ -156,15 +135,18 @@ class SendGridTest extends TestCase
             ->expects($this->once())
             ->method('sendRequest')
             ->with($this->callback(function (Request $request) {
-                return (string) $request->getBody() === http_build_query([
-                        'api_user' => 'rudolph',
-                        'api_key' => 'rednose',
-                        'to' => [
-                            'alice@example.com',
+                return (string) $request->getBody() === json_encode([
+                        'personalizations' => [[
+                            'to' => [[
+                                'email' => 'alice@example.com',
+                            ]],
+                            'subject' => 'Stampie is awesome!',
+                        ]],
+                        'from' => [
+                            'email' => 'bob@example.com',
                         ],
-                        'from' => 'bob@example.com',
-                        'subject' => 'Stampie is awesome!',
-                        'x-smtpapi' => json_encode(['unique_args' => ['client_name' => 'Stampie']])
+                        'content' => [],
+                        'custom_args'=> ['client_name' => 'Stampie'],
                     ]);
             }))
             ->willReturn(new Response())
@@ -181,14 +163,17 @@ class SendGridTest extends TestCase
             ->expects($this->once())
             ->method('sendRequest')
             ->with($this->callback(function (Request $request) {
-                return (string) $request->getBody() === http_build_query([
-                        'api_user' => 'rudolph',
-                        'api_key' => 'rednose',
-                        'to' => [
-                            'alice@example.com',
+                return (string) $request->getBody() === json_encode([
+                        'personalizations' => [[
+                            'to' => [[
+                                'email' => 'alice@example.com',
+                            ]],
+                            'subject' => 'Stampie is awesome!',
+                        ]],
+                        'from' => [
+                            'email' => 'bob@example.com',
                         ],
-                        'from' => 'bob@example.com',
-                        'subject' => 'Stampie is awesome!',
+                        'content' => [],
                     ]);
             }))
             ->willReturn(new Response())

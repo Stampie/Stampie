@@ -6,6 +6,7 @@ use Stampie\Adapter\ResponseInterface;
 use Stampie\Attachment;
 use Stampie\Exception\ApiException;
 use Stampie\Exception\HttpException;
+use Stampie\IdentityInterface;
 use Stampie\Mailer;
 use Stampie\Message\AttachmentsAwareInterface;
 use Stampie\Message\MetadataAwareInterface;
@@ -17,6 +18,7 @@ use Stampie\Util\AttachmentUtils;
  * Mailer to be used with SendGrid Web API.
  *
  * @author Henrik Bjrnskov <henrik@bjrnskov.dk>
+ * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
 class SendGrid extends Mailer
 {
@@ -25,42 +27,7 @@ class SendGrid extends Mailer
      */
     protected function getEndpoint()
     {
-        return 'https://sendgrid.com/api/mail.send.json';
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function setServerToken($serverToken)
-    {
-        if (false === strpos($serverToken, ':')) {
-            throw new \InvalidArgumentException('SendGrid uses a "username:password" based ServerToken');
-        }
-
-        parent::setServerToken($serverToken);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getFiles(MessageInterface $message)
-    {
-        if (!($message instanceof AttachmentsAwareInterface)) {
-            return [];
-        }
-
-        // Process files
-        list($attachments) = $this->processAttachments($message->getAttachments());
-
-        // Format params
-        $files = [];
-        if ($attachments) {
-            $files['files'] = $attachments;
-        }
-
-        return $files;
+        return 'https://api.sendgrid.com/v3/mail/send';
     }
 
     /**
@@ -70,13 +37,35 @@ class SendGrid extends Mailer
     {
         $httpException = new HttpException($response->getStatusCode(), $response->getStatusText());
 
-        // 4xx will containt error information in the body encoded as JSON
+        // 4xx will content error information in the body encoded as JSON
         if (!in_array($response->getStatusCode(), range(400, 417))) {
             throw $httpException;
         }
 
         $error = json_decode($response->getContent());
-        throw new ApiException(implode(', ', (array) $error->errors), $httpException);
+        $message = '';
+        foreach ($error->errors as $i => $e) {
+            $message .= sprintf(
+                "ERROR #%d: \nField: %s \nMessage: %s \nHelp: %s\n\n\n",
+                $i,
+                isset($e->field) ? $e->field : '-',
+                isset($e->message) ? $e->message : '-',
+                isset($e->help) ? $e->help : '-'
+            );
+        }
+
+        throw new ApiException($message, $httpException);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getHeaders()
+    {
+        return [
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer '.$this->getServerToken(),
+        ];
     }
 
     /**
@@ -84,69 +73,72 @@ class SendGrid extends Mailer
      */
     protected function format(MessageInterface $message)
     {
-        // We should split up the ServerToken on : to get username and password
-        list($username, $password) = explode(':', $this->getServerToken(), 2);
+        $personalization = [
+            'to' => $this->formatRecipients($message->getTo()),
+            'cc' => $this->formatRecipients($message->getCc()),
+            'bcc' => $this->formatRecipients($message->getBcc()),
+            'subject' => $message->getSubject(),
+        ];
 
-        $from = $this->normalizeIdentity($message->getFrom());
-
-        $toEmails = [];
-        $toNames = [];
-
-        foreach ($this->normalizeIdentities($message->getTo()) as $recipient) {
-            $toEmails[] = $recipient->getEmail();
-            $toNames[] = $recipient->getName();
+        if ($headers = $message->getHeaders()) {
+            $personalization['headers'] = $headers;
         }
 
-        $bccEmails = [];
-
-        foreach ($this->normalizeIdentities($message->getBcc()) as $recipient) {
-            $bccEmails[] = $recipient->getEmail();
+        if (empty($personalization['cc'])) {
+            unset($personalization['cc']);
         }
 
-        $smtpApi = [];
+        if (empty($personalization['bcc'])) {
+            unset($personalization['bcc']);
+        }
+
+        $content = [
+            ['type' => 'text/plain', 'value' => $message->getText()],
+            ['type' => 'text/html', 'value' => $message->getHtml()],
+        ];
+
+        foreach ($content as $i => $c) {
+            if (empty($c['value'])) {
+                unset($content[$i]);
+            }
+        }
+
+        $parameters = [
+            'personalizations' => [$personalization],
+            'from' => $this->formatRecipients($message->getFrom())[0],
+            'reply_to' => $this->formatRecipients($message->getReplyTo()),
+            'content' => array_values($content),
+        ];
+
+        if (empty($parameters['reply_to'])) {
+            unset($parameters['reply_to']);
+        } else {
+            $parameters['reply_to'] = $parameters['reply_to'][0];
+        }
+
+        if ($message instanceof AttachmentsAwareInterface) {
+            $attachments = $message->getAttachments();
+            if (!empty($attachments)) {
+                $parameters['attachments'] = $this->processAttachments($attachments);
+            }
+        }
 
         if ($message instanceof TaggableInterface) {
-            $smtpApi['category'] = (array) $message->getTag();
+            $parameters['categories'] = (array) $message->getTag();
         }
 
         if ($message instanceof MetadataAwareInterface) {
             $metadata = array_filter($message->getMetadata());
-            // Do not set an empty array on unique_args. json_encode turns it into []; SendGrid expects {}.
-            if (count($metadata)) {
-                $smtpApi['unique_args'] = $metadata;
+            if (!empty($metadata)) {
+                if (isset($parameters['custom_args'])) {
+                    $parameters['custom_args'] = array_merge($parameters['custom_args'], $metadata);
+                } else {
+                    $parameters['custom_args'] = $metadata;
+                }
             }
         }
 
-        $inline = [];
-        if ($message instanceof AttachmentsAwareInterface) {
-            // Store inline attachment references
-            list(, $inline) = $this->processAttachments($message->getAttachments());
-        }
-
-        $parameters = [
-            'api_user' => $username,
-            'api_key'  => $password,
-            'to'       => $toEmails,
-            'toname'   => $toNames,
-            'from'     => $from->getEmail(),
-            'fromname' => $from->getName(),
-            'subject'  => $message->getSubject(),
-            'text'     => $message->getText(),
-            'html'     => $message->getHtml(),
-            'bcc'      => $bccEmails,
-            'replyto'  => $message->getReplyTo(),
-            'content'  => $inline,
-        ];
-
-        if ($headers = $message->getHeaders()) {
-            $parameters['headers'] = json_encode($headers);
-        }
-
-        if ($smtpApi) {
-            $parameters['x-smtpapi'] = json_encode(array_filter($smtpApi));
-        }
-
-        return http_build_query(array_filter($parameters));
+        return json_encode($parameters);
     }
 
     /**
@@ -157,19 +149,48 @@ class SendGrid extends Mailer
     protected function processAttachments(array $attachments)
     {
         $attachments = AttachmentUtils::processAttachments($attachments);
-
         $processedAttachments = [];
-        $inline = [];
+
         foreach ($attachments as $name => $attachment) {
+            $item = [
+                'content' => base64_encode(file_get_contents($attachment->getPath())),
+                'type' => $attachment->getType(),
+                'filename' => $attachment->getName(),
+            ];
+
             $id = $attachment->getId();
-            if (isset($id)) {
-                // Reference inline
-                $inline[$id] = $name;
+            if (!empty($id)) {
+                $item['disposition'] = 'inline';
+                $item['content_id'] = $id;
             }
 
-            $processedAttachments[$name] = $attachment->getPath();
+            $processedAttachments[] = $item;
         }
 
-        return [$processedAttachments, $inline];
+        return $processedAttachments;
+    }
+
+    /**
+     * @param IdentityInterface[]|string $recipients
+     *
+     * @return array
+     */
+    private function formatRecipients($recipients)
+    {
+        $data = [];
+        foreach ($this->normalizeIdentities($recipients) as $recipient) {
+            $item = [
+                'email' => $recipient->getEmail(),
+                'name' => $recipient->getName(),
+            ];
+
+            if (empty($item['name'])) {
+                unset($item['name']);
+            }
+
+            $data[] = $item;
+        }
+
+        return $data;
     }
 }

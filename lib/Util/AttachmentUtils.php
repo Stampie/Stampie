@@ -25,7 +25,7 @@ final class AttachmentUtils
      *
      * @throws \InvalidArgumentException
      *
-     * @return array
+     * @return Attachment[]
      */
     public static function processAttachments(array $attachments)
     {
