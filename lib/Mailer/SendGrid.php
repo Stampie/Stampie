@@ -18,6 +18,7 @@ use Stampie\Util\AttachmentUtils;
  * Mailer to be used with SendGrid Web API.
  *
  * @author Henrik Bjrnskov <henrik@bjrnskov.dk>
+ * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
 class SendGrid extends Mailer
 {
@@ -129,6 +130,7 @@ class SendGrid extends Mailer
         if ($message instanceof MetadataAwareInterface) {
             $metadata = array_filter($message->getMetadata());
             if (!empty($metadata)) {
+                // TODO verify the correctness
                 $parameters = array_merge($parameters, $metadata);
             }
         }
@@ -170,7 +172,7 @@ class SendGrid extends Mailer
      *
      * @return array
      */
-    public function formatRecipients($recipients)
+    private function formatRecipients($recipients)
     {
         $data = [];
         foreach ($this->normalizeIdentities($recipients) as $recipient) {
