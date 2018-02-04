@@ -146,7 +146,7 @@ class SendGridTest extends TestCase
                             'email' => 'bob@example.com',
                         ],
                         'content' => [],
-                        'client_name' => 'Stampie',
+                        'custom_args'=> ['client_name' => 'Stampie'],
                     ]);
             }))
             ->willReturn(new Response())
