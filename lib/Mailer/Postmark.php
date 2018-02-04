@@ -2,7 +2,7 @@
 
 namespace Stampie\Mailer;
 
-use Stampie\Adapter\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use Stampie\Attachment;
 use Stampie\Exception\ApiException;
 use Stampie\Exception\HttpException;
@@ -32,11 +32,11 @@ class Postmark extends Mailer
      */
     protected function handle(ResponseInterface $response)
     {
-        $httpException = new HttpException($response->getStatusCode(), $response->getStatusText());
+        $httpException = new HttpException($response->getStatusCode(), $response->getReasonPhrase());
 
         // Not 422 contains information about API Error
         if ($response->getStatusCode() == 422) {
-            $error = json_decode($response->getContent());
+            $error = json_decode((string) $response->getBody());
             throw new ApiException(isset($error->Message) ? $error->Message : 'Unprocessable Entity', $httpException);
         }
 

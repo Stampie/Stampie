@@ -6,8 +6,7 @@ use Http\Client\HttpClient;
 use Http\Discovery\MessageFactoryDiscovery;
 use Http\Message\MessageFactory;
 use Http\Message\MultipartStream\MultipartStreamBuilder;
-use Stampie\Adapter\Response;
-use Stampie\Adapter\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use Stampie\Util\IdentityUtils;
 
 /**
@@ -108,7 +107,7 @@ abstract class Mailer implements MailerInterface
         $response = $this->doSend($message);
 
         // We are all clear if status is HTTP 2xx OK
-        if ($response->isSuccessful()) {
+        if (in_array($response->getStatusCode(), range(200, 206), true)) {
             return;
         }
 
@@ -203,11 +202,11 @@ abstract class Mailer implements MailerInterface
     }
 
     /**
-     * Take a Message and return a Stampie Response.
+     * Take a Message and return a PSR ResponseInterface.
      *
      * @param MessageInterface $message
      *
-     * @return Response
+     * @return ResponseInterface
      */
     private function doSend(MessageInterface $message)
     {
@@ -248,8 +247,6 @@ abstract class Mailer implements MailerInterface
         }
 
         $request = $this->getMessageFactory()->createRequest('POST', $this->getEndpoint(), $headers, $content);
-        $psr7Response = $this->getHttpClient()->sendRequest($request);
-
-        return new Response($psr7Response->getStatusCode(), $psr7Response->getBody()->__toString());
+        return $this->getHttpClient()->sendRequest($request);
     }
 }

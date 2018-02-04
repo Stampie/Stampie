@@ -2,7 +2,7 @@
 
 namespace Stampie\Mailer;
 
-use Stampie\Adapter\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use Stampie\Attachment;
 use Stampie\Exception\ApiException;
 use Stampie\Exception\HttpException;
@@ -106,8 +106,8 @@ class Mandrill extends Mailer
      */
     protected function handle(ResponseInterface $response)
     {
-        $httpException = new HttpException($response->getStatusCode(), $response->getStatusText());
-        $error = json_decode($response->getContent());
+        $httpException = new HttpException($response->getStatusCode(), $response->getReasonPhrase());
+        $error = json_decode((string) $response->getBody());
 
         throw new ApiException($error->message, $httpException, $error->code);
     }
