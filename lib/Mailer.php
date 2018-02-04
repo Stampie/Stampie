@@ -43,7 +43,7 @@ abstract class Mailer implements MailerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param HttpClient $httpClient
      */
     public function setHttpClient(HttpClient $httpClient)
     {
@@ -51,7 +51,7 @@ abstract class Mailer implements MailerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return HttpClient
      */
     private function getHttpClient()
     {
