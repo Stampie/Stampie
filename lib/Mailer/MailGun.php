@@ -2,7 +2,7 @@
 
 namespace Stampie\Mailer;
 
-use Stampie\Adapter\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use Stampie\Attachment;
 use Stampie\Exception\HttpException;
 use Stampie\Mailer;
@@ -122,7 +122,7 @@ class MailGun extends Mailer
      */
     protected function handle(ResponseInterface $response)
     {
-        throw new HttpException($response->getStatusCode(), $response->getStatusText());
+        throw new HttpException($response->getStatusCode(), $response->getReasonPhrase());
     }
 
     /**

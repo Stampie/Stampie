@@ -2,7 +2,7 @@
 
 namespace Stampie\Mailer;
 
-use Stampie\Adapter\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use Stampie\Attachment;
 use Stampie\Exception\ApiException;
 use Stampie\Exception\HttpException;
@@ -35,14 +35,14 @@ class SendGrid extends Mailer
      */
     protected function handle(ResponseInterface $response)
     {
-        $httpException = new HttpException($response->getStatusCode(), $response->getStatusText());
+        $httpException = new HttpException($response->getStatusCode(), $response->getReasonPhrase());
 
         // 4xx will content error information in the body encoded as JSON
         if (!in_array($response->getStatusCode(), range(400, 417))) {
             throw $httpException;
         }
 
-        $error = json_decode($response->getContent());
+        $error = json_decode((string) $response->getBody());
         $message = '';
         foreach ($error->errors as $i => $e) {
             $message .= sprintf(
