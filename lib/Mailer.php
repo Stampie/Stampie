@@ -107,7 +107,7 @@ abstract class Mailer implements MailerInterface
         $response = $this->doSend($message);
 
         // We are all clear if status is HTTP 2xx OK
-        if ((bool) in_array($response->getStatusCode(), range(200, 206), true)) {
+        if (in_array($response->getStatusCode(), range(200, 206), true)) {
             return;
         }
 
