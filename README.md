@@ -12,6 +12,7 @@ It is very easy to use and to integrate into your application as demonstrated be
 * [SendGrid](https://sendgrid.com)
 * [MailGun](https://www.mailgun.com)
 * [Mandrill](https://mandrill.com/)
+* [Mailjet](https://www.mailjet.com)
 
 ```php
 <?php
