@@ -2,48 +2,44 @@
 
 namespace Stampie\Tests\Mailer;
 
-use Stampie\Adapter\ResponseInterface;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use Http\Client\HttpClient;
+use Stampie\Exception\ApiException;
+use Stampie\Exception\HttpException;
+use Stampie\Identity;
 use Stampie\Mailer\SparkPost;
-use Stampie\MessageInterface;
-use Stampie\Tests\BaseMailerTest;
+use Stampie\Tests\TestCase;
 
-class SparkPostTest extends BaseMailerTest
+class SparkPostTest extends TestCase
 {
-    const SERVER_TOKEN = 'abc123';
+    const SERVER_TOKEN = '123abc';
+
+    /**
+     * @var SparkPost
+     */
+    private $mailer;
+
+    /**
+     * @var HttpClient|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $httpClient;
 
     public function setUp()
     {
-        parent::setUp();
-        $this->mailer = new TestSparkPost($this->adapter, self::SERVER_TOKEN);
+        $this->httpClient = $this->getMockBuilder(HttpClient::class)->getMock();
+        $this->mailer = new SparkPost($this->httpClient, self::SERVER_TOKEN);
     }
 
-    public function testServerToken()
-    {
-        $this->assertEquals(self::SERVER_TOKEN, $this->mailer->getServerToken());
-    }
-
-    public function testEndpoint()
-    {
-        $this->assertEquals('https://api.sparkpost.com/api/v1/transmissions', $this->mailer->getEndpoint());
-    }
-
-    public function testHeaders()
-    {
-        $headers = $this->mailer->getHeaders();
-
-        $this->assertArrayHasKey('Authorization', $headers);
-        $this->assertEquals(self::SERVER_TOKEN, $headers['Authorization']);
-    }
-
-    public function testFormat()
+    public function testSend()
     {
         $message = $this->getMessageMock(
-            $from = 'noreply@example.com',
-            $to = ['john@example.com', 'bob@example.com'],
-            $subject = 'Testing SparkPost',
-            $html = '<p>Hello</p>',
-            $text = 'Hello',
-            $headers = ['X-Foo' => 'bar']
+            new Identity('bob@example.com', 'Bob'),
+            [new Identity('alice@example.com', 'Alice'), 'charlie@example.com'],
+            'Stampie is awesome!',
+            '<h1>Stampie</h1>',
+            'Stampie',
+            ['X-Custom-Header' => 'My Custom Header Value']
         );
 
         $message
@@ -54,131 +50,137 @@ class SparkPostTest extends BaseMailerTest
         $message
             ->expects($this->any())
             ->method('getCc')
-            ->will($this->returnValue(['charlie@example.com']));
+            ->will($this->returnValue([
+                new Identity('cc-mark@example.com', 'Mark'),
+                'cc-john@example.com',
+            ]));
 
         $message
             ->expects($this->any())
             ->method('getBcc')
-            ->will($this->returnValue(['mark@example.com']));
+            ->will($this->returnValue([new Identity('bcc-sally@example.com', 'Sally')]));
 
-        $this->assertArraySubset([
-            'content' => [
-                'from' => [
-                    'name' => null,
-                    'email' => 'noreply@example.com',
-                ],
-                'reply_to' => 'reply@example.com',
-                'headers' => [
-                    'X-Foo' => 'bar',
-                    'Cc' => 'charlie@example.com',
-                ],
-                'subject' => 'Testing SparkPost',
-                'text' => 'Hello',
-                'html' => '<p>Hello</p>',
-            ],
-            'recipients' => [
-                ['address' => ['email' => 'john@example.com']],
-                ['address' => ['email' => 'bob@example.com']],
-                ['address' => ['email' => 'charlie@example.com']],
-                ['address' => ['email' => 'mark@example.com']],
-            ],
-        ], json_decode($this->mailer->format($message), true));
+        $this->httpClient
+            ->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (Request $request) {
+                $body = json_decode((string) $request->getBody(), true);
+                return
+                    $request->getMethod() === 'POST'
+                    && (string) $request->getUri() === 'https://api.sparkpost.com/api/v1/transmissions'
+                    && $request->getHeaderLine('Content-Type') === 'application/json'
+                    && $request->getHeaderLine('Authorization') === self::SERVER_TOKEN
+                    && $body == [
+                        'options' => ['transactional' => true],
+                        'content' => [
+                            'from' => ['email' => 'bob@example.com', 'name' => 'Bob'],
+                            'headers' => [
+                                'X-Custom-Header' => 'My Custom Header Value',
+                                'CC' => 'Mark <cc-mark@example.com>,cc-john@example.com',
+                            ],
+                            'subject' => 'Stampie is awesome!',
+                            'text' => 'Stampie',
+                            'html' => '<h1>Stampie</h1>',
+                            'reply_to' => 'reply@example.com',
+                        ],
+                        'recipients' => [
+                            [
+                                'address' => [
+                                    'email' => 'alice@example.com',
+                                    'header_to' => 'Alice <alice@example.com>,charlie@example.com',
+                                ],
+                                'tags' => [],
+                            ],
+                            [
+                                'address' => [
+                                    'email' => 'charlie@example.com',
+                                    'header_to' => 'Alice <alice@example.com>,charlie@example.com',
+                                ],
+                                'tags' => [],
+                            ],
+                            [
+                                'address' => [
+                                    'email' => 'cc-mark@example.com',
+                                    'header_to' => 'Alice <alice@example.com>,charlie@example.com',
+                                ],
+                                'tags' => [],
+                            ],
+                            [
+                                'address' => [
+                                    'email' => 'cc-john@example.com',
+                                    'header_to' => 'Alice <alice@example.com>,charlie@example.com',
+                                ],
+                                'tags' => [],
+                            ],
+                            [
+                                'address' => [
+                                    'email' => 'bcc-sally@example.com',
+                                    'header_to' => 'Alice <alice@example.com>,charlie@example.com',
+                                ],
+                                'tags' => [],
+                            ],
+                        ],
+                    ];
+            }))
+            ->willReturn(new Response());
+
+        $this->mailer->send($message);
     }
 
-    public function testFormatCarbonCopy()
-    {
-        $message = $this->getCarbonCopyMock(
-            $from = null,
-            $to = ['john@example.com', 'bob@example.com'],
-            $subject = null,
-            $html = null,
-            $text = null,
-            $headers = ['X-Foo' => 'bar'],
-            $cc = ['charlie@example.com']
-        );
-
-        $this->assertArraySubset([
-            'content' => [
-                'headers' => [
-                    'X-Foo' => 'bar',
-                    'Cc' => 'charlie@example.com',
-                ],
-            ],
-            'recipients' => [
-                ['address' => ['email' => 'john@example.com']],
-                ['address' => ['email' => 'bob@example.com']],
-                ['address' => ['email' => 'charlie@example.com']],
-            ],
-        ], json_decode($this->mailer->format($message), true));
-    }
-
-    public function testFormatBlindCarbonCopy()
-    {
-        $message = $this->getBlindCarbonCopyMock(
-            $from = null,
-            $to = ['john@example.com', 'bob@example.com'],
-            $subject = null,
-            $html = null,
-            $text = null,
-            $headers = [],
-            $bcc = ['mark@example.com']
-        );
-
-        $this->assertArraySubset([
-            'recipients' => [
-                ['address' => ['email' => 'john@example.com']],
-                ['address' => ['email' => 'bob@example.com']],
-                ['address' => ['email' => 'mark@example.com']],
-            ],
-        ], json_decode($this->mailer->format($message), true));
-    }
-
-    public function testFormatTaggable()
+    public function testSendTaggable()
     {
         $message = $this->getTaggableMessageMock(
-            $from = null,
-            $to = 'john@example.com',
-            $subject = null,
-            $html = null,
-            $text = null,
-            $headers = [],
-            $tag = ['foo', 'bar']
+            'bob@example.com',
+            'alice@example.com',
+            'Stampie is awesome!',
+            null,
+            null,
+            [],
+            ['foo', 'bar']
         );
 
-        static::assertArraySubset([
-            'recipients' => [
-                [
-                    'address' => ['email' => 'john@example.com'],
-                    'tags' => ['foo', 'bar'],
-                ],
-            ],
-        ], json_decode($this->mailer->format($message), true));
+        $this->httpClient
+            ->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (Request $request) {
+                $body = json_decode((string) $request->getBody(), true);
+
+                return array_key_exists('recipients', $body)
+                    && array_key_exists('tags', $body['recipients'][0])
+                    && $body['recipients'][0]['tags'] === ['foo', 'bar'];
+            }))
+            ->willReturn(new Response());
+
+        $this->mailer->send($message);
     }
 
-    public function testFormatMetadata()
+    public function testSendMetadataAware()
     {
         $message = $this->getMetadataAwareMessageMock(
-            $from = null,
-            $to = null,
-            $subject = null,
-            $html = null,
-            $text = null,
-            $headers = [],
-            $metadata = ['foo' => 'bar', 'bar' => 'baz']
+            'bob@example.com',
+            'alice@example.com',
+            'Stampie is awesome',
+            null,
+            null,
+            [],
+            ['client_name' => 'Stampie']
         );
 
-        static::assertArraySubset([
-            'metadata' => [
-                'foo' => 'bar',
-                'bar' => 'baz',
-            ],
-        ], json_decode($this->mailer->format($message), true));
+        $this->httpClient
+            ->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (Request $request) {
+                $body = json_decode((string) $request->getBody(), true);
+
+                return array_key_exists('metadata', $body) && $body['metadata'] === ['client_name' => 'Stampie'];
+            }))
+            ->willReturn(new Response());
+
+        $this->mailer->send($message);
     }
 
-    public function testFormatAttachments()
+    public function testSendWithAttachments()
     {
-        $fixtureDir = __DIR__ . '/../../../Fixtures';
-
         $message = $this->getAttachmentsMessageMock(
             $from = null,
             $to = null,
@@ -188,58 +190,76 @@ class SparkPostTest extends BaseMailerTest
             $headers = [],
             array_merge(
                 $attachments = [
-                    $this->getAttachmentMock($fixtureDir . '/paper.txt', 'paper.txt', 'text/plain', null),
-                    $this->getAttachmentMock($fixtureDir . '/apple.jpg', 'apple.jpg', 'image/jpeg', null),
+                    $this->getAttachmentMock('paper.txt', 'paper.txt', 'text/plain', null),
+                    $this->getAttachmentMock('apple.jpg', 'apple.jpg', 'image/jpeg', null),
                 ],
                 $images = [
-                    $this->getAttachmentMock($fixtureDir . '/orange.jpg', 'orange.jpg', 'image/jpeg', 'orange'),
+                    $this->getAttachmentMock('orange.jpg', 'orange.jpg', 'image/jpeg', 'orange'),
                 ]
             )
         );
 
-        static::assertArraySubset([
-            'content' => [
-                'inline_images' => [
-                    [
-                        'type' => 'image/jpeg',
-                        'name' => 'orange',
-                    ],
-                ],
-                'attachments' => [
-                    [
-                        'type' => 'text/plain',
-                        'name' => 'paper.txt',
-                    ],
-                    [
-                        'type' => 'image/jpeg',
-                        'name' => 'apple.jpg',
-                    ],
-                ],
-            ],
-        ], json_decode($this->mailer->format($message), true));
-    }
-}
+        $fixtureDir = __DIR__.'/../../../Fixtures';
 
+        $this->httpClient
+            ->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (Request $request) use ($fixtureDir) {
+                $body = json_decode((string) $request->getBody(), true);
 
-class TestSparkPost extends SparkPost
-{
-    public function getEndpoint()
-    {
-        return parent::getEndpoint();
-    }
+                return array_key_exists('inline_images', $body['content'])
+                    && $body['content']['inline_images'] === [
+                        [
+                            'type' => 'image/jpeg',
+                            'name' => 'orange',
+                            'data' => base64_encode(file_get_contents($fixtureDir.'/orange.jpg')),
+                        ]
+                    ]
+                    && array_key_exists('attachments', $body['content'])
+                    && $body['content']['attachments'] === [
+                        [
+                            'type' => 'text/plain',
+                            'name' => 'paper.txt',
+                            'data' => base64_encode(file_get_contents($fixtureDir.'/paper.txt')),
+                        ],
+                        [
+                            'type' => 'image/jpeg',
+                            'name' => 'apple.jpg',
+                            'data' => base64_encode(file_get_contents($fixtureDir.'/apple.jpg')),
+                        ],
+                    ];
+            }))
+            ->willReturn(new Response())
+        ;
 
-    public function getHeaders()
-    {
-        return parent::getHeaders();
-    }
-
-    public function format(MessageInterface $message)
-    {
-        return parent::format($message);
+        $this->mailer->send($message);
     }
 
-    public function handle(ResponseInterface $response)
+    /**
+     * @dataProvider badRequestProvider
+     */
+    public function testHandleBadRequest($httpStatusCode, $expectApiException)
     {
-        parent::handle($response);
+        $this->expectException($expectApiException ? ApiException::class : HttpException::class);
+
+        $response = new Response($httpStatusCode);
+
+        $message = $this->getMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome!');
+
+        $this->httpClient
+            ->method('sendRequest')
+            ->willReturn($response);
+
+        $this->mailer->send($message);
+    }
+
+    public function badRequestProvider() {
+        foreach ([400, 401, 403, 404, 405, 409, 415, 422, 429] as $code) {
+            yield [$code, true];
+        }
+
+        foreach ([500, 503] as $code) {
+            yield [$code, false];
+        }
     }
 }

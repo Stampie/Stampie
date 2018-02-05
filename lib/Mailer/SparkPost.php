@@ -2,7 +2,7 @@
 
 namespace Stampie\Mailer;
 
-use Stampie\Adapter\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use Stampie\Attachment;
 use Stampie\Exception\ApiException;
 use Stampie\Exception\HttpException;
@@ -20,18 +20,28 @@ use Stampie\Util\IdentityUtils;
  */
 class SparkPost extends Mailer
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function getEndpoint()
     {
         return 'https://api.sparkpost.com/api/v1/transmissions';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getHeaders()
     {
         return [
+            'Content-Type' => 'application/json',
             'Authorization' => $this->getServerToken(),
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function format(MessageInterface $message)
     {
         $from = $this->normalizeIdentity($message->getFrom());
@@ -91,9 +101,11 @@ class SparkPost extends Mailer
         $merged = array_merge($normalizedTo, $normalizedCc, $normalizedBcc);
         foreach ($merged as $recipient) {
             /*
-             * IMPORTANT:
-             * Do not set address.name!
-             * SparkPost will wrap the entire header_to value, e.g. Bob <bob@example.com, john@example.com>
+             * The reason we are specifying header_to is so that each recipient can see *everybody* who received
+             * the email. Without it, each recipient will only see their email in the To field.
+             *
+             * IMPORTANT: Do not specify address.name!
+             * If given, SparkPost will try to wrap the entire header_to value, mangling it in the process.
              */
 
             $parameters['recipients'][] = [
@@ -106,22 +118,27 @@ class SparkPost extends Mailer
         }
 
         if (count($normalizedCc)) {
-            $parameters['content']['headers']['Cc'] = IdentityUtils::buildIdentityString($normalizedCc);
+            $parameters['content']['headers']['CC'] = IdentityUtils::buildIdentityString($normalizedCc);
         }
 
         return json_encode($parameters);
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * HTTP codes 400-429 will throw an ApiException, otherwise an HttpException is thrown.
+     */
     protected function handle(ResponseInterface $response)
     {
-        $httpException = new HttpException($response->getStatusCode(), $response->getStatusText());
+        $httpException = new HttpException($response->getStatusCode(), $response->getReasonPhrase());
 
-        // 4xx will contain error information in the body encoded as JSON
-        if ($response->getStatusCode() < 400 || $response->getStatusCode() > 429) {
-            throw $httpException;
+        // 400-429 will contain error information in the body encoded as JSON
+        if ($response->getStatusCode() >= 400 && $response->getStatusCode() <= 429) {
+            throw new ApiException((string) $response->getBody(), $httpException);
         }
 
-        throw new ApiException($response->getContent(), $httpException);
+        throw $httpException;
     }
 
     private function getAttachmentContent(Attachment $attachment)
