@@ -257,7 +257,15 @@ class SparkPostTest extends TestCase
      */
     public function testHandleBadRequest($httpStatusCode, $expectApiException)
     {
-        $this->expectException($expectApiException ? ApiException::class : HttpException::class);
+        // Hack to support old PhpUnit 4.x for PHP 5.5.
+        // @TODO remove when support for PHP 5.5 is dropped.
+        if (!method_exists($this, 'expectException')) {
+            $this->setExpectedException($expectApiException
+                ? '\Stampie\Exception\ApiException'
+                : '\Stampie\Exception\HttpException');
+        } else {
+            $this->expectException($expectApiException ? ApiException::class : HttpException::class);
+        }
 
         $response = new Response($httpStatusCode);
 
