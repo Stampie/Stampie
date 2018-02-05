@@ -31,6 +31,23 @@ class SparkPostTest extends TestCase
         $this->mailer = new SparkPost($this->httpClient, self::SERVER_TOKEN);
     }
 
+    public function testNonTransactional()
+    {
+        $mailer = new SparkPost($this->httpClient, self::SERVER_TOKEN, false);
+        $message = $this->getMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome');
+
+        $this->httpClient
+            ->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (Request $request) {
+                $body = json_decode((string) $request->getBody(), true);
+                return $body['options']['transactional'] === false;
+            }))
+            ->willReturn(new Response());
+
+        $mailer->send($message);
+    }
+
     public function testSend()
     {
         $message = $this->getMessageMock(

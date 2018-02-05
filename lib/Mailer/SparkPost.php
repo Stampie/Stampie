@@ -2,6 +2,7 @@
 
 namespace Stampie\Mailer;
 
+use Http\Client\HttpClient;
 use Psr\Http\Message\ResponseInterface;
 use Stampie\Attachment;
 use Stampie\Exception\ApiException;
@@ -20,6 +21,14 @@ use Stampie\Util\IdentityUtils;
  */
 class SparkPost extends Mailer
 {
+    private $transactional;
+
+    public function __construct(HttpClient $httpClient, $serverToken, $transactional = true)
+    {
+        parent::__construct($httpClient, $serverToken);
+        $this->transactional = (bool) $transactional;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -48,7 +57,7 @@ class SparkPost extends Mailer
 
         $parameters = [
             'options' => [
-                'transactional' => true,
+                'transactional' => $this->transactional,
             ],
             'content' => [
                 'from' => [
