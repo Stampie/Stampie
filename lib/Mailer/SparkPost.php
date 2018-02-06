@@ -23,6 +23,14 @@ class SparkPost extends Mailer
 {
     private $transactional;
 
+    /**
+     * @param \Http\Client\HttpClient $httpClient
+     * @param string                  $serverToken
+     * @param bool                    $transactional Whether messages are transactional for unsubscribe
+     *                                               and suppression purposes
+     *
+     * @see https://en.wikipedia.org/wiki/Email_marketing#Transactional_emails
+     */
     public function __construct(HttpClient $httpClient, $serverToken, $transactional = true)
     {
         parent::__construct($httpClient, $serverToken);
