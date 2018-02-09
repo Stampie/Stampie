@@ -21,6 +21,19 @@ use Stampie\Util\AttachmentUtils;
 class Mandrill extends Mailer
 {
     /**
+     * @var string
+     */
+    private $subaccount;
+
+    /**
+     * @param string $subaccount
+     */
+    public function setSubaccount($subaccount)
+    {
+        $this->subaccount = $subaccount;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function getEndpoint()
@@ -95,6 +108,10 @@ class Mandrill extends Mailer
                 'images'      => $images,
             ]),
         ];
+
+        if ($this->subaccount) {
+            $parameters['message']['subaccount'] = $this->subaccount;
+        }
 
         return json_encode($parameters);
     }

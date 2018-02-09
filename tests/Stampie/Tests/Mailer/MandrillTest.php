@@ -194,6 +194,25 @@ class MandrillTest extends TestCase
         $this->mailer->send($message);
     }
 
+    public function testSendWithSubaccount()
+    {
+        $message = $this->getMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome!');
+
+        $this->httpClient
+            ->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (Request $request) {
+                $body = json_decode((string) $request->getBody(), true);
+
+                return $body['message']['subaccount'] === 'sub';
+            }))
+            ->willReturn(new Response())
+        ;
+
+        $this->mailer->setSubaccount('sub');
+        $this->mailer->send($message);
+    }
+
     /**
      * @dataProvider carbonCopyProvider
      *
