@@ -37,6 +37,7 @@ class Postmark extends Mailer
         // Not 422 contains information about API Error
         if ($response->getStatusCode() == 422) {
             $error = json_decode((string) $response->getBody());
+
             throw new ApiException(isset($error->Message) ? $error->Message : 'Unprocessable Entity', $httpException);
         }
 
