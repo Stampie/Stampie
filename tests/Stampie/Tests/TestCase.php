@@ -108,8 +108,7 @@ class TestCase extends BaseTestCase
     {
         $attachment = $this->getMockBuilder('\\Stampie\\Attachment')
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $attachment
             ->expects($this->any())

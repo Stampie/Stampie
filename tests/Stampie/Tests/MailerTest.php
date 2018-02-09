@@ -81,7 +81,6 @@ class MailerTest extends TestCase
         $this->mailer->send($this->getMockBuilder('Stampie\MessageInterface')->getMock());
     }
 
-
     public function testSendWithFiles()
     {
         $adapter = $this->httpClient;
@@ -97,18 +96,17 @@ class MailerTest extends TestCase
         $mailer
             ->expects($this->once())
             ->method('getFiles')
-            ->willReturn(['files' => ['foo'=> __DIR__ . '/../../Fixtures/logo.png']]);
+            ->willReturn(['files' => ['foo'=> __DIR__.'/../../Fixtures/logo.png']]);
 
         $adapter
             ->expects($this->once())
             ->method('sendRequest')
-            ->with($this->callback(function(RequestInterface $request) {
+            ->with($this->callback(function (RequestInterface $request) {
                 return preg_match('|multipart/form-data; boundary="[a-zA-Z0-9\._]+"|sim', $request->getHeaderLine('Content-Type'));
             }))
             ->will($this->returnValue(
                 $this->getResponseMock(true)
-            ))
-        ;
+            ));
 
         $mailer->send($this->getMockBuilder('Stampie\MessageInterface')->getMock());
     }

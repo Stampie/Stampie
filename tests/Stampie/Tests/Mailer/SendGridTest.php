@@ -63,13 +63,11 @@ class SendGridTest extends TestCase
                                'email' => 'bob@example.com',
                            ],
                         'content' => [
-                                ['type' => 'text/html', 'value' => 'Trying out Stampie',],
+                                ['type' => 'text/html', 'value' => 'Trying out Stampie'],
                             ],
-                    ])
-                ;
+                    ]);
             }))
-            ->willReturn(new Response())
-        ;
+            ->willReturn(new Response());
 
         $this->mailer->send($message);
     }
@@ -87,14 +85,13 @@ class SendGridTest extends TestCase
             ->method('sendRequest')
             ->with($this->callback(function (Request $request) {
                 $body = (string) $request->getBody();
+
                 return
                     false !== strpos($body, base64_encode('Attachment #1'.PHP_EOL))
                     && false !== strpos($body, base64_encode('Attachment #2'.PHP_EOL))
-                    && false !== strpos($body, base64_encode('Attachment #3'.PHP_EOL))
-                ;
+                    && false !== strpos($body, base64_encode('Attachment #3'.PHP_EOL));
             }))
-            ->willReturn(new Response())
-        ;
+            ->willReturn(new Response());
 
         $this->mailer->send($message);
     }
@@ -118,11 +115,10 @@ class SendGridTest extends TestCase
                             'email' => 'bob@example.com',
                         ],
                         'content' => [],
-                    'categories' => ['tag'],
+                    'categories'  => ['tag'],
                 ]);
             }))
-            ->willReturn(new Response())
-        ;
+            ->willReturn(new Response());
 
         $this->mailer->send($message);
     }
@@ -145,12 +141,11 @@ class SendGridTest extends TestCase
                         'from' => [
                             'email' => 'bob@example.com',
                         ],
-                        'content' => [],
+                        'content'    => [],
                         'custom_args'=> ['client_name' => 'Stampie'],
                     ]);
             }))
-            ->willReturn(new Response())
-        ;
+            ->willReturn(new Response());
 
         $this->mailer->send($message);
     }
@@ -176,8 +171,7 @@ class SendGridTest extends TestCase
                         'content' => [],
                     ]);
             }))
-            ->willReturn(new Response())
-        ;
+            ->willReturn(new Response());
 
         $this->mailer->send($message);
     }
@@ -193,8 +187,7 @@ class SendGridTest extends TestCase
 
         $this->httpClient
             ->method('sendRequest')
-            ->willReturn($response)
-        ;
+            ->willReturn($response);
 
         $this->mailer->send($message);
     }
@@ -210,8 +203,7 @@ class SendGridTest extends TestCase
 
         $this->httpClient
             ->method('sendRequest')
-            ->willReturn($response)
-        ;
+            ->willReturn($response);
 
         $this->mailer->send($message);
     }
