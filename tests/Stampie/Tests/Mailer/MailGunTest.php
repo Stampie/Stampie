@@ -58,11 +58,9 @@ class MailGunTest extends TestCase
                     $request->getMethod() === 'POST'
                     && (string) $request->getUri() === 'https://api.mailgun.net/v2/henrik.bjrnskov.dk/messages'
                     && $request->getHeaderLine('Content-Type') === 'application/x-www-form-urlencoded'
-                    && $request->getHeaderLine('Authorization') === 'Basic '.base64_encode('api:myCustomKey')
-                ;
+                    && $request->getHeaderLine('Authorization') === 'Basic '.base64_encode('api:myCustomKey');
             }))
-            ->willReturn($response)
-        ;
+            ->willReturn($response);
 
         $this->mailer->send($message);
     }
@@ -84,17 +82,16 @@ class MailGunTest extends TestCase
             ->method('sendRequest')
             ->with($this->callback(function (Request $request) {
                 $body = (string) $request->getBody();
+
                 return
                     preg_match('#^multipart/form-data; boundary="[^"]+"$#', $request->getHeaderLine('Content-Type'), $matches)
                     && false !== strpos($body, 'Attachment #1')
                     && false !== strpos($body, 'Attachment #2')
                     && false !== strpos($body, 'Attachment #3')
                     && false !== strpos($body, 'Attachment #4')
-                    && false !== strpos($body, 'Attachment #5')
-                ;
+                    && false !== strpos($body, 'Attachment #5');
             }))
-            ->willReturn($response)
-        ;
+            ->willReturn($response);
 
         $this->mailer->send($message);
     }

@@ -41,6 +41,7 @@ class SparkPostTest extends TestCase
             ->method('sendRequest')
             ->with($this->callback(function (Request $request) {
                 $body = json_decode((string) $request->getBody(), true);
+
                 return $body['options']['transactional'] === false;
             }))
             ->willReturn(new Response());
@@ -82,6 +83,7 @@ class SparkPostTest extends TestCase
             ->method('sendRequest')
             ->with($this->callback(function (Request $request) {
                 $body = json_decode((string) $request->getBody(), true);
+
                 return
                     $request->getMethod() === 'POST'
                     && (string) $request->getUri() === 'https://api.sparkpost.com/api/v1/transmissions'
@@ -90,48 +92,48 @@ class SparkPostTest extends TestCase
                     && $body == [
                         'options' => ['transactional' => true],
                         'content' => [
-                            'from' => ['email' => 'bob@example.com', 'name' => 'Bob'],
+                            'from'    => ['email' => 'bob@example.com', 'name' => 'Bob'],
                             'headers' => [
                                 'X-Custom-Header' => 'My Custom Header Value',
-                                'CC' => 'Mark <cc-mark@example.com>,cc-john@example.com',
+                                'CC'              => 'Mark <cc-mark@example.com>,cc-john@example.com',
                             ],
-                            'subject' => 'Stampie is awesome!',
-                            'text' => 'Stampie',
-                            'html' => '<h1>Stampie</h1>',
+                            'subject'  => 'Stampie is awesome!',
+                            'text'     => 'Stampie',
+                            'html'     => '<h1>Stampie</h1>',
                             'reply_to' => 'reply@example.com',
                         ],
                         'recipients' => [
                             [
                                 'address' => [
-                                    'email' => 'alice@example.com',
+                                    'email'     => 'alice@example.com',
                                     'header_to' => 'Alice <alice@example.com>,charlie@example.com',
                                 ],
                                 'tags' => [],
                             ],
                             [
                                 'address' => [
-                                    'email' => 'charlie@example.com',
+                                    'email'     => 'charlie@example.com',
                                     'header_to' => 'Alice <alice@example.com>,charlie@example.com',
                                 ],
                                 'tags' => [],
                             ],
                             [
                                 'address' => [
-                                    'email' => 'cc-mark@example.com',
+                                    'email'     => 'cc-mark@example.com',
                                     'header_to' => 'Alice <alice@example.com>,charlie@example.com',
                                 ],
                                 'tags' => [],
                             ],
                             [
                                 'address' => [
-                                    'email' => 'cc-john@example.com',
+                                    'email'     => 'cc-john@example.com',
                                     'header_to' => 'Alice <alice@example.com>,charlie@example.com',
                                 ],
                                 'tags' => [],
                             ],
                             [
                                 'address' => [
-                                    'email' => 'bcc-sally@example.com',
+                                    'email'     => 'bcc-sally@example.com',
                                     'header_to' => 'Alice <alice@example.com>,charlie@example.com',
                                 ],
                                 'tags' => [],
@@ -230,7 +232,7 @@ class SparkPostTest extends TestCase
                             'type' => 'image/jpeg',
                             'name' => 'orange',
                             'data' => base64_encode(file_get_contents($fixtureDir.'/orange.jpg')),
-                        ]
+                        ],
                     ]
                     && array_key_exists('attachments', $body['content'])
                     && $body['content']['attachments'] === [
@@ -246,8 +248,7 @@ class SparkPostTest extends TestCase
                         ],
                     ];
             }))
-            ->willReturn(new Response())
-        ;
+            ->willReturn(new Response());
 
         $this->mailer->send($message);
     }
@@ -278,7 +279,8 @@ class SparkPostTest extends TestCase
         $this->mailer->send($message);
     }
 
-    public function badRequestProvider() {
+    public function badRequestProvider()
+    {
         foreach ([400, 401, 403, 404, 405, 409, 415, 422, 429] as $code) {
             yield [$code, true];
         }

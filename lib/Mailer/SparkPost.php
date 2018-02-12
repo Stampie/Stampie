@@ -50,7 +50,7 @@ class SparkPost extends Mailer
     protected function getHeaders()
     {
         return [
-            'Content-Type' => 'application/json',
+            'Content-Type'  => 'application/json',
             'Authorization' => $this->getServerToken(),
         ];
     }
@@ -68,12 +68,12 @@ class SparkPost extends Mailer
             ],
             'content' => [
                 'from' => [
-                    'name' => $from->getName(),
+                    'name'  => $from->getName(),
                     'email' => $from->getEmail(),
                 ],
                 'subject' => $message->getSubject(),
-                'text' => $message->getText(),
-                'html' => $message->getHtml(),
+                'text'    => $message->getText(),
+                'html'    => $message->getHtml(),
             ],
         ];
 
@@ -126,7 +126,7 @@ class SparkPost extends Mailer
 
             $parameters['recipients'][] = [
                 'address' => [
-                    'email' => $recipient->getEmail(),
+                    'email'     => $recipient->getEmail(),
                     'header_to' => $toIdentityString,
                 ],
                 'tags' => $tags,

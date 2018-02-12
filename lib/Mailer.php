@@ -247,6 +247,7 @@ abstract class Mailer implements MailerInterface
         }
 
         $request = $this->getMessageFactory()->createRequest('POST', $this->getEndpoint(), $headers, $content);
+
         return $this->getHttpClient()->sendRequest($request);
     }
 }

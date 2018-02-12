@@ -40,9 +40,9 @@ class IdentityUtilsTest extends TestCase
                 [
                     new Identity('john@example.com', 'John'),
                     new Identity('bob@example.com', 'Bob'),
-                    new Identity('charlie@example.com')
+                    new Identity('charlie@example.com'),
                 ],
-                'John <john@example.com>,Bob <bob@example.com>,charlie@example.com'
+                'John <john@example.com>,Bob <bob@example.com>,charlie@example.com',
             ],
         ];
     }

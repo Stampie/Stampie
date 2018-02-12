@@ -39,6 +39,7 @@ class PostmarkTest extends TestCase
             ->method('sendRequest')
             ->with($this->callback(function (Request $request) {
                 $body = json_decode((string) $request->getBody(), true);
+
                 return
                     $request->getMethod() === 'POST'
                     && (string) $request->getUri() === 'http://api.postmarkapp.com/email'
@@ -46,16 +47,14 @@ class PostmarkTest extends TestCase
                     && $request->getHeaderLine('Accept') === 'application/json'
                     && $request->getHeaderLine('X-Postmark-Server-Token') === self::SERVER_TOKEN
                     && $body == [
-                        'From' => 'bob@example.com',
-                        'To' => 'alice@example.com',
-                        'Subject' => 'Stampie is awesome!',
+                        'From'     => 'bob@example.com',
+                        'To'       => 'alice@example.com',
+                        'Subject'  => 'Stampie is awesome!',
                         'HtmlBody' => '<h1>Stampie</h1>',
                         'TextBody' => 'Stampie',
-                    ]
-                ;
+                    ];
             }))
-            ->willReturn($response)
-        ;
+            ->willReturn($response);
 
         $this->mailer->send($message);
     }
@@ -64,7 +63,7 @@ class PostmarkTest extends TestCase
     {
         $response = new Response();
 
-        $message = $this->getTaggableMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome', null, null, [],'tag');
+        $message = $this->getTaggableMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome', null, null, [], 'tag');
 
         $this->httpClient
             ->expects($this->once())
@@ -73,14 +72,13 @@ class PostmarkTest extends TestCase
                 $body = json_decode((string) $request->getBody(), true);
 
                 return $body == [
-                    'From' => 'bob@example.com',
-                    'To' => 'alice@example.com',
+                    'From'    => 'bob@example.com',
+                    'To'      => 'alice@example.com',
                     'Subject' => 'Stampie is awesome',
-                    'Tag' => 'tag',
+                    'Tag'     => 'tag',
                 ];
             }))
-            ->willReturn($response)
-         ;
+            ->willReturn($response);
 
         $this->mailer->send($message);
     }
@@ -99,27 +97,27 @@ class PostmarkTest extends TestCase
             ->method('sendRequest')
             ->with($this->callback(function (Request $request) {
                 $body = json_decode((string) $request->getBody(), true);
+
                 return $body == [
-                    'From' => 'bob@example.com',
-                    'To' => 'alice@example.com',
-                    'Subject' => 'Stampie is awesome',
+                    'From'        => 'bob@example.com',
+                    'To'          => 'alice@example.com',
+                    'Subject'     => 'Stampie is awesome',
                     'Attachments' => [
                         [
-                            'Name' => 'path1.txt',
-                            'Content' => base64_encode('Attachment #1'.PHP_EOL),
+                            'Name'        => 'path1.txt',
+                            'Content'     => base64_encode('Attachment #1'.PHP_EOL),
                             'ContentType' => 'text/plain',
                         ],
                         [
-                            'Name' => 'path2.txt',
-                            'Content' => base64_encode('Attachment #2'.PHP_EOL),
+                            'Name'        => 'path2.txt',
+                            'Content'     => base64_encode('Attachment #2'.PHP_EOL),
                             'ContentType' => 'text/plain',
-                            'ContentID' => 'id1',
-                        ]
-                    ]
+                            'ContentID'   => 'id1',
+                        ],
+                    ],
                 ];
             }))
-            ->willReturn($response)
-        ;
+            ->willReturn($response);
 
         $this->mailer->send($message);
     }

@@ -26,7 +26,7 @@ class MandrillTest extends TestCase
     public function setUp()
     {
         $this->httpClient = $this->getMockBuilder(HttpClient::class)->getMock();
-        $this->mailer = new Mandrill($this->httpClient, self::SERVER_TOKEN );
+        $this->mailer = new Mandrill($this->httpClient, self::SERVER_TOKEN);
     }
 
     public function testSend()
@@ -40,39 +40,38 @@ class MandrillTest extends TestCase
             ->method('sendRequest')
             ->with($this->callback(function (Request $request) {
                 $body = json_decode((string) $request->getBody(), true);
+
                 return
                     $request->getMethod() === 'POST'
                     && (string) $request->getUri() === 'https://mandrillapp.com/api/1.0/messages/send.json'
                     && $request->getHeaderLine('Content-Type') === 'application/json'
                     && $body == [
-                        'key' => self::SERVER_TOKEN,
+                        'key'     => self::SERVER_TOKEN,
                         'message' => [
                             'from_email' => 'bob@example.com',
-                            'to' => [
+                            'to'         => [
                                 [
                                     'email' => 'alice@example.com',
-                                    'name' => null,
-                                    'type' => 'to'
-                                ]
+                                    'name'  => null,
+                                    'type'  => 'to',
+                                ],
                             ],
                             'subject' => 'Stampie is awesome!',
-                            'html' => 'Trying out Stampie',
+                            'html'    => 'Trying out Stampie',
                             'headers' => [
                                 'X-Custom-Header' => 'My Custom Header Value',
                             ],
                         ],
-                    ]
-                ;
+                    ];
             }))
-            ->willReturn(new Response())
-        ;
+            ->willReturn(new Response());
 
         $this->mailer->send($message);
     }
 
     public function testSendTaggable()
     {
-        $message = $this->getTaggableMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome', null, null, [],['tag']);
+        $message = $this->getTaggableMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome', null, null, [], ['tag']);
 
         $this->httpClient
             ->expects($this->once())
@@ -81,32 +80,31 @@ class MandrillTest extends TestCase
                 $body = json_decode((string) $request->getBody(), true);
 
                 return $body == [
-                    'key' => self::SERVER_TOKEN,
+                    'key'     => self::SERVER_TOKEN,
                     'message' => [
                         'from_email' => 'bob@example.com',
-                        'to' => [
+                        'to'         => [
                             [
                                 'email' => 'alice@example.com',
-                                'name' => null,
-                                'type' => 'to',
+                                'name'  => null,
+                                'type'  => 'to',
                             ],
                         ],
                         'subject' => 'Stampie is awesome',
-                        'tags' => [
+                        'tags'    => [
                             'tag',
                         ],
                     ],
                 ];
             }))
-            ->willReturn(new Response())
-        ;
+            ->willReturn(new Response());
 
         $this->mailer->send($message);
     }
 
     public function testSendMetadataAware()
     {
-        $message = $this->getMetadataAwareMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome', null, null, [],[
+        $message = $this->getMetadataAwareMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome', null, null, [], [
             'client_name' => 'Stampie',
         ]);
 
@@ -117,25 +115,24 @@ class MandrillTest extends TestCase
                 $body = json_decode((string) $request->getBody(), true);
 
                 return $body == [
-                    'key' => self::SERVER_TOKEN,
+                    'key'     => self::SERVER_TOKEN,
                     'message' => [
                         'from_email' => 'bob@example.com',
-                        'to' => [
+                        'to'         => [
                             [
                                 'email' => 'alice@example.com',
-                                'name' => null,
-                                'type' => 'to',
+                                'name'  => null,
+                                'type'  => 'to',
                             ],
                         ],
-                        'subject' => 'Stampie is awesome',
+                        'subject'  => 'Stampie is awesome',
                         'metadata' => [
                             'client_name' => 'Stampie',
                         ],
                     ],
                 ];
             }))
-            ->willReturn(new Response())
-        ;
+            ->willReturn(new Response());
 
         $this->mailer->send($message);
     }
@@ -155,41 +152,40 @@ class MandrillTest extends TestCase
                 $body = json_decode((string) $request->getBody(), true);
 
                 return $body == [
-                    'key' => self::SERVER_TOKEN,
+                    'key'     => self::SERVER_TOKEN,
                     'message' => [
                         'from_email' => 'bob@example.com',
-                        'to' => [
+                        'to'         => [
                             [
                                 'email' => 'alice@example.com',
-                                'name' => null,
-                                'type' => 'to',
+                                'name'  => null,
+                                'type'  => 'to',
                             ],
                         ],
-                        'subject' => 'Stampie is awesome',
+                        'subject'     => 'Stampie is awesome',
                         'attachments' => [
                             [
-                                'type' => 'text/plain',
-                                'name' => 'path1.txt',
+                                'type'    => 'text/plain',
+                                'name'    => 'path1.txt',
                                 'content' => base64_encode(file_get_contents(__DIR__.'/../../../Fixtures/path-1.txt')),
                             ],
                             [
-                                'type' => 'text/plain',
-                                'name' => 'path2.txt',
+                                'type'    => 'text/plain',
+                                'name'    => 'path2.txt',
                                 'content' => base64_encode(file_get_contents(__DIR__.'/../../../Fixtures/path-2.txt')),
                             ],
                         ],
                         'images' => [
                             [
-                                'type' => 'image/png',
-                                'name' => 'contentid1',
+                                'type'    => 'image/png',
+                                'name'    => 'contentid1',
                                 'content' => base64_encode(file_get_contents(__DIR__.'/../../../Fixtures/logo.png')),
                             ],
                         ],
                     ],
                 ];
             }))
-            ->willReturn(new Response())
-        ;
+            ->willReturn(new Response());
 
         $this->mailer->send($message);
     }
@@ -206,8 +202,7 @@ class MandrillTest extends TestCase
 
                 return $body['message']['subaccount'] === 'sub';
             }))
-            ->willReturn(new Response())
-        ;
+            ->willReturn(new Response());
 
         $this->mailer->setSubaccount('sub');
         $this->mailer->send($message);
@@ -217,8 +212,8 @@ class MandrillTest extends TestCase
      * @dataProvider carbonCopyProvider
      *
      * @param string $recipient
-     * @param array $ccs
-     * @param array $expectedTos
+     * @param array  $ccs
+     * @param array  $expectedTos
      */
     public function testFormatCarbonCopy($recipient, $ccs, $expectedTos)
     {
@@ -231,16 +226,15 @@ class MandrillTest extends TestCase
                 $body = json_decode((string) $request->getBody(), true);
 
                 return $body == [
-                    'key' => self::SERVER_TOKEN,
+                    'key'     => self::SERVER_TOKEN,
                     'message' => [
                         'from_email' => 'bob@example.com',
-                        'to' => $expectedTos,
-                        'subject' => 'Stampie is awesome',
+                        'to'         => $expectedTos,
+                        'subject'    => 'Stampie is awesome',
                     ],
                 ];
             }))
-            ->willReturn(new Response())
-        ;
+            ->willReturn(new Response());
 
         $this->mailer->send($message);
     }
@@ -249,8 +243,8 @@ class MandrillTest extends TestCase
      * @dataProvider blindCarbonCopyProvider
      *
      * @param string $recipient
-     * @param array $bccs
-     * @param array $expectedTos
+     * @param array  $bccs
+     * @param array  $expectedTos
      */
     public function testFormatBlindCarbonCopy($recipient, $bccs, $expectedTos)
     {
@@ -263,16 +257,15 @@ class MandrillTest extends TestCase
                 $body = json_decode((string) $request->getBody(), true);
 
                 return $body == [
-                        'key' => self::SERVER_TOKEN,
+                        'key'     => self::SERVER_TOKEN,
                         'message' => [
                             'from_email' => 'bob@example.com',
-                            'to' => $expectedTos,
-                            'subject' => 'Stampie is awesome',
+                            'to'         => $expectedTos,
+                            'subject'    => 'Stampie is awesome',
                         ],
                     ];
             }))
-            ->willReturn(new Response())
-        ;
+            ->willReturn(new Response());
 
         $this->mailer->send($message);
     }
