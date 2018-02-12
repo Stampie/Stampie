@@ -4,6 +4,14 @@ The change log describes what been "Added", "Removed", "Changed" or "Fixed" betw
 
 ## Unreleased
 
+## 1.0.0-beta2
+
+### Added
+
+- Support for Mailjet
+- Support for Sparkpost
+- Support for Mandrill subaccounts
+
 ## 1.0.0-beta1 
 
 ### Added
