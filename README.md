@@ -13,6 +13,7 @@ It is very easy to use and to integrate into your application as demonstrated be
 * [MailGun](https://www.mailgun.com)
 * [Mandrill](https://mandrill.com/)
 * [SparkPost](https://sparkpost.com)
+* [Mailjet](https://www.mailjet.com)
 
 ```php
 <?php
