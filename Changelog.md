@@ -4,6 +4,12 @@ The change log describes what been "Added", "Removed", "Changed" or "Fixed" betw
 
 ## Unreleased
 
+## 1.0.1
+
+### Added
+
+- Marked HTTPlug 2 as supported.
+
 ## 1.0.0-beta2
 
 ### Added
@@ -12,7 +18,7 @@ The change log describes what been "Added", "Removed", "Changed" or "Fixed" betw
 - Support for Sparkpost
 - Support for Mandrill subaccounts
 
-## 1.0.0-beta1 
+## 1.0.0-beta1
 
 ### Added
 
