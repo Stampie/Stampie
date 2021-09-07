@@ -74,7 +74,7 @@ Read more about the virtual packages, why this is a good idea and about the flex
 
 ## Documentation
 
-There is generated API documentation for all tags and released versions. Those can be found at [stampie.github.io/Stampie/api/master/](https://stampie.github.io/Stampie/api/master/).
+There is generated API documentation for all tags and released versions. Those can be found at [stampie.github.io/Stampie/api/main/](https://stampie.github.io/Stampie/api/main/).
 
 ## Extensions
 
