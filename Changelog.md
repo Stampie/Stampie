@@ -4,6 +4,10 @@ The change log describes what been "Added", "Removed", "Changed" or "Fixed" betw
 
 ## Unreleased
 
+### Added
+
+- Added support for PHP 8
+
 ### Removed
 
 - Removed support for PHP <7.2
