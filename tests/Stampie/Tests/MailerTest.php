@@ -135,6 +135,12 @@ class MailerTest extends TestCase
 
     protected function getMailerMock(array $args = [])
     {
-        return $this->getMockForAbstractClass('Stampie\Mailer', $args);
+        $mailer = $this->getMockForAbstractClass('Stampie\Mailer', $args);
+
+        $mailer->expects($this->any())
+            ->method('getEndpoint')
+            ->willReturn('https://example.com/fake-endpoint');
+
+        return $mailer;
     }
 }
