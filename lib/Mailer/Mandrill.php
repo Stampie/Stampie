@@ -93,19 +93,19 @@ class Mandrill extends Mailer
         }
 
         $parameters = [
-            'key'     => $this->getServerToken(),
+            'key' => $this->getServerToken(),
             'message' => array_filter([
-                'from_email'  => $from->getEmail(),
-                'from_name'   => $from->getName(),
-                'to'          => $to,
-                'subject'     => $message->getSubject(),
-                'headers'     => $headers,
-                'text'        => $message->getText(),
-                'html'        => $message->getHtml(),
-                'tags'        => $tags,
-                'metadata'    => $metadata,
+                'from_email' => $from->getEmail(),
+                'from_name' => $from->getName(),
+                'to' => $to,
+                'subject' => $message->getSubject(),
+                'headers' => $headers,
+                'text' => $message->getText(),
+                'html' => $message->getHtml(),
+                'tags' => $tags,
+                'metadata' => $metadata,
                 'attachments' => $attachments,
-                'images'      => $images,
+                'images' => $images,
             ]),
         ];
 
@@ -135,15 +135,15 @@ class Mandrill extends Mailer
      * @return array
      *               First element: Attachments – an array containing arrays of the following format
      *               array(
-     *               'type'    => type,
-     *               'name'    => name,
+     *               'type' => type,
+     *               'name' => name,
      *               'content' => base64-encoded content,
      *               )
      *
      *     Second element: Inline images – an array containing arrays of the following format
      *         array(
-     *             'type'    => type,
-     *             'name'    => id,
+     *             'type' => type,
+     *             'name' => id,
      *             'content' => base64-encoded content,
      *         )
      */
@@ -156,8 +156,8 @@ class Mandrill extends Mailer
         foreach ($attachments as $name => $attachment) {
             $type = $attachment->getType();
             $item = [
-                'type'    => $type,
-                'name'    => $name,
+                'type' => $type,
+                'name' => $name,
                 'content' => base64_encode($this->getAttachmentContent($attachment)),
             ];
 

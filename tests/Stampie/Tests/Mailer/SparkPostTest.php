@@ -92,48 +92,48 @@ class SparkPostTest extends TestCase
                     && $body == [
                         'options' => ['transactional' => true],
                         'content' => [
-                            'from'    => ['email' => 'bob@example.com', 'name' => 'Bob'],
+                            'from' => ['email' => 'bob@example.com', 'name' => 'Bob'],
                             'headers' => [
                                 'X-Custom-Header' => 'My Custom Header Value',
-                                'CC'              => 'Mark <cc-mark@example.com>,cc-john@example.com',
+                                'CC' => 'Mark <cc-mark@example.com>,cc-john@example.com',
                             ],
-                            'subject'  => 'Stampie is awesome!',
-                            'text'     => 'Stampie',
-                            'html'     => '<h1>Stampie</h1>',
+                            'subject' => 'Stampie is awesome!',
+                            'text' => 'Stampie',
+                            'html' => '<h1>Stampie</h1>',
                             'reply_to' => 'reply@example.com',
                         ],
                         'recipients' => [
                             [
                                 'address' => [
-                                    'email'     => 'alice@example.com',
+                                    'email' => 'alice@example.com',
                                     'header_to' => 'Alice <alice@example.com>,charlie@example.com',
                                 ],
                                 'tags' => [],
                             ],
                             [
                                 'address' => [
-                                    'email'     => 'charlie@example.com',
+                                    'email' => 'charlie@example.com',
                                     'header_to' => 'Alice <alice@example.com>,charlie@example.com',
                                 ],
                                 'tags' => [],
                             ],
                             [
                                 'address' => [
-                                    'email'     => 'cc-mark@example.com',
+                                    'email' => 'cc-mark@example.com',
                                     'header_to' => 'Alice <alice@example.com>,charlie@example.com',
                                 ],
                                 'tags' => [],
                             ],
                             [
                                 'address' => [
-                                    'email'     => 'cc-john@example.com',
+                                    'email' => 'cc-john@example.com',
                                     'header_to' => 'Alice <alice@example.com>,charlie@example.com',
                                 ],
                                 'tags' => [],
                             ],
                             [
                                 'address' => [
-                                    'email'     => 'bcc-sally@example.com',
+                                    'email' => 'bcc-sally@example.com',
                                     'header_to' => 'Alice <alice@example.com>,charlie@example.com',
                                 ],
                                 'tags' => [],

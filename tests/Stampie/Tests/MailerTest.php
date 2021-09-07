@@ -96,7 +96,7 @@ class MailerTest extends TestCase
         $mailer
             ->expects($this->once())
             ->method('getFiles')
-            ->willReturn(['files' => ['foo'=> __DIR__.'/../../Fixtures/logo.png']]);
+            ->willReturn(['files' => ['foo' => __DIR__.'/../../Fixtures/logo.png']]);
 
         $adapter
             ->expects($this->once())
@@ -135,6 +135,12 @@ class MailerTest extends TestCase
 
     protected function getMailerMock(array $args = [])
     {
-        return $this->getMockForAbstractClass('Stampie\Mailer', $args);
+        $mailer = $this->getMockForAbstractClass('Stampie\Mailer', $args);
+
+        $mailer->expects($this->any())
+            ->method('getEndpoint')
+            ->willReturn('https://example.com/fake-endpoint');
+
+        return $mailer;
     }
 }
