@@ -5,6 +5,9 @@ namespace Stampie\Tests\Mailer;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Http\Client\HttpClient;
+use PHPUnit\Framework\MockObject\MockObject;
+use Stampie\Exception\ApiException;
+use Stampie\Exception\HttpException;
 use Stampie\Mailer\Postmark;
 use Stampie\Tests\TestCase;
 
@@ -18,11 +21,11 @@ class PostmarkTest extends TestCase
     private $mailer;
 
     /**
-     * @var HttpClient|\PHPUnit_Framework_MockObject_MockObject
+     * @var HttpClient&MockObject
      */
     private $httpClient;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->httpClient = $this->getMockBuilder(HttpClient::class)->getMock();
         $this->mailer = new Postmark($this->httpClient, self::SERVER_TOKEN);
@@ -122,10 +125,6 @@ class PostmarkTest extends TestCase
         $this->mailer->send($message);
     }
 
-    /**
-     * @expectedException \Stampie\Exception\HttpException
-     * @expectedExceptionMessage Internal Server Error
-     */
     public function testHandleInternalServerError()
     {
         $response = new Response(500);
@@ -136,13 +135,12 @@ class PostmarkTest extends TestCase
             ->method('sendRequest')
             ->willReturn($response);
 
+        $this->expectException(HttpException::class);
+        $this->expectExceptionMessage('Internal Server Error');
+
         $this->mailer->send($message);
     }
 
-    /**
-     * @expectedException \Stampie\Exception\HttpException
-     * @expectedExceptionMessage Bad Request
-     */
     public function testHandlerBadRequest()
     {
         $response = new Response(400);
@@ -153,13 +151,12 @@ class PostmarkTest extends TestCase
             ->method('sendRequest')
             ->willReturn($response);
 
+        $this->expectException(HttpException::class);
+        $this->expectExceptionMessage('Bad Request');
+
         $this->mailer->send($message);
     }
 
-    /**
-     * @expectedException \Stampie\Exception\ApiException
-     * @expectedExceptionMessage Bad Credentials
-     */
     public function testHandleBadCredentials()
     {
         $response = new Response(422, [], '{ "Message" : "Bad Credentials" }');
@@ -169,6 +166,9 @@ class PostmarkTest extends TestCase
         $this->httpClient
             ->method('sendRequest')
             ->willReturn($response);
+
+        $this->expectException(ApiException::class);
+        $this->expectExceptionMessage('Bad Credentials');
 
         $this->mailer->send($message);
     }

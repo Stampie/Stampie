@@ -5,6 +5,8 @@ namespace Stampie\Tests\Mailer;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Http\Client\HttpClient;
+use PHPUnit\Framework\MockObject\MockObject;
+use Stampie\Exception\ApiException;
 use Stampie\Identity;
 use Stampie\Mailer\Mandrill;
 use Stampie\Tests\TestCase;
@@ -19,11 +21,11 @@ class MandrillTest extends TestCase
     private $mailer;
 
     /**
-     * @var HttpClient|\PHPUnit_Framework_MockObject_MockObject
+     * @var HttpClient&MockObject
      */
     private $httpClient;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->httpClient = $this->getMockBuilder(HttpClient::class)->getMock();
         $this->mailer = new Mandrill($this->httpClient, self::SERVER_TOKEN);
@@ -270,10 +272,6 @@ class MandrillTest extends TestCase
         $this->mailer->send($message);
     }
 
-    /**
-     * @expectedException \Stampie\Exception\ApiException
-     * @expectedExceptionMessage Bad Request
-     */
     public function testHandleBadRequest()
     {
         $response = new Response(400, [], json_encode(['message' => 'Bad Request', 'code' => -1]));
@@ -284,13 +282,12 @@ class MandrillTest extends TestCase
             ->method('sendRequest')
             ->willReturn($response);
 
+        $this->expectException(ApiException::class);
+        $this->expectExceptionMessage('Bad Request');
+
         $this->mailer->send($message);
     }
 
-    /**
-     * @expectedException \Stampie\Exception\ApiException
-     * @expectedExceptionMessage Unauthorized
-     */
     public function testHandleUnauthorized()
     {
         $response = new Response(401, [], json_encode(['message' => 'Unauthorized', 'code' => -1]));
@@ -301,13 +298,12 @@ class MandrillTest extends TestCase
             ->method('sendRequest')
             ->willReturn($response);
 
+        $this->expectException(ApiException::class);
+        $this->expectExceptionMessage('Unauthorized');
+
         $this->mailer->send($message);
     }
 
-    /**
-     * @expectedException \Stampie\Exception\ApiException
-     * @expectedExceptionMessage Gateway Timeout
-     */
     public function testHandleGatewayTimeout()
     {
         $response = new Response(504, [], json_encode(['message' => 'Gateway Timeout', 'code' => -1]));
@@ -317,6 +313,9 @@ class MandrillTest extends TestCase
         $this->httpClient
             ->method('sendRequest')
             ->willReturn($response);
+
+        $this->expectException(ApiException::class);
+        $this->expectExceptionMessage('Gateway Timeout');
 
         $this->mailer->send($message);
     }

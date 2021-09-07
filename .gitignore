@@ -3,5 +3,6 @@ coverage
 composer.lock
 composer.phar
 phpunit.xml
+.phpunit.result.cache
 test.php
 cache

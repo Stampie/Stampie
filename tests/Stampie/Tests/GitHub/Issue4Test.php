@@ -3,6 +3,7 @@
 namespace Stampie\Tests\GitHub;
 
 use GuzzleHttp\Psr7\Response;
+use Stampie\Exception\ApiException;
 use Stampie\Mailer\Postmark;
 use Stampie\Tests\TestCase;
 
@@ -11,10 +12,6 @@ use Stampie\Tests\TestCase;
  */
 class Issue4Test extends TestCase
 {
-    /**
-     * @expectedException \Stampie\Exception\ApiException
-     * @expectedExceptionMessage Unprocessable Entity
-     */
     public function testMissingErrorMessageInResponse()
     {
         $httpClient = $this->getMockBuilder('Http\Client\HttpClient')->getMock();
@@ -23,6 +20,9 @@ class Issue4Test extends TestCase
         $mailer = new Postmark($httpClient, 'ServerToken');
 
         $message = $this->getMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome');
+
+        $this->expectException(ApiException::class);
+        $this->expectExceptionMessage('Unprocessable Entity');
 
         $mailer->send($message);
     }

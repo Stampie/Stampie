@@ -2,6 +2,7 @@
 
 namespace Stampie\Tests\Util;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Stampie\Attachment;
 use Stampie\Util\AttachmentUtils;
@@ -12,7 +13,6 @@ use Stampie\Util\AttachmentUtils;
 class AttachmentUtilsTest extends TestCase
 {
     /**
-     * @expectedException \InvalidArgumentException
      * @covers ::processAttachments
      */
     public function testProcessInvalidAttachmentsFails()
@@ -20,6 +20,7 @@ class AttachmentUtilsTest extends TestCase
         $attachments = [
             'not an attachment object',
         ];
+        $this->expectException(\InvalidArgumentException::class);
 
         AttachmentUtils::processAttachments($attachments);
     }
@@ -113,7 +114,7 @@ class AttachmentUtilsTest extends TestCase
      * @param array|null $mockMethods
      * @param string     $name
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject|Attachment
+     * @return MockObject&Attachment
      */
     protected function buildAttachment(array $mockMethods = null, $name = null)
     {
@@ -123,7 +124,7 @@ class AttachmentUtilsTest extends TestCase
         }
 
         $mock = $this->getMockBuilder('\\Stampie\\Attachment')
-                        ->setMethods($mockMethods)
+                        ->onlyMethods($mockMethods)
                         ->disableOriginalConstructor()
                         ->getMock();
 

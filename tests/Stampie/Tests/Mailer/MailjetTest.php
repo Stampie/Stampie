@@ -5,6 +5,7 @@ namespace Stampie\Tests\Mailer;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Http\Client\HttpClient;
+use PHPUnit\Framework\MockObject\MockObject;
 use Stampie\Exception\ApiException;
 use Stampie\Exception\HttpException;
 use Stampie\Identity;
@@ -21,11 +22,11 @@ class MailjetTest extends TestCase
     private $mailer;
 
     /**
-     * @var HttpClient|\PHPUnit_Framework_MockObject_MockObject
+     * @var HttpClient&MockObject
      */
     private $httpClient;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -33,12 +34,10 @@ class MailjetTest extends TestCase
         $this->mailer = new Mailjet($this->httpClient, self::SERVER_TOKEN);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Mailjet uses a "publicApiKey:privateApiKey" based ServerToken
-     */
     public function testServerTokenMissingDelimiter()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Mailjet uses a "publicApiKey:privateApiKey" based ServerToken');
         new Mailjet($this->httpClient, 'missingDelimiter');
     }
 
@@ -296,12 +295,8 @@ class MailjetTest extends TestCase
     {
         $response = new Response($statusCode, [], $content);
 
-        if (method_exists($this, 'expectException')) {
-            $this->expectException($exceptionType);
-            $this->expectExceptionMessage($exceptionMessage);
-        } else {
-            $this->setExpectedException($exceptionType, $exceptionMessage);
-        }
+        $this->expectException($exceptionType);
+        $this->expectExceptionMessage($exceptionMessage);
 
         $message = $this->getMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome!');
 

@@ -5,6 +5,7 @@ namespace Stampie\Tests\Mailer;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Http\Client\HttpClient;
+use PHPUnit\Framework\MockObject\MockObject;
 use Stampie\Mailer\MailGun;
 use Stampie\Tests\TestCase;
 
@@ -21,21 +22,19 @@ class MailGunTest extends TestCase
     private $mailer;
 
     /**
-     * @var HttpClient|\PHPUnit_Framework_MockObject_MockObject
+     * @var HttpClient&MockObject
      */
     private $httpClient;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->httpClient = $this->getMockBuilder(HttpClient::class)->getMock();
         $this->mailer = new MailGun($this->httpClient, self::SERVER_TOKEN);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testServerTokenMissingDelimeter()
     {
+        $this->expectException(\InvalidArgumentException::class);
         new MailGun($this->httpClient, 'missingDelimeter');
     }
 

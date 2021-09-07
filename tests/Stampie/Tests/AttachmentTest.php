@@ -8,7 +8,6 @@ namespace Stampie\Tests;
 class AttachmentTest extends TestCase
 {
     /**
-     * @expectedException \InvalidArgumentException
      * @covers ::__construct
      */
     public function testMissingFileFails()
@@ -16,7 +15,7 @@ class AttachmentTest extends TestCase
         $file = 'filenotfound.txt';
 
         $attachment = $this->getMockBuilder('\\Stampie\\Attachment')
-            ->setMethods(['isValidFile'])
+            ->onlyMethods(['isValidFile'])
             ->disableOriginalConstructor()
             ->getMock();
         $attachment
@@ -25,11 +24,12 @@ class AttachmentTest extends TestCase
             ->with($file)
             ->will($this->returnValue(false));
 
+        $this->expectException(\InvalidArgumentException::class);
+
         $attachment->__construct($file);
     }
 
     /**
-     * @expectedException \RuntimeException
      * @covers ::__construct
      */
     public function testUnknownFileTypeFails()
@@ -52,6 +52,8 @@ class AttachmentTest extends TestCase
             ->with($file)
             ->will($this->returnValue(null));
 
+        $this->expectException(\RuntimeException::class);
+
         $attachment->__construct($file);
     }
 
@@ -64,7 +66,7 @@ class AttachmentTest extends TestCase
         $type = 'text/plain';
 
         $attachment = $this->getMockBuilder('\\Stampie\\Attachment')
-            ->setMethods(['isValidFile', 'determineFileType'])
+            ->onlyMethods(['isValidFile', 'determineFileType'])
             ->disableOriginalConstructor()
             ->getMock();
         $attachment
@@ -99,7 +101,7 @@ class AttachmentTest extends TestCase
         $id = md5(time());
 
         $attachment = $this->getMockBuilder('\\Stampie\\Attachment')
-            ->setMethods(['isValidFile'])
+            ->onlyMethods(['isValidFile'])
             ->disableOriginalConstructor()
             ->getMock();
         $attachment
