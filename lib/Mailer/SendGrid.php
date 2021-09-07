@@ -63,7 +63,7 @@ class SendGrid extends Mailer
     protected function getHeaders()
     {
         return [
-            'Content-Type'  => 'application/json',
+            'Content-Type' => 'application/json',
             'Authorization' => 'Bearer '.$this->getServerToken(),
         ];
     }
@@ -74,9 +74,9 @@ class SendGrid extends Mailer
     protected function format(MessageInterface $message)
     {
         $personalization = [
-            'to'      => $this->formatRecipients($message->getTo()),
-            'cc'      => $this->formatRecipients($message->getCc()),
-            'bcc'     => $this->formatRecipients($message->getBcc()),
+            'to' => $this->formatRecipients($message->getTo()),
+            'cc' => $this->formatRecipients($message->getCc()),
+            'bcc' => $this->formatRecipients($message->getBcc()),
             'subject' => $message->getSubject(),
         ];
 
@@ -105,9 +105,9 @@ class SendGrid extends Mailer
 
         $parameters = [
             'personalizations' => [$personalization],
-            'from'             => $this->formatRecipients($message->getFrom())[0],
-            'reply_to'         => $this->formatRecipients($message->getReplyTo()),
-            'content'          => array_values($content),
+            'from' => $this->formatRecipients($message->getFrom())[0],
+            'reply_to' => $this->formatRecipients($message->getReplyTo()),
+            'content' => array_values($content),
         ];
 
         if (empty($parameters['reply_to'])) {
@@ -153,8 +153,8 @@ class SendGrid extends Mailer
 
         foreach ($attachments as $name => $attachment) {
             $item = [
-                'content'  => base64_encode(file_get_contents($attachment->getPath())),
-                'type'     => $attachment->getType(),
+                'content' => base64_encode(file_get_contents($attachment->getPath())),
+                'type' => $attachment->getType(),
                 'filename' => $attachment->getName(),
             ];
 
@@ -181,7 +181,7 @@ class SendGrid extends Mailer
         foreach ($this->normalizeIdentities($recipients) as $recipient) {
             $item = [
                 'email' => $recipient->getEmail(),
-                'name'  => $recipient->getName(),
+                'name' => $recipient->getName(),
             ];
 
             if (empty($item['name'])) {

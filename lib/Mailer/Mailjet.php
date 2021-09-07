@@ -47,9 +47,9 @@ class Mailjet extends Mailer
     protected function getHeaders()
     {
         return [
-            'Accept'        => 'application/json',
+            'Accept' => 'application/json',
             'Authorization' => sprintf('Basic %s', base64_encode($this->getServerToken())),
-            'Content-Type'  => 'application/json',
+            'Content-Type' => 'application/json',
         ];
     }
 
@@ -59,15 +59,15 @@ class Mailjet extends Mailer
     protected function format(MessageInterface $message)
     {
         $parameters = [
-            'From'     => $this->buildSenderField($message->getFrom()),
-            'To'       => $this->buildRecipientsField($message->getTo()),
-            'Cc'       => $this->buildRecipientsField($message->getCc()),
-            'Bcc'      => $this->buildRecipientsField($message->getBcc()),
-            'Subject'  => $message->getSubject(),
-            'Headers'  => $message->getHeaders(),
+            'From' => $this->buildSenderField($message->getFrom()),
+            'To' => $this->buildRecipientsField($message->getTo()),
+            'Cc' => $this->buildRecipientsField($message->getCc()),
+            'Bcc' => $this->buildRecipientsField($message->getBcc()),
+            'Subject' => $message->getSubject(),
+            'Headers' => $message->getHeaders(),
             'HTMLPart' => $message->getHtml(),
             'TextPart' => $message->getText(),
-            'ReplyTo'  => $this->buildSenderField($message->getReplyTo()),
+            'ReplyTo' => $this->buildSenderField($message->getReplyTo()),
         ];
 
         $attachments = $this->processAttachments($message);
@@ -205,15 +205,15 @@ class Mailjet extends Mailer
 
         $processedAttachments = [
             'attached' => [],
-            'inlined'  => [],
+            'inlined' => [],
         ];
 
         $attachments = AttachmentUtils::processAttachments($message->getAttachments());
         foreach ($attachments as $name => $attachment) {
             $item = [
-                'Filename'      => $name,
+                'Filename' => $name,
                 'Base64Content' => base64_encode($this->getAttachmentContent($attachment)),
-                'ContentType'   => $attachment->getType(),
+                'ContentType' => $attachment->getType(),
             ];
 
             if (null !== $id = $attachment->getId()) {

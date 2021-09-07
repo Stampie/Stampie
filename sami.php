@@ -18,10 +18,10 @@ $versions = GitVersionCollection::create($dir)
     ->add('master', 'master branch');
 
 return new Sami($iterator, [
-    'versions'             => $versions,
-    'title'                => 'Stampie API',
-    'build_dir'            => __DIR__.'/api/%version%',
-    'cache_dir'            => __DIR__.'/cache/%version%',
-    'remote_repository'    => new GitHubRemoteRepository('Stampie/Stampie', dirname($dir)),
+    'versions' => $versions,
+    'title' => 'Stampie API',
+    'build_dir' => __DIR__.'/api/%version%',
+    'cache_dir' => __DIR__.'/cache/%version%',
+    'remote_repository' => new GitHubRemoteRepository('Stampie/Stampie', dirname($dir)),
     'default_opened_level' => 2,
 ]);

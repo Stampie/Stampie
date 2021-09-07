@@ -53,18 +53,18 @@ class SendGridTest extends TestCase
                     && $request->getHeaderLine('Authorization') === 'Bearer '.self::SERVER_TOKEN
                     && (string) $request->getBody() === json_encode([
                         'personalizations' => [[
-                                'to' => [[
-                                        'email' => 'alice@example.com',
-                                    ]],
-                                'subject' => 'Stampie is awesome!',
-                                'headers' => ['X-Custom-Header' => 'My Custom Header Value'],
+                            'to' => [[
+                                'email' => 'alice@example.com',
                             ]],
+                            'subject' => 'Stampie is awesome!',
+                            'headers' => ['X-Custom-Header' => 'My Custom Header Value'],
+                        ]],
                         'from' => [
-                               'email' => 'bob@example.com',
-                           ],
+                            'email' => 'bob@example.com',
+                        ],
                         'content' => [
-                                ['type' => 'text/html', 'value' => 'Trying out Stampie'],
-                            ],
+                            ['type' => 'text/html', 'value' => 'Trying out Stampie'],
+                        ],
                     ]);
             }))
             ->willReturn(new Response());
@@ -106,16 +106,16 @@ class SendGridTest extends TestCase
             ->with($this->callback(function (Request $request) {
                 return (string) $request->getBody() === json_encode([
                     'personalizations' => [[
-                            'to' => [[
-                                'email' => 'alice@example.com',
-                            ]],
-                            'subject' => 'Stampie is awesome!',
+                        'to' => [[
+                            'email' => 'alice@example.com',
                         ]],
-                        'from' => [
-                            'email' => 'bob@example.com',
-                        ],
-                        'content' => [],
-                    'categories'  => ['tag'],
+                        'subject' => 'Stampie is awesome!',
+                    ]],
+                    'from' => [
+                        'email' => 'bob@example.com',
+                    ],
+                    'content' => [],
+                    'categories' => ['tag'],
                 ]);
             }))
             ->willReturn(new Response());
@@ -132,18 +132,18 @@ class SendGridTest extends TestCase
             ->method('sendRequest')
             ->with($this->callback(function (Request $request) {
                 return (string) $request->getBody() === json_encode([
-                        'personalizations' => [[
-                            'to' => [[
-                                'email' => 'alice@example.com',
-                            ]],
-                            'subject' => 'Stampie is awesome!',
+                    'personalizations' => [[
+                        'to' => [[
+                            'email' => 'alice@example.com',
                         ]],
-                        'from' => [
-                            'email' => 'bob@example.com',
-                        ],
-                        'content'    => [],
-                        'custom_args'=> ['client_name' => 'Stampie'],
-                    ]);
+                        'subject' => 'Stampie is awesome!',
+                    ]],
+                    'from' => [
+                        'email' => 'bob@example.com',
+                    ],
+                    'content' => [],
+                    'custom_args' => ['client_name' => 'Stampie'],
+                ]);
             }))
             ->willReturn(new Response());
 
@@ -159,17 +159,17 @@ class SendGridTest extends TestCase
             ->method('sendRequest')
             ->with($this->callback(function (Request $request) {
                 return (string) $request->getBody() === json_encode([
-                        'personalizations' => [[
-                            'to' => [[
-                                'email' => 'alice@example.com',
-                            ]],
-                            'subject' => 'Stampie is awesome!',
+                    'personalizations' => [[
+                        'to' => [[
+                            'email' => 'alice@example.com',
                         ]],
-                        'from' => [
-                            'email' => 'bob@example.com',
-                        ],
-                        'content' => [],
-                    ]);
+                        'subject' => 'Stampie is awesome!',
+                    ]],
+                    'from' => [
+                        'email' => 'bob@example.com',
+                    ],
+                    'content' => [],
+                ]);
             }))
             ->willReturn(new Response());
 

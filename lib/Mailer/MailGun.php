@@ -49,7 +49,7 @@ class MailGun extends Mailer
 
         return [
             'Authorization' => 'Basic '.base64_encode('api:'.$serverToken),
-            'Content-Type'  => 'application/x-www-form-urlencoded',
+            'Content-Type' => 'application/x-www-form-urlencoded',
         ];
     }
 
@@ -92,13 +92,13 @@ class MailGun extends Mailer
         });
 
         $parameters = [
-            'from'    => $this->buildIdentityString($message->getFrom()),
-            'to'      => $this->buildIdentityString($message->getTo()),
+            'from' => $this->buildIdentityString($message->getFrom()),
+            'to' => $this->buildIdentityString($message->getTo()),
             'subject' => $message->getSubject(),
-            'text'    => $message->getText(),
-            'html'    => $message->getHtml(),
-            'cc'      => $this->buildIdentityString($message->getCc()),
-            'bcc'     => $this->buildIdentityString($message->getBcc()),
+            'text' => $message->getText(),
+            'html' => $message->getHtml(),
+            'cc' => $this->buildIdentityString($message->getCc()),
+            'bcc' => $this->buildIdentityString($message->getBcc()),
         ];
 
         if ($message instanceof TaggableInterface) {

@@ -75,9 +75,9 @@ class MailjetTest extends TestCase
                                     'Email' => 'alice@example.com',
                                 ],
                             ],
-                            'Subject'  => 'Stampie is awesome!',
+                            'Subject' => 'Stampie is awesome!',
                             'HTMLPart' => 'Trying out Stampie!',
-                            'Headers'  => [
+                            'Headers' => [
                                 'X-Custom-Header' => 'My Custom Header Value',
                             ],
                         ],
@@ -112,8 +112,8 @@ class MailjetTest extends TestCase
                                     'Email' => 'alice@example.com',
                                 ],
                             ],
-                            'Subject'            => 'Stampie is awesome!',
-                            'HTMLPart'           => 'Trying out Stampie!',
+                            'Subject' => 'Stampie is awesome!',
+                            'HTMLPart' => 'Trying out Stampie!',
                             'MonitoringCategory' => 'tag',
                         ],
                     ],
@@ -149,8 +149,8 @@ class MailjetTest extends TestCase
                                     'Email' => 'alice@example.com',
                                 ],
                             ],
-                            'Subject'      => 'Stampie is awesome!',
-                            'HTMLPart'     => 'Trying out Stampie!',
+                            'Subject' => 'Stampie is awesome!',
+                            'HTMLPart' => 'Trying out Stampie!',
                             'EventPayload' => [
                                 'client_name' => 'Stampie',
                             ],
@@ -191,25 +191,25 @@ class MailjetTest extends TestCase
                                     'Email' => 'alice@example.com',
                                 ],
                             ],
-                            'Subject'     => 'Stampie is awesome!',
+                            'Subject' => 'Stampie is awesome!',
                             'Attachments' => [
                                 [
-                                    'ContentType'   => 'text/plain',
-                                    'Filename'      => 'path1.txt',
+                                    'ContentType' => 'text/plain',
+                                    'Filename' => 'path1.txt',
                                     'Base64Content' => base64_encode(file_get_contents(__DIR__.'/../../../Fixtures/path-1.txt')),
                                 ],
                                 [
-                                    'ContentType'   => 'text/plain',
-                                    'Filename'      => 'path2.txt',
+                                    'ContentType' => 'text/plain',
+                                    'Filename' => 'path2.txt',
                                     'Base64Content' => base64_encode(file_get_contents(__DIR__.'/../../../Fixtures/path-2.txt')),
                                 ],
                             ],
                             'InlinedAttachments' => [
                                 [
-                                    'ContentType'   => 'image/png',
-                                    'Filename'      => 'logo.png',
+                                    'ContentType' => 'image/png',
+                                    'Filename' => 'logo.png',
                                     'Base64Content' => base64_encode(file_get_contents(__DIR__.'/../../../Fixtures/logo.png')),
-                                    'ContentID'     => 'contentid1',
+                                    'ContentID' => 'contentid1',
                                 ],
                             ],
                         ],
@@ -240,7 +240,7 @@ class MailjetTest extends TestCase
                     'Messages' => [
                         [
                             'From' => $expectedFormat,
-                            'To'   => [
+                            'To' => [
                                 [
                                     'Email' => 'alice@example.com',
                                 ],
@@ -276,7 +276,7 @@ class MailjetTest extends TestCase
                             'From' => [
                                 'Email' => 'bob@example.com',
                             ],
-                            'To'      => $expectedFormat,
+                            'To' => $expectedFormat,
                             'Subject' => 'Stampie is awesome!',
                         ],
                     ],

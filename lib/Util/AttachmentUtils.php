@@ -62,7 +62,7 @@ final class AttachmentUtils
 
         $i = 0;
         while (in_array($name, $claimed)) {
-            $i++;
+            ++$i;
             $name = $basename.'-'.$i.'.'.$ext;
         }
 

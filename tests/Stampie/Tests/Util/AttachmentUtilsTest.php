@@ -112,7 +112,8 @@ class AttachmentUtilsTest extends TestCase
     /**
      * @param array|null $mockMethods
      * @param string     $name
-     *                                a@return \PHPUnit_Framework_MockObject_MockObject|Attachment
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject|Attachment
      */
     protected function buildAttachment(array $mockMethods = null, $name = null)
     {

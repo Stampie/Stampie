@@ -96,7 +96,7 @@ class MailerTest extends TestCase
         $mailer
             ->expects($this->once())
             ->method('getFiles')
-            ->willReturn(['files' => ['foo'=> __DIR__.'/../../Fixtures/logo.png']]);
+            ->willReturn(['files' => ['foo' => __DIR__.'/../../Fixtures/logo.png']]);
 
         $adapter
             ->expects($this->once())

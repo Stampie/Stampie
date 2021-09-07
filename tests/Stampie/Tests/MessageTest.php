@@ -5,7 +5,7 @@ namespace Stampie\Tests;
 class MessageTest extends TestCase
 {
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testTextWithHtmlFails()
     {
@@ -14,7 +14,7 @@ class MessageTest extends TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testInvaildEmailFails()
     {

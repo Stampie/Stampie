@@ -50,9 +50,9 @@ class Postmark extends Mailer
     protected function getHeaders()
     {
         return [
-            'Content-Type'            => 'application/json',
+            'Content-Type' => 'application/json',
             'X-Postmark-Server-Token' => $this->getServerToken(),
-            'Accept'                  => 'application/json',
+            'Accept' => 'application/json',
         ];
     }
 
@@ -67,13 +67,13 @@ class Postmark extends Mailer
         }
 
         $parameters = [
-            'From'     => $this->buildIdentityString($message->getFrom()),
-            'To'       => $this->buildIdentityString($message->getTo()),
-            'Subject'  => $message->getSubject(),
-            'Headers'  => $headers,
+            'From' => $this->buildIdentityString($message->getFrom()),
+            'To' => $this->buildIdentityString($message->getTo()),
+            'Subject' => $message->getSubject(),
+            'Headers' => $headers,
             'HtmlBody' => $message->getHtml(),
             'TextBody' => $message->getText(),
-            'ReplyTo'  => $message->getReplyTo(),
+            'ReplyTo' => $message->getReplyTo(),
         ];
 
         if ($message instanceof TaggableInterface) {
@@ -112,9 +112,9 @@ class Postmark extends Mailer
      *
      * @return array An array containing arrays of the following format:
      *               array(
-     *               'Name'                 => name,
-     *               'Content'              => base64-encoded content,
-     *               'ContentType'          => type,
+     *               'Name' => name,
+     *               'Content' => base64-encoded content,
+     *               'ContentType' => type,
      *               (optional) 'ContentID' => id,
      *               )
      */
@@ -125,8 +125,8 @@ class Postmark extends Mailer
         $processedAttachments = [];
         foreach ($attachments as $name => $attachment) {
             $item = [
-                'Name'        => $name,
-                'Content'     => base64_encode($this->getAttachmentContent($attachment)),
+                'Name' => $name,
+                'Content' => base64_encode($this->getAttachmentContent($attachment)),
                 'ContentType' => $attachment->getType(),
             ];
 
