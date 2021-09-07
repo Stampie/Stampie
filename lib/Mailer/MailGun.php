@@ -82,14 +82,15 @@ class MailGun extends Mailer
      */
     protected function format(MessageInterface $message)
     {
-        // Custom headers should be prefixed with h:X-My-Header
-        $headers = array_merge(
+        $allHeaders = array_merge(
             $message->getHeaders(),
             ['Reply-To' => $message->getReplyTo()]
         );
-        array_walk($headers, function (&$value, &$key) {
-            $key = 'h:'.$key;
-        });
+        $headers = [];
+        foreach (array_filter($allHeaders) as $key => $value) {
+            // Custom headers should be prefixed with h:X-My-Header
+            $headers['h:'.$key] = $value;
+        }
 
         $parameters = [
             'from' => $this->buildIdentityString($message->getFrom()),
@@ -107,11 +108,10 @@ class MailGun extends Mailer
 
         $metadata = [];
         if ($message instanceof MetadataAwareInterface) {
-            $metadata = array_filter($message->getMetadata());
-            // Custom variables should be prefixed with v:my_var
-            array_walk($metadata, function (&$value, &$key) {
-                $key = 'v:'.$key;
-            });
+            foreach (array_filter($message->getMetadata()) as $key => $value) {
+                // Custom variables should be prefixed with v:my_var
+                $metadata['v:'.$key] = $value;
+            }
         }
 
         return http_build_query(array_filter(array_merge($headers, $parameters, $metadata)));
