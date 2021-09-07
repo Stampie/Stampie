@@ -5,6 +5,9 @@ namespace Stampie\Tests\Mailer;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Http\Client\HttpClient;
+use PHPUnit\Framework\MockObject\MockObject;
+use Stampie\Exception\ApiException;
+use Stampie\Exception\HttpException;
 use Stampie\Mailer\SendGrid;
 use Stampie\Tests\TestCase;
 
@@ -18,21 +21,19 @@ class SendGridTest extends TestCase
     private $mailer;
 
     /**
-     * @var HttpClient|\PHPUnit_Framework_MockObject_MockObject
+     * @var HttpClient&MockObject
      */
     private $httpClient;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->httpClient = $this->getMockBuilder(HttpClient::class)->getMock();
         $this->mailer = new SendGrid($this->httpClient, self::SERVER_TOKEN);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInvalidServerToken()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->mailer->setServerToken('');
     }
 
@@ -176,9 +177,6 @@ class SendGridTest extends TestCase
         $this->mailer->send($message);
     }
 
-    /**
-     * @expectedException \Stampie\Exception\ApiException
-     */
     public function testHandleBadRequest()
     {
         $message = $this->getMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome!');
@@ -189,12 +187,11 @@ class SendGridTest extends TestCase
             ->method('sendRequest')
             ->willReturn($response);
 
+        $this->expectException(ApiException::class);
+
         $this->mailer->send($message);
     }
 
-    /**
-     * @expectedException \Stampie\Exception\HttpException
-     */
     public function testHandleInternalServerError()
     {
         $message = $this->getMessageMock('bob@example.com', 'alice@example.com', 'Stampie is awesome!');
@@ -204,6 +201,8 @@ class SendGridTest extends TestCase
         $this->httpClient
             ->method('sendRequest')
             ->willReturn($response);
+
+        $this->expectException(HttpException::class);
 
         $this->mailer->send($message);
     }

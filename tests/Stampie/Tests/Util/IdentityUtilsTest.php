@@ -63,7 +63,7 @@ class IdentityUtilsTest extends TestCase
     public function testNormalizeIdentities($identities)
     {
         $normalizedIdentities = IdentityUtils::normalizeIdentities($identities);
-        $this->assertInternalType('array', $normalizedIdentities);
+        $this->assertIsArray($normalizedIdentities);
         foreach ($normalizedIdentities as $identity) {
             $this->assertInstanceOf(IdentityInterface::class, $identity);
         }

@@ -2,13 +2,14 @@
 
 namespace Stampie\Tests;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Stampie\MessageInterface;
 
 class TestCase extends BaseTestCase
 {
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|MessageInterface
+     * @return MockObject&MessageInterface
      */
     protected function getMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [])
     {
@@ -20,7 +21,7 @@ class TestCase extends BaseTestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|MessageInterface
+     * @return MockObject&MessageInterface
      */
     protected function getTaggableMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $tags = [])
     {
@@ -37,7 +38,7 @@ class TestCase extends BaseTestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|MessageInterface
+     * @return MockObject&MessageInterface
      */
     protected function getMetadataAwareMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], array $metadata = [])
     {
@@ -54,7 +55,7 @@ class TestCase extends BaseTestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|MessageInterface
+     * @return MockObject&MessageInterface
      */
     protected function getCarbonCopyMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $cc = null)
     {
@@ -71,7 +72,7 @@ class TestCase extends BaseTestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|MessageInterface
+     * @return MockObject&MessageInterface
      */
     protected function getBlindCarbonCopyMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $bcc = null)
     {
@@ -88,7 +89,7 @@ class TestCase extends BaseTestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|MessageInterface
+     * @return MockObject&MessageInterface
      */
     public function getAttachmentsMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], array $attachments = [])
     {
@@ -131,7 +132,7 @@ class TestCase extends BaseTestCase
         return $attachment;
     }
 
-    private function configureMessageMock(\PHPUnit_Framework_MockObject_MockObject $message, $from, $to, $subject, $html = null, $text = null, array $headers = [])
+    private function configureMessageMock(MockObject $message, $from, $to, $subject, $html = null, $text = null, array $headers = [])
     {
         $message
             ->expects($this->any())

@@ -5,6 +5,7 @@ namespace Stampie\Tests\Mailer;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Http\Client\HttpClient;
+use PHPUnit\Framework\MockObject\MockObject;
 use Stampie\Exception\ApiException;
 use Stampie\Exception\HttpException;
 use Stampie\Identity;
@@ -21,11 +22,11 @@ class SparkPostTest extends TestCase
     private $mailer;
 
     /**
-     * @var HttpClient|\PHPUnit_Framework_MockObject_MockObject
+     * @var HttpClient&MockObject
      */
     private $httpClient;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->httpClient = $this->getMockBuilder(HttpClient::class)->getMock();
         $this->mailer = new SparkPost($this->httpClient, self::SERVER_TOKEN);
@@ -258,15 +259,7 @@ class SparkPostTest extends TestCase
      */
     public function testHandleBadRequest($httpStatusCode, $expectApiException)
     {
-        // Hack to support old PhpUnit 4.x for PHP 5.5.
-        // @TODO remove when support for PHP 5.5 is dropped.
-        if (!method_exists($this, 'expectException')) {
-            $this->setExpectedException($expectApiException
-                ? '\Stampie\Exception\ApiException'
-                : '\Stampie\Exception\HttpException');
-        } else {
-            $this->expectException($expectApiException ? ApiException::class : HttpException::class);
-        }
+        $this->expectException($expectApiException ? ApiException::class : HttpException::class);
 
         $response = new Response($httpStatusCode);
 

@@ -4,20 +4,16 @@ namespace Stampie\Tests;
 
 class MessageTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testTextWithHtmlFails()
     {
         $message = $this->getMockForAbstractClass('Stampie\Message', ['hb@peytz.dk']);
+        $this->expectException(\InvalidArgumentException::class);
         $message->setText('<b>something</b>');
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testInvaildEmailFails()
+    public function testInvalidEmailFails()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->getMockForAbstractClass('Stampie\Message', ['invalid email']);
     }
 

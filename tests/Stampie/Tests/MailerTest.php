@@ -16,7 +16,7 @@ class MailerTest extends TestCase
      */
     protected $mailer;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->mailer = $this->getMailerMock([
             $this->httpClient = $this->getHttpClientMock(),
@@ -33,12 +33,10 @@ class MailerTest extends TestCase
         $this->assertEquals($this->httpClient, $reflectionProperty->getValue($this->mailer));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage ServerToken cannot be empty
-     */
     public function testServerTokenCannotBeEmpty()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('ServerToken cannot be empty');
         $this->mailer->setServerToken('');
     }
 
@@ -86,7 +84,7 @@ class MailerTest extends TestCase
         $adapter = $this->httpClient;
         $mailer = $this->getMockBuilder(MailGun::class)
             ->setConstructorArgs([$adapter, 'Token:bar'])
-            ->setMethods(['format', 'getFiles'])
+            ->onlyMethods(['format', 'getFiles'])
             ->getMock();
 
         $mailer
@@ -102,7 +100,7 @@ class MailerTest extends TestCase
             ->expects($this->once())
             ->method('sendRequest')
             ->with($this->callback(function (RequestInterface $request) {
-                return preg_match('|multipart/form-data; boundary="[a-zA-Z0-9\._]+"|sim', $request->getHeaderLine('Content-Type'));
+                return (bool) preg_match('|multipart/form-data; boundary="[a-zA-Z0-9\._]+"|sim', $request->getHeaderLine('Content-Type'));
             }))
             ->will($this->returnValue(
                 $this->getResponseMock(true)
