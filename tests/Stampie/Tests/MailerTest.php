@@ -89,7 +89,8 @@ class MailerTest extends TestCase
 
         $mailer
             ->expects($this->once())
-            ->method('format');
+            ->method('format')
+            ->willReturn('');
 
         $mailer
             ->expects($this->once())
@@ -138,6 +139,9 @@ class MailerTest extends TestCase
         $mailer->expects($this->any())
             ->method('getEndpoint')
             ->willReturn('https://example.com/fake-endpoint');
+
+        $mailer->method('format')
+            ->willReturn('');
 
         return $mailer;
     }

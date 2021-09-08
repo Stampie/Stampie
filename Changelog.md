@@ -4,6 +4,19 @@ The change log describes what been "Added", "Removed", "Changed" or "Fixed" betw
 
 ## Unreleased
 
+### Added
+
+- Added support for using any PSR-18 client
+- Added support for providing PSR-17 factories in the mailer
+
+### Removed
+
+- Removed support for HTTPlug 1 (HTTPlug 2 is still supported as it extends PSR-18).
+
+### Deprecated
+
+- Deprecated `Stampie\Mailer::setMessageFactory` in favor of setting a PSR-17 RequestFactory
+
 ## 1.1.0
 
 ### Added
