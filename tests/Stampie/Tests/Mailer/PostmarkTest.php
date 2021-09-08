@@ -45,7 +45,7 @@ class PostmarkTest extends TestCase
 
                 return
                     $request->getMethod() === 'POST'
-                    && (string) $request->getUri() === 'http://api.postmarkapp.com/email'
+                    && (string) $request->getUri() === 'https://api.postmarkapp.com/email'
                     && $request->getHeaderLine('Content-Type') === 'application/json'
                     && $request->getHeaderLine('Accept') === 'application/json'
                     && $request->getHeaderLine('X-Postmark-Server-Token') === self::SERVER_TOKEN
