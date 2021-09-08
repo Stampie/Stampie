@@ -4,6 +4,8 @@ The change log describes what been "Added", "Removed", "Changed" or "Fixed" betw
 
 ## Unreleased
 
+## 1.1.0
+
 ### Added
 
 - Added support for PHP 8
@@ -11,6 +13,11 @@ The change log describes what been "Added", "Removed", "Changed" or "Fixed" betw
 ### Removed
 
 - Removed support for PHP <7.2
+
+### Fixed
+
+- Fixed the Postmark endpoint to use https
+- Fixed the handling of taggable messages without any tags in the Sendgrid mailer
 
 ## 1.0.1
 
