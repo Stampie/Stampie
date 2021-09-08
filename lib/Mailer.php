@@ -130,14 +130,16 @@ abstract class Mailer implements MailerInterface
     }
 
     /**
-     * Return an key -> value array of files.
+     * Return a key -> value array of files.
+     *
+     * This implies that the formatted payload uses application/x-www-form-urlencoded.
      *
      * example:
      *     ['foo_files' => array('attachmentname.jpg' => '/path/to/file.jpg')]
      *
      * @param MessageInterface $message
      *
-     * @return string[]
+     * @return array<string, array<int|string, string>
      */
     protected function getFiles(MessageInterface $message)
     {
@@ -150,7 +152,7 @@ abstract class Mailer implements MailerInterface
     abstract protected function getEndpoint();
 
     /**
-     * Return a a string formatted for the correct Mailer endpoint.
+     * Returns a string formatted for the correct Mailer endpoint.
      * Postmark this is Json, SendGrid it is a urlencoded parameter list.
      *
      * @param MessageInterface $message
