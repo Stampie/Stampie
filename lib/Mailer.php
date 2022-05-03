@@ -2,11 +2,13 @@
 
 namespace Stampie;
 
-use Http\Client\HttpClient;
-use Http\Discovery\MessageFactoryDiscovery;
+use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Message\MessageFactory;
 use Http\Message\MultipartStream\MultipartStreamBuilder;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Stampie\Util\IdentityUtils;
 
 /**
@@ -17,7 +19,7 @@ use Stampie\Util\IdentityUtils;
 abstract class Mailer implements MailerInterface
 {
     /**
-     * @var HttpClient
+     * @var ClientInterface
      */
     protected $httpClient;
 
@@ -32,46 +34,60 @@ abstract class Mailer implements MailerInterface
     private $messageFactory;
 
     /**
-     * @param HttpClient $httpClient
-     * @param string     $serverToken
+     * @var RequestFactoryInterface|null
      */
-    public function __construct(HttpClient $httpClient, $serverToken)
+    private $requestFactory;
+
+    /**
+     * @var StreamFactoryInterface|null
+     */
+    private $streamFactory;
+
+    public function __construct(ClientInterface $httpClient, string $serverToken)
     {
         $this->setHttpClient($httpClient);
         $this->setServerToken($serverToken);
     }
 
-    /**
-     * @param HttpClient $httpClient
-     */
-    public function setHttpClient(HttpClient $httpClient)
+    public function setHttpClient(ClientInterface $httpClient)
     {
         $this->httpClient = $httpClient;
     }
 
-    /**
-     * @return HttpClient
-     */
-    private function getHttpClient()
+    public function setRequestFactory(?RequestFactoryInterface $requestFactory): void
     {
-        return $this->httpClient;
+        $this->requestFactory = $requestFactory;
     }
 
     /**
-     * @return MessageFactory
+     * @return RequestFactoryInterface|MessageFactory
      */
-    private function getMessageFactory()
+    private function getRequestFactory()
     {
-        return $this->messageFactory ?: MessageFactoryDiscovery::find();
+        return $this->requestFactory ?? $this->messageFactory ?? ($this->httpClient instanceof RequestFactoryInterface ? $this->httpClient : Psr17FactoryDiscovery::findRequestFactory());
+    }
+
+    public function setStreamFactory(?StreamFactoryInterface $streamFactory): void
+    {
+        $this->streamFactory = $streamFactory;
+    }
+
+    private function getStreamFactory(): StreamFactoryInterface
+    {
+        return $this->streamFactory ?? ($this->httpClient instanceof StreamFactoryInterface ? $this->httpClient : Psr17FactoryDiscovery::findStreamFactory());
     }
 
     /**
      * @param MessageFactory $messageFactory
      *
      * @return Mailer
+     *
+     * @deprecated use "setRequestFactory" instead or provide a PSR-18 client implementing RequestFactoryInterface directly
      */
     public function setMessageFactory(MessageFactory $messageFactory)
     {
+        trigger_deprecation('stampie/stampie', '1.2.0', sprintf('The "%s" method is deprecated. Use "setRequestFactory" instead or provide a PSR-18 client implementing RequestFactoryInterface directly.', __METHOD__));
+
         $this->messageFactory = $messageFactory;
 
         return $this;
@@ -216,10 +232,12 @@ abstract class Mailer implements MailerInterface
         $headers = $this->getHeaders();
         $files = $this->getFiles($message);
 
-        if (!empty($files)) {
+        if (empty($files)) {
+            $content = $this->getStreamFactory()->createStream($content);
+        } else {
             // HTTP query content
             parse_str($content, $fields);
-            $builder = new MultipartStreamBuilder();
+            $builder = new MultipartStreamBuilder($this->streamFactory);
 
             foreach ($fields as $name => $value) {
                 if (is_array($value)) {
@@ -248,8 +266,13 @@ abstract class Mailer implements MailerInterface
             $headers['Content-Type'] = 'multipart/form-data; boundary="'.$builder->getBoundary().'"';
         }
 
-        $request = $this->getMessageFactory()->createRequest('POST', $this->getEndpoint(), $headers, $content);
+        $request = $this->getRequestFactory()->createRequest('POST', $this->getEndpoint())
+            ->withBody($content);
 
-        return $this->getHttpClient()->sendRequest($request);
+        foreach ($headers as $headerName => $headerValue) {
+            $request = $request->withHeader($headerName, $headerValue);
+        }
+
+        return $this->httpClient->sendRequest($request);
     }
 }
