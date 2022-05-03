@@ -16,7 +16,7 @@ interface TaggableInterface
      * Most providers supporting this feature only allow to use a limited number of tags
      * in the application.
      *
-     * @return string|array
+     * @return string|string[]
      */
     public function getTag();
 }

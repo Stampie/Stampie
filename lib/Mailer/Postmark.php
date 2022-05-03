@@ -110,13 +110,7 @@ class Postmark extends Mailer
     /**
      * @param Attachment[] $attachments
      *
-     * @return array An array containing arrays of the following format:
-     *               array(
-     *               'Name' => name,
-     *               'Content' => base64-encoded content,
-     *               'ContentType' => type,
-     *               (optional) 'ContentID' => id,
-     *               )
+     * @return list<array{Name: string, Content: string, ContentType: string, ContentID?: string}>
      */
     protected function processAttachments(array $attachments)
     {

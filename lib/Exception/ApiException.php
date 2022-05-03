@@ -12,9 +12,9 @@ use Stampie\ExceptionInterface;
 class ApiException extends \RuntimeException implements ExceptionInterface
 {
     /**
-     * @param string     $message
-     * @param \Exception $previous
-     * @param int        $code
+     * @param string          $message
+     * @param \Exception|null $previous
+     * @param int             $code
      */
     public function __construct($message, \Exception $previous = null, $code = 0)
     {

@@ -73,13 +73,13 @@ class Attachment
      *
      * @throws \RuntimeException
      *
-     * @return string
+     * @return string|null
      */
     protected function determineFileType($path)
     {
         if (!function_exists('finfo_open')) {
             // File info functions not available
-            return;
+            return null;
         }
 
         // Determine file type
@@ -90,7 +90,7 @@ class Attachment
 
         if ($type === false) {
             // Could not determine file type
-            return;
+            return null;
         }
 
         return $type;

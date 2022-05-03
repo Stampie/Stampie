@@ -147,7 +147,7 @@ class SendGrid extends Mailer
     /**
      * @param Attachment[] $attachments
      *
-     * @return array First element: All attachments – array(name => path). Second element: Inline attachments – array(id => name)
+     * @return list<array{content: string, type: string, filename: string, disposition?: string, content_id?: string}>
      */
     protected function processAttachments(array $attachments)
     {
@@ -174,9 +174,9 @@ class SendGrid extends Mailer
     }
 
     /**
-     * @param IdentityInterface[]|string $recipients
+     * @param array<IdentityInterface|string>|IdentityInterface|string|null $recipients
      *
-     * @return array
+     * @return list<array{email: string, name?: string}>
      */
     private function formatRecipients($recipients)
     {

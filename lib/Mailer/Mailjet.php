@@ -125,9 +125,9 @@ class Mailjet extends Mailer
     }
 
     /**
-     * @param IdentityInterface|string $identity
+     * @param IdentityInterface|string|null $identity
      *
-     * @return array
+     * @return array{Email?: string, Name?: string}
      */
     protected function buildSenderField($identity)
     {
@@ -153,9 +153,9 @@ class Mailjet extends Mailer
     }
 
     /**
-     * @param IdentityInterface[]|string $identities
+     * @param array<IdentityInterface|string>|IdentityInterface|string|null $identities
      *
-     * @return array
+     * @return list<array{Email: string, Name?: string}>
      */
     protected function buildRecipientsField($identities)
     {
@@ -197,6 +197,11 @@ class Mailjet extends Mailer
         return $recipients;
     }
 
+    /**
+     * @param MessageInterface $message
+     *
+     * @return array{attached?: list<array{Filename: string, Base64Content: string, ContentType: string}>, inlined?: list<array{Filename: string, Base64Content: string, ContentType: string, ContentID: string}>}
+     */
     protected function processAttachments(MessageInterface $message)
     {
         if (!$message instanceof AttachmentsAwareInterface) {
