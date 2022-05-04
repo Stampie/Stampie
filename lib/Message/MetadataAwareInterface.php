@@ -16,7 +16,7 @@ interface MetadataAwareInterface
      * Providers supporting this feature will then give some filtering or tracking
      * capabilities.
      *
-     * @return array An associative array of metadata
+     * @return array<string, mixed> An associative array of metadata
      */
     public function getMetadata();
 }

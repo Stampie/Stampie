@@ -25,7 +25,7 @@ final class AttachmentUtils
      *
      * @throws \InvalidArgumentException
      *
-     * @return Attachment[]
+     * @return array<string, Attachment>
      */
     public static function processAttachments(array $attachments)
     {
@@ -50,8 +50,8 @@ final class AttachmentUtils
     }
 
     /**
-     * @param string $name    The name to make unique
-     * @param array  $claimed Names already in use to avoid
+     * @param string   $name    The name to make unique
+     * @param string[] $claimed Names already in use to avoid
      *
      * @return string A unique name
      */

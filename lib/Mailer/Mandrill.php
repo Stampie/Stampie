@@ -21,12 +21,14 @@ use Stampie\Util\AttachmentUtils;
 class Mandrill extends Mailer
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $subaccount;
 
     /**
-     * @param string $subaccount
+     * @param string|null $subaccount
+     *
+     * @return void
      */
     public function setSubaccount($subaccount)
     {
@@ -132,8 +134,8 @@ class Mandrill extends Mailer
     /**
      * @param Attachment[] $attachments
      *
-     * @return array
-     *               First element: Attachments – an array containing arrays of the following format
+     * @return array{list<array{type: string, name: string, content: string}>, list<array{type: string, name: string, content: string}>}
+     *     First element: Attachments – an array containing arrays of the following format
      *               array(
      *               'type' => type,
      *               'name' => name,

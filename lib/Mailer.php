@@ -29,7 +29,7 @@ abstract class Mailer implements MailerInterface
     protected $serverToken;
 
     /**
-     * @var MessageFactory
+     * @var MessageFactory|null
      */
     private $messageFactory;
 
@@ -49,6 +49,9 @@ abstract class Mailer implements MailerInterface
         $this->setServerToken($serverToken);
     }
 
+    /**
+     * @return void
+     */
     public function setHttpClient(ClientInterface $httpClient)
     {
         $this->httpClient = $httpClient;
@@ -80,7 +83,7 @@ abstract class Mailer implements MailerInterface
     /**
      * @param MessageFactory $messageFactory
      *
-     * @return Mailer
+     * @return static
      *
      * @deprecated use "setRequestFactory" instead or provide a PSR-18 client implementing RequestFactoryInterface directly
      */
@@ -94,7 +97,9 @@ abstract class Mailer implements MailerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $serverToken
+     *
+     * @return void
      *
      * @throws \InvalidArgumentException
      */
@@ -108,7 +113,7 @@ abstract class Mailer implements MailerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
     public function getServerToken()
     {
@@ -136,7 +141,7 @@ abstract class Mailer implements MailerInterface
      * example:
      *     array('X-Header-Name' => 'value')
      *
-     * @return array
+     * @return array<string, string>
      */
     protected function getHeaders()
     {
@@ -155,7 +160,7 @@ abstract class Mailer implements MailerInterface
      *
      * @param MessageInterface $message
      *
-     * @return array<string, array<int|string, string>
+     * @return array<string, array<int|string, string>>
      */
     protected function getFiles(MessageInterface $message)
     {
@@ -184,6 +189,8 @@ abstract class Mailer implements MailerInterface
      *
      * @param ResponseInterface $response
      *
+     * @return void
+     *
      * @throws \Stampie\Exception\ApiException
      * @throws \Stampie\Exception\HttpException
      */
@@ -200,7 +207,7 @@ abstract class Mailer implements MailerInterface
     }
 
     /**
-     * @param IdentityInterface[]|string $identities
+     * @param array<IdentityInterface|string>|IdentityInterface|string|null $identities
      *
      * @return IdentityInterface[]
      */
@@ -210,7 +217,7 @@ abstract class Mailer implements MailerInterface
     }
 
     /**
-     * @param IdentityInterface[]|IdentityInterface|string $identities
+     * @param IdentityInterface[]|IdentityInterface|string|null $identities
      *
      * @return string
      */

@@ -34,7 +34,7 @@ class IdentityUtils
     }
 
     /**
-     * @param IdentityInterface[]|string $identities
+     * @param array<IdentityInterface|string>|IdentityInterface|string|null $identities
      *
      * @return IdentityInterface[]
      */
@@ -60,7 +60,7 @@ class IdentityUtils
     }
 
     /**
-     * @param IdentityInterface[]|IdentityInterface|string $identities
+     * @param IdentityInterface[]|IdentityInterface|string|null $identities
      *
      * @return string
      */

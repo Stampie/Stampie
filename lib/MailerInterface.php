@@ -9,6 +9,8 @@ interface MailerInterface
      *
      * @param MessageInterface $message
      *
+     * @return void
+     *
      * @throws ExceptionInterface if an error happens while sending the message
      */
     public function send(MessageInterface $message);

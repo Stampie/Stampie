@@ -53,9 +53,6 @@ class MailGun extends Mailer
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getFiles(MessageInterface $message)
     {
         if (!($message instanceof AttachmentsAwareInterface)) {
@@ -128,7 +125,7 @@ class MailGun extends Mailer
     /**
      * @param Attachment[] $attachments
      *
-     * @return array First element: An array of attachment paths. Second element: An array of inline paths
+     * @return array{array<string, string>, string[]} First element: An array of attachment paths. Second element: An array of inline paths
      */
     protected function processAttachments(array $attachments)
     {

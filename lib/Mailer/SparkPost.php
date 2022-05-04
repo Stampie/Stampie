@@ -21,6 +21,9 @@ use Stampie\Util\IdentityUtils;
  */
 class SparkPost extends Mailer
 {
+    /**
+     * @var bool
+     */
     private $transactional;
 
     /**
@@ -113,7 +116,6 @@ class SparkPost extends Mailer
         $normalizedBcc = $this->normalizeIdentities($message->getBcc());
         $toIdentityString = IdentityUtils::buildIdentityString($normalizedTo);
 
-        /** @var \Stampie\Identity[] $merged */
         $merged = array_merge($normalizedTo, $normalizedCc, $normalizedBcc);
         foreach ($merged as $recipient) {
             /*
@@ -157,6 +159,9 @@ class SparkPost extends Mailer
         throw $httpException;
     }
 
+    /**
+     * @return string
+     */
     private function getAttachmentContent(Attachment $attachment)
     {
         return file_get_contents($attachment->getPath());

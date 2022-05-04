@@ -11,7 +11,7 @@ namespace Stampie;
 abstract class Message implements MessageInterface
 {
     /**
-     * @var string
+     * @var IdentityInterface|string
      */
     protected $to;
 
@@ -38,9 +38,6 @@ abstract class Message implements MessageInterface
         $this->to = $to;
     }
 
-    /**
-     * @return string
-     */
     public function getTo()
     {
         return $this->to;
@@ -48,6 +45,8 @@ abstract class Message implements MessageInterface
 
     /**
      * @param string $html
+     *
+     * @return void
      */
     public function setHtml($html)
     {
@@ -56,6 +55,8 @@ abstract class Message implements MessageInterface
 
     /**
      * @param string $text
+     *
+     * @return void
      *
      * @throws \InvalidArgumentException
      */
@@ -68,33 +69,21 @@ abstract class Message implements MessageInterface
         $this->text = $text;
     }
 
-    /**
-     * @return string
-     */
     public function getHtml()
     {
         return $this->html;
     }
 
-    /**
-     * @return string
-     */
     public function getText()
     {
         return $this->text;
     }
 
-    /**
-     * @return array
-     */
     public function getHeaders()
     {
         return [];
     }
 
-    /**
-     * @return string
-     */
     public function getReplyTo()
     {
         $from = $this->getFrom();
@@ -106,17 +95,13 @@ abstract class Message implements MessageInterface
         return $from;
     }
 
-    /**
-     * @return null
-     */
     public function getCc()
     {
+        return null;
     }
 
-    /**
-     * @return null
-     */
     public function getBcc()
     {
+        return null;
     }
 }

@@ -16,17 +16,17 @@ interface MessageInterface
     public function getFrom();
 
     /**
-     * @return IdentityInterface[]|string
+     * @return IdentityInterface[]|IdentityInterface|string
      */
     public function getTo();
 
     /**
-     * @return IdentityInterface[]|string
+     * @return IdentityInterface[]|IdentityInterface|string|null
      */
     public function getCc();
 
     /**
-     * @return IdentityInterface[]|$string
+     * @return IdentityInterface[]|IdentityInterface|string|null
      */
     public function getBcc();
 
@@ -36,12 +36,12 @@ interface MessageInterface
     public function getSubject();
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getReplyTo();
 
     /**
-     * @return array
+     * @return array<string, string>
      */
     public function getHeaders();
 
