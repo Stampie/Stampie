@@ -5,6 +5,6 @@ namespace Stampie;
 /**
  * Every Stampie related exception must implement this interface.
  */
-interface ExceptionInterface
+interface ExceptionInterface extends \Throwable
 {
 }
