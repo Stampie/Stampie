@@ -123,7 +123,7 @@ class AttachmentUtilsTest extends TestCase
             $mockMethods[] = 'getName';
         }
 
-        $mock = $this->getMockBuilder('\\Stampie\\Attachment')
+        $mock = $this->getMockBuilder(Attachment::class)
                         ->onlyMethods($mockMethods)
                         ->disableOriginalConstructor()
                         ->getMock();

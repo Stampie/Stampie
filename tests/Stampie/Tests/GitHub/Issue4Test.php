@@ -3,6 +3,7 @@
 namespace Stampie\Tests\GitHub;
 
 use GuzzleHttp\Psr7\Response;
+use Http\Client\HttpClient;
 use Stampie\Exception\ApiException;
 use Stampie\Mailer\Postmark;
 use Stampie\Tests\TestCase;
@@ -14,7 +15,7 @@ class Issue4Test extends TestCase
 {
     public function testMissingErrorMessageInResponse()
     {
-        $httpClient = $this->getMockBuilder('Http\Client\HttpClient')->getMock();
+        $httpClient = $this->getMockBuilder(HttpClient::class)->getMock();
         $httpClient->method('sendRequest')->willReturn(new Response(422, [], '{}'));
 
         $mailer = new Postmark($httpClient, 'ServerToken');

@@ -4,7 +4,11 @@ namespace Stampie\Tests;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase as BaseTestCase;
+use Stampie\Attachment;
 use Stampie\MessageInterface;
+use Stampie\Tests\Mailer\AttachmentMessage;
+use Stampie\Tests\Mailer\MetadataAwareMessage;
+use Stampie\Tests\Mailer\TaggableMessage;
 
 class TestCase extends BaseTestCase
 {
@@ -13,7 +17,7 @@ class TestCase extends BaseTestCase
      */
     protected function getMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [])
     {
-        $message = $this->getMockBuilder('Stampie\MessageInterface')->getMock();
+        $message = $this->getMockBuilder(MessageInterface::class)->getMock();
 
         $this->configureMessageMock($message, $from, $to, $subject, $html, $text, $headers);
 
@@ -25,7 +29,7 @@ class TestCase extends BaseTestCase
      */
     protected function getTaggableMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $tags = [])
     {
-        $message = $this->getMockBuilder('Stampie\Tests\Mailer\TaggableMessage')->getMock();
+        $message = $this->getMockBuilder(TaggableMessage::class)->getMock();
 
         $this->configureMessageMock($message, $from, $to, $subject, $html, $text, $headers);
 
@@ -42,7 +46,7 @@ class TestCase extends BaseTestCase
      */
     protected function getMetadataAwareMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], array $metadata = [])
     {
-        $message = $this->getMockBuilder('Stampie\Tests\Mailer\MetadataAwareMessage')->getMock();
+        $message = $this->getMockBuilder(MetadataAwareMessage::class)->getMock();
 
         $this->configureMessageMock($message, $from, $to, $subject, $html, $text, $headers);
 
@@ -59,7 +63,7 @@ class TestCase extends BaseTestCase
      */
     protected function getCarbonCopyMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $cc = null)
     {
-        $message = $this->getMockBuilder('Stampie\MessageInterface')->getMock();
+        $message = $this->getMockBuilder(MessageInterface::class)->getMock();
 
         $this->configureMessageMock($message, $from, $to, $subject, $html, $text, $headers);
 
@@ -76,7 +80,7 @@ class TestCase extends BaseTestCase
      */
     protected function getBlindCarbonCopyMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $bcc = null)
     {
-        $message = $this->getMockBuilder('Stampie\MessageInterface')->getMock();
+        $message = $this->getMockBuilder(MessageInterface::class)->getMock();
 
         $this->configureMessageMock($message, $from, $to, $subject, $html, $text, $headers);
 
@@ -93,7 +97,7 @@ class TestCase extends BaseTestCase
      */
     public function getAttachmentsMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], array $attachments = [])
     {
-        $message = $this->getMockBuilder('Stampie\\Tests\\Mailer\\AttachmentMessage')->getMock();
+        $message = $this->getMockBuilder(AttachmentMessage::class)->getMock();
 
         $this->configureMessageMock($message, $from, $to, $subject, $html, $text, $headers);
 
@@ -107,7 +111,7 @@ class TestCase extends BaseTestCase
 
     protected function getAttachmentMock($path, $name, $type, $id = null)
     {
-        $attachment = $this->getMockBuilder('\\Stampie\\Attachment')
+        $attachment = $this->getMockBuilder(Attachment::class)
             ->disableOriginalConstructor()
             ->getMock();
 
