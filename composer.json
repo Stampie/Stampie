@@ -43,6 +43,7 @@
         "ext-json": "*",
         "guzzlehttp/psr7": "^2.0",
         "php-http/mock-client": "^1.0",
+        "phpstan/phpstan": "^1.6",
         "phpunit/phpunit": "^9.5.20"
     },
     "conflict": {
@@ -59,5 +60,8 @@
         "branch-alias": {
             "dev-main": "2.x-dev"
         }
+    },
+    "config": {
+        "sort-packages": true
     }
 }
