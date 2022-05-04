@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html -->
-<phpunit colors="true" bootstrap="vendor/autoload.php" >
-
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" colors="true" bootstrap="vendor/autoload.php" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd">
+    <coverage>
+        <include>
+            <directory>./lib</directory>
+        </include>
+    </coverage>
     <testsuites>
         <testsuite name="Stampie Test Suite">
             <directory>./tests/Stampie/Tests</directory>
         </testsuite>
     </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory>./lib</directory>
-        </whitelist>
-    </filter>
-
 </phpunit>
