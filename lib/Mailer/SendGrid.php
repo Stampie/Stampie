@@ -141,7 +141,7 @@ class SendGrid extends Mailer
             }
         }
 
-        return json_encode($parameters);
+        return json_encode($parameters, \JSON_THROW_ON_ERROR);
     }
 
     /**

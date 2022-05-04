@@ -139,7 +139,7 @@ class SparkPost extends Mailer
             $parameters['content']['headers']['CC'] = IdentityUtils::buildIdentityString($normalizedCc);
         }
 
-        return json_encode($parameters);
+        return json_encode($parameters, \JSON_THROW_ON_ERROR);
     }
 
     /**

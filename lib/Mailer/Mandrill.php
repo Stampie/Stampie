@@ -115,7 +115,7 @@ class Mandrill extends Mailer
             $parameters['message']['subaccount'] = $this->subaccount;
         }
 
-        return json_encode($parameters);
+        return json_encode($parameters, \JSON_THROW_ON_ERROR);
     }
 
     /**

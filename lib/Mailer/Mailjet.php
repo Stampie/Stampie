@@ -89,7 +89,7 @@ class Mailjet extends Mailer
             $parameters['MonitoringCategory'] = $message->getTag();
         }
 
-        return json_encode(['Messages' => [array_filter($parameters)]]);
+        return json_encode(['Messages' => [array_filter($parameters)]], \JSON_THROW_ON_ERROR);
     }
 
     /**
