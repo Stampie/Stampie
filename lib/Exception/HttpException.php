@@ -13,6 +13,11 @@ use Stampie\ExceptionInterface;
 class HttpException extends \RuntimeException implements ExceptionInterface
 {
     /**
+     * @var int
+     */
+    private $statusCode;
+
+    /**
      * @param int             $statusCode
      * @param string          $message
      * @param \Exception|null $previous
