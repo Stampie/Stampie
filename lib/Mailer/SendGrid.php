@@ -133,11 +133,7 @@ class SendGrid extends Mailer
         if ($message instanceof MetadataAwareInterface) {
             $metadata = array_filter($message->getMetadata());
             if (!empty($metadata)) {
-                if (isset($parameters['custom_args'])) {
-                    $parameters['custom_args'] = array_merge($parameters['custom_args'], $metadata);
-                } else {
-                    $parameters['custom_args'] = $metadata;
-                }
+                $parameters['custom_args'] = $metadata;
             }
         }
 
