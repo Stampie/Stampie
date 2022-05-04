@@ -202,18 +202,18 @@ class SparkPostTest extends TestCase
     public function testSendWithAttachments()
     {
         $message = $this->getAttachmentsMessageMock(
-            $from = null,
-            $to = null,
-            $subject = null,
-            $html = null,
-            $text = null,
-            $headers = [],
+            'bob@example.com',
+            'alice@example.com',
+            'Stampie is awesome',
+            null,
+            null,
+            [],
             array_merge(
-                $attachments = [
+                [
                     $this->getAttachmentMock('paper.txt', 'paper.txt', 'text/plain', null),
                     $this->getAttachmentMock('apple.jpg', 'apple.jpg', 'image/jpeg', null),
                 ],
-                $images = [
+                [
                     $this->getAttachmentMock('orange.jpg', 'orange.jpg', 'image/jpeg', 'orange'),
                 ]
             )
