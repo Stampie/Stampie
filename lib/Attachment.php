@@ -84,6 +84,11 @@ class Attachment
 
         // Determine file type
         $finfo = finfo_open(\FILEINFO_MIME_TYPE);
+
+        if ($finfo === false) {
+            throw new \RuntimeException('Could not read the fileinfo database.');
+        }
+
         $type = finfo_file($finfo, $path);
 
         finfo_close($finfo);
