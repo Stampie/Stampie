@@ -8,7 +8,7 @@ namespace Stampie;
 class Identity implements IdentityInterface
 {
     /**
-     * @var string|null
+     * @var string
      */
     private $email;
 
@@ -18,10 +18,10 @@ class Identity implements IdentityInterface
     private $name;
 
     /**
-     * @param string|null $email
+     * @param string      $email
      * @param string|null $name
      */
-    public function __construct($email = null, $name = null)
+    public function __construct(string $email, $name = null)
     {
         $this->email = $email;
         $this->name = $name;
