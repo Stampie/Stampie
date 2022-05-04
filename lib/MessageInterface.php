@@ -46,12 +46,12 @@ interface MessageInterface
     public function getHeaders();
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getHtml();
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getText();
 }

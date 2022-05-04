@@ -16,12 +16,12 @@ abstract class Message implements MessageInterface
     protected $to;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $html;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $text;
 
@@ -44,7 +44,7 @@ abstract class Message implements MessageInterface
     }
 
     /**
-     * @param string $html
+     * @param string|null $html
      *
      * @return void
      */
