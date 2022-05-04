@@ -3,6 +3,7 @@
 namespace Stampie\Tests;
 
 use Http\Client\HttpClient;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -12,10 +13,13 @@ use Stampie\MessageInterface;
 
 class MailerTest extends TestCase
 {
+    /**
+     * @var HttpClient&MockObject
+     */
     protected $httpClient;
 
     /**
-     * @var \Stampie\MailerInterface
+     * @var Mailer&MockObject
      */
     protected $mailer;
 
@@ -130,11 +134,17 @@ class MailerTest extends TestCase
         return $response;
     }
 
+    /**
+     * @return HttpClient&MockObject
+     */
     protected function getHttpClientMock()
     {
         return $this->getMockBuilder(HttpClient::class)->getMock();
     }
 
+    /**
+     * @return Mailer&MockObject
+     */
     protected function getMailerMock(array $args = [])
     {
         $mailer = $this->getMockForAbstractClass(Mailer::class, $args);

@@ -15,7 +15,7 @@ class TestCase extends BaseTestCase
     /**
      * @return MockObject&MessageInterface
      */
-    protected function getMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [])
+    protected function getMessageMock($from, $to, string $subject, ?string $html = null, ?string $text = null, array $headers = [])
     {
         $message = $this->getMockBuilder(MessageInterface::class)->getMock();
 
@@ -27,7 +27,7 @@ class TestCase extends BaseTestCase
     /**
      * @return MockObject&MessageInterface
      */
-    protected function getTaggableMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $tags = [])
+    protected function getTaggableMessageMock($from, $to, string $subject, ?string $html = null, ?string $text = null, array $headers = [], $tags = [])
     {
         $message = $this->getMockBuilder(TaggableMessage::class)->getMock();
 
@@ -44,7 +44,7 @@ class TestCase extends BaseTestCase
     /**
      * @return MockObject&MessageInterface
      */
-    protected function getMetadataAwareMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], array $metadata = [])
+    protected function getMetadataAwareMessageMock($from, $to, string $subject, ?string $html = null, ?string $text = null, array $headers = [], array $metadata = [])
     {
         $message = $this->getMockBuilder(MetadataAwareMessage::class)->getMock();
 
@@ -61,7 +61,7 @@ class TestCase extends BaseTestCase
     /**
      * @return MockObject&MessageInterface
      */
-    protected function getCarbonCopyMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $cc = null)
+    protected function getCarbonCopyMock($from, $to, string $subject, ?string $html = null, ?string $text = null, array $headers = [], $cc = null)
     {
         $message = $this->getMockBuilder(MessageInterface::class)->getMock();
 
@@ -78,7 +78,7 @@ class TestCase extends BaseTestCase
     /**
      * @return MockObject&MessageInterface
      */
-    protected function getBlindCarbonCopyMock($from, $to, $subject, $html = null, $text = null, array $headers = [], $bcc = null)
+    protected function getBlindCarbonCopyMock($from, $to, string $subject, ?string $html = null, ?string $text = null, array $headers = [], $bcc = null)
     {
         $message = $this->getMockBuilder(MessageInterface::class)->getMock();
 
@@ -95,7 +95,7 @@ class TestCase extends BaseTestCase
     /**
      * @return MockObject&MessageInterface
      */
-    public function getAttachmentsMessageMock($from, $to, $subject, $html = null, $text = null, array $headers = [], array $attachments = [])
+    public function getAttachmentsMessageMock($from, $to, string $subject, ?string $html = null, ?string $text = null, array $headers = [], array $attachments = [])
     {
         $message = $this->getMockBuilder(AttachmentMessage::class)->getMock();
 
@@ -109,7 +109,10 @@ class TestCase extends BaseTestCase
         return $message;
     }
 
-    protected function getAttachmentMock($path, $name, $type, $id = null)
+    /**
+     * @return MockObject&Attachment
+     */
+    protected function getAttachmentMock(string $path, string $name, string $type, ?string $id = null)
     {
         $attachment = $this->getMockBuilder(Attachment::class)
             ->disableOriginalConstructor()
@@ -132,11 +135,10 @@ class TestCase extends BaseTestCase
             ->method('getId')
             ->will($this->returnValue($id));
 
-        /* @var \Stampie\Attachment $attachment */
         return $attachment;
     }
 
-    private function configureMessageMock(MockObject $message, $from, $to, $subject, $html = null, $text = null, array $headers = [])
+    private function configureMessageMock(MockObject $message, $from, $to, string $subject, ?string $html = null, ?string $text = null, array $headers = [])
     {
         $message
             ->expects($this->any())
