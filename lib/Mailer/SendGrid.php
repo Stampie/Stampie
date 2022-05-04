@@ -156,7 +156,7 @@ class SendGrid extends Mailer
 
         foreach ($attachments as $name => $attachment) {
             $item = [
-                'content' => base64_encode(file_get_contents($attachment->getPath())),
+                'content' => base64_encode($attachment->getContent()),
                 'type' => $attachment->getType(),
                 'filename' => $attachment->getName(),
             ];

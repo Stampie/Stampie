@@ -127,4 +127,18 @@ class Attachment
     {
         return $this->id;
     }
+
+    /**
+     * Gets the full content of the attachment.
+     */
+    public function getContent(): string
+    {
+        $content = file_get_contents($this->path);
+
+        if ($content === false) {
+            throw new \RuntimeException(sprintf('Could not read file "%s".', $this->path));
+        }
+
+        return $content;
+    }
 }

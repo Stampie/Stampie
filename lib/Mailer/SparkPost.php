@@ -4,7 +4,6 @@ namespace Stampie\Mailer;
 
 use Http\Client\HttpClient;
 use Psr\Http\Message\ResponseInterface;
-use Stampie\Attachment;
 use Stampie\Exception\ApiException;
 use Stampie\Exception\HttpException;
 use Stampie\Mailer;
@@ -94,7 +93,7 @@ class SparkPost extends Mailer
                 $parameters['content'][$inline ? 'inline_images' : 'attachments'][] = [
                     'type' => $attachment->getType(),
                     'name' => $inline ? $attachment->getId() : $attachment->getName(),
-                    'data' => base64_encode($this->getAttachmentContent($attachment)),
+                    'data' => base64_encode($attachment->getContent()),
                 ];
             }
         }
@@ -157,13 +156,5 @@ class SparkPost extends Mailer
         }
 
         throw $httpException;
-    }
-
-    /**
-     * @return string
-     */
-    private function getAttachmentContent(Attachment $attachment)
-    {
-        return file_get_contents($attachment->getPath());
     }
 }

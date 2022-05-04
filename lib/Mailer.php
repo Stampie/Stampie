@@ -265,6 +265,11 @@ abstract class Mailer implements MailerInterface
                         $options['filename'] = $name;
                     }
                     $value = fopen($path, 'r');
+
+                    if ($value === false) {
+                        throw new \RuntimeException(sprintf('Could not read file "%s".', $path));
+                    }
+
                     $builder->addResource($key, $value, $options);
                 }
             }

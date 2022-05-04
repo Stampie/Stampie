@@ -104,7 +104,7 @@ class Postmark extends Mailer
      */
     protected function getAttachmentContent(Attachment $attachment)
     {
-        return file_get_contents($attachment->getPath());
+        return $attachment->getContent();
     }
 
     /**

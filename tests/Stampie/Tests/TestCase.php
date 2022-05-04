@@ -110,32 +110,11 @@ class TestCase extends BaseTestCase
     }
 
     /**
-     * @return MockObject&Attachment
+     * @return Attachment
      */
     protected function getAttachmentMock(string $path, string $name, string $type, ?string $id = null)
     {
-        $attachment = $this->getMockBuilder(Attachment::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $attachment
-            ->expects($this->any())
-            ->method('getPath')
-            ->will($this->returnValue(__DIR__.'/../../Fixtures/'.$path));
-        $attachment
-            ->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue($name));
-        $attachment
-            ->expects($this->any())
-            ->method('getType')
-            ->will($this->returnValue($type));
-        $attachment
-            ->expects($this->any())
-            ->method('getId')
-            ->will($this->returnValue($id));
-
-        return $attachment;
+        return new Attachment(__DIR__.'/../../Fixtures/'.$path, $name, $type, $id);
     }
 
     private function configureMessageMock(MockObject $message, $from, $to, string $subject, ?string $html = null, ?string $text = null, array $headers = [])
