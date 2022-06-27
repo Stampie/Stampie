@@ -2,6 +2,8 @@
 
 namespace Stampie\Tests;
 
+use Stampie\Attachment;
+
 /**
  * @coversDefaultClass \Stampie\Attachment
  */
@@ -14,7 +16,7 @@ class AttachmentTest extends TestCase
     {
         $file = 'filenotfound.txt';
 
-        $attachment = $this->getMockBuilder('\\Stampie\\Attachment')
+        $attachment = $this->getMockBuilder(Attachment::class)
             ->onlyMethods(['isValidFile'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -36,7 +38,7 @@ class AttachmentTest extends TestCase
     {
         $file = 'unknownfiletype.txt';
 
-        $attachment = $this->getMockBuilder('\\Stampie\\Attachment')
+        $attachment = $this->getMockBuilder(Attachment::class)
             ->setMethods(['isValidFile', 'determineFileType'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -65,7 +67,7 @@ class AttachmentTest extends TestCase
         $file = 'unknownfiletype.txt';
         $type = 'text/plain';
 
-        $attachment = $this->getMockBuilder('\\Stampie\\Attachment')
+        $attachment = $this->getMockBuilder(Attachment::class)
             ->onlyMethods(['isValidFile', 'determineFileType'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -100,7 +102,7 @@ class AttachmentTest extends TestCase
         $type = 'image/jpeg';
         $id = md5(time());
 
-        $attachment = $this->getMockBuilder('\\Stampie\\Attachment')
+        $attachment = $this->getMockBuilder(Attachment::class)
             ->onlyMethods(['isValidFile'])
             ->disableOriginalConstructor()
             ->getMock();

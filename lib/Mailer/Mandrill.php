@@ -115,7 +115,7 @@ class Mandrill extends Mailer
             $parameters['message']['subaccount'] = $this->subaccount;
         }
 
-        return json_encode($parameters);
+        return json_encode($parameters, \JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -184,6 +184,6 @@ class Mandrill extends Mailer
      */
     protected function getAttachmentContent(Attachment $attachment)
     {
-        return file_get_contents($attachment->getPath());
+        return $attachment->getContent();
     }
 }

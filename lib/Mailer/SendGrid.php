@@ -133,15 +133,11 @@ class SendGrid extends Mailer
         if ($message instanceof MetadataAwareInterface) {
             $metadata = array_filter($message->getMetadata());
             if (!empty($metadata)) {
-                if (isset($parameters['custom_args'])) {
-                    $parameters['custom_args'] = array_merge($parameters['custom_args'], $metadata);
-                } else {
-                    $parameters['custom_args'] = $metadata;
-                }
+                $parameters['custom_args'] = $metadata;
             }
         }
 
-        return json_encode($parameters);
+        return json_encode($parameters, \JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -156,7 +152,7 @@ class SendGrid extends Mailer
 
         foreach ($attachments as $name => $attachment) {
             $item = [
-                'content' => base64_encode(file_get_contents($attachment->getPath())),
+                'content' => base64_encode($attachment->getContent()),
                 'type' => $attachment->getType(),
                 'filename' => $attachment->getName(),
             ];

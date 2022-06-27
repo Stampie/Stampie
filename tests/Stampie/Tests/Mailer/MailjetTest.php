@@ -290,8 +290,10 @@ class MailjetTest extends TestCase
 
     /**
      * @dataProvider errorProvider
+     *
+     * @param class-string<\Throwable> $exceptionType
      */
-    public function testHandleError($statusCode, $content, $exceptionType, $exceptionMessage)
+    public function testHandleError(int $statusCode, string $content, string $exceptionType, string $exceptionMessage)
     {
         $response = new Response($statusCode, [], $content);
 

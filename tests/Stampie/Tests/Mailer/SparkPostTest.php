@@ -257,7 +257,7 @@ class SparkPostTest extends TestCase
     /**
      * @dataProvider badRequestProvider
      */
-    public function testHandleBadRequest($httpStatusCode, $expectApiException)
+    public function testHandleBadRequest(int $httpStatusCode, bool $expectApiException)
     {
         $this->expectException($expectApiException ? ApiException::class : HttpException::class);
 

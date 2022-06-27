@@ -2,17 +2,24 @@
 
 namespace Stampie\Tests;
 
+use Http\Client\HttpClient;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use Stampie\Mailer;
 use Stampie\Mailer\MailGun;
+use Stampie\MessageInterface;
 
 class MailerTest extends TestCase
 {
+    /**
+     * @var HttpClient&MockObject
+     */
     protected $httpClient;
 
     /**
-     * @var \Stampie\MailerInterface
+     * @var Mailer&MockObject
      */
     protected $mailer;
 
@@ -60,7 +67,7 @@ class MailerTest extends TestCase
                 $this->getResponseMock(true)
             ));
 
-        $this->mailer->send($this->getMockBuilder('Stampie\MessageInterface')->getMock());
+        $this->mailer->send($this->getMockBuilder(MessageInterface::class)->getMock());
     }
 
     public function testUnsuccessfulSendCallsHandle()
@@ -76,7 +83,7 @@ class MailerTest extends TestCase
             ->expects($this->once())
             ->method('handle');
 
-        $this->mailer->send($this->getMockBuilder('Stampie\MessageInterface')->getMock());
+        $this->mailer->send($this->getMockBuilder(MessageInterface::class)->getMock());
     }
 
     public function testSendWithFiles()
@@ -107,7 +114,7 @@ class MailerTest extends TestCase
                 $this->getResponseMock(true)
             ));
 
-        $mailer->send($this->getMockBuilder('Stampie\MessageInterface')->getMock());
+        $mailer->send($this->getMockBuilder(MessageInterface::class)->getMock());
     }
 
     /**
@@ -127,14 +134,20 @@ class MailerTest extends TestCase
         return $response;
     }
 
+    /**
+     * @return HttpClient&MockObject
+     */
     protected function getHttpClientMock()
     {
-        return $this->getMockBuilder('Http\Client\HttpClient')->getMock();
+        return $this->getMockBuilder(HttpClient::class)->getMock();
     }
 
+    /**
+     * @return Mailer&MockObject
+     */
     protected function getMailerMock(array $args = [])
     {
-        $mailer = $this->getMockForAbstractClass('Stampie\Mailer', $args);
+        $mailer = $this->getMockForAbstractClass(Mailer::class, $args);
 
         $mailer->expects($this->any())
             ->method('getEndpoint')

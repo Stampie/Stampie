@@ -84,6 +84,11 @@ class Attachment
 
         // Determine file type
         $finfo = finfo_open(\FILEINFO_MIME_TYPE);
+
+        if ($finfo === false) {
+            throw new \RuntimeException('Could not read the fileinfo database.');
+        }
+
         $type = finfo_file($finfo, $path);
 
         finfo_close($finfo);
@@ -126,5 +131,19 @@ class Attachment
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Gets the full content of the attachment.
+     */
+    public function getContent(): string
+    {
+        $content = file_get_contents($this->path);
+
+        if ($content === false) {
+            throw new \RuntimeException(sprintf('Could not read file "%s".', $this->path));
+        }
+
+        return $content;
     }
 }

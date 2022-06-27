@@ -94,7 +94,7 @@ class Postmark extends Mailer
             }
         }
 
-        return json_encode(array_filter($parameters));
+        return json_encode(array_filter($parameters), \JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -104,7 +104,7 @@ class Postmark extends Mailer
      */
     protected function getAttachmentContent(Attachment $attachment)
     {
-        return file_get_contents($attachment->getPath());
+        return $attachment->getContent();
     }
 
     /**
